@@ -33,16 +33,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.interfaces.AuthenApi;
+import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     @Bind(R.id.user2)
     EditText et;
     @Bind(R.id.pass2)
     EditText et2;
-
     @Bind(R.id.email)
     EditText et4;
     @Bind(R.id.imgv)
@@ -54,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Uri selectedImage = null;
     private final int FILE_MAX_SIZE = 500;
     ProgressDialog progress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +67,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (view==bt1){
-            Toast.makeText(getApplicationContext(),et.getText().toString(),Toast.LENGTH_SHORT).show();
-        }else if (view==imv){
+        if (view == bt1) {
+            signUp();
+        } else if (view == imv) {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -101,8 +100,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void signup(){
-
+    private void signUp() {
+        if (!vlidateForm()) return;
         progress = ProgressDialog.show(this, "SignUp", "Saving...", true);
         AuthenApi service = ServiceGenerator.createService(AuthenApi.class);
         // create part for file (photo, video, ...)
@@ -113,10 +112,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         RequestBody email = createPartFromString(et4.getText().toString());
 
         HashMap<String, RequestBody> map = new HashMap<>();
-
         map.put("username", username);
         map.put("password", password);
         map.put("email", email);
+
         // finally, execute the request
         Call<ResponseBody> call = service.Signup(map, body);
         call.enqueue(new Callback<ResponseBody>() {
@@ -127,18 +126,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         Gson gson = new Gson();
                         String json = response.body().string();
-//                        BaseEntity base = gson.fromJson(json, BaseEntity.class);
-//                        if (base.isStatus()) {
-//                            Toast.makeText(getApplicationContext(), "Signup Success", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), base.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
+                        Log.e("JSON ", json);
+                        BaseResponse base = gson.fromJson(json, BaseResponse.class);
+                        if (base.isStatus()) {
+                            // signUp success
+                            Toast.makeText(getApplicationContext(), "Signup Success", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(), base.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                        Toast.makeText(getApplicationContext(), "Signup Success", Toast.LENGTH_SHORT).show();
-//                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {
                     try {
                         Log.e("LOG", "Retrofit Response: " + response.errorBody().string());
@@ -155,8 +154,29 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Log.v("onFailure", t.getMessage());
             }
         });
-
     }
+
+    private boolean vlidateForm() {
+        boolean check = true;
+        if (et.getText().toString().equals("")) {
+            et.requestFocus();
+            Toast.makeText(getApplicationContext(), "Username is require*", Toast.LENGTH_SHORT).show();
+            check = false;
+        } else if (et2.getText().toString().equals("")) {
+            et2.requestFocus();
+            Toast.makeText(getApplicationContext(), "Password is require*", Toast.LENGTH_SHORT).show();
+            check = false;
+        } else if (et4.getText().toString().equals("")) {
+            et4.requestFocus();
+            Toast.makeText(getApplicationContext(), "Email is require*", Toast.LENGTH_SHORT).show();
+            check = false;
+        } else if (selectedImage == null) {
+            Toast.makeText(getApplicationContext(), "ImageProfile is require*", Toast.LENGTH_SHORT).show();
+            check = false;
+        }
+        return check;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

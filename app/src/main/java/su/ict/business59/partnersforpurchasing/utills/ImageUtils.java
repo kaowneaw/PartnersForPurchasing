@@ -29,12 +29,14 @@ public class ImageUtils {
 
     public File saveBitmapToFile(Bitmap bitmap) {
 
-        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/BusMapBkk";
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ShopShare";
         File dir = new File(file_path);
         if (!dir.exists()) {
             dir.mkdir();
         }
-        File file = new File(dir, "sketchpad.png");
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+        File file = new File(dir, ts+".jpg");
         FileOutputStream fOut = null;
         try {
             fOut = new FileOutputStream(file);

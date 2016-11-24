@@ -62,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ButterKnife.bind(this);
         bt1.setOnClickListener(this);
         imv.setOnClickListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

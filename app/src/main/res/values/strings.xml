@@ -6,4 +6,15 @@
     <string name="choose_file">Select a file</string>
     <string name="error_selecting_file">Error selecting File</string>
     <string name="internal_storage">Internal storage</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="feeds">Feeds</string>
+    <string name="product">Product</string>
+    <string name="new_product">New Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="desciption">Desciption</string>
+    <string name="price">Price</string>
+    <string name="add_more_image">Add More Image</string>
 </resources>

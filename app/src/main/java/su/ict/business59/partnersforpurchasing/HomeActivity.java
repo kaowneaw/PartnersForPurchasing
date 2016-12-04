@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity
         nav_username.setText(pref.getUsername());
         nav_email.setText(pref.getEmail());
         String host = getResources().getString(R.string.host);
-        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerInside().into(nav_img);
+        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(nav_img);
     }
 
     @Override

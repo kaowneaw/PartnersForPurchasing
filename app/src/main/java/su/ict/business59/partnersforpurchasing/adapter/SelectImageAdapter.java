@@ -52,7 +52,6 @@ public class SelectImageAdapter extends RecyclerView.Adapter<SelectImageAdapter.
     public void onBindViewHolder(SelectImageAdapter.ViewHolder holder, int position) {
         // Get the data model based on position
         Uri imgUri = imgList.get(position);
-        holder.setItem(position + "");
         // Set item views based on your views and data model
         ImageView imgHolder = holder.imgView;
         Picasso.with(mContext).load(imgUri).fit().centerCrop().into(imgHolder);
@@ -68,7 +67,6 @@ public class SelectImageAdapter extends RecyclerView.Adapter<SelectImageAdapter.
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         private ImageView imgView;
-        private String mItem;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -81,9 +79,6 @@ public class SelectImageAdapter extends RecyclerView.Adapter<SelectImageAdapter.
 
         }
 
-        public void setItem(String item) {
-            mItem = item;
-        }
 
         @Override
         public void onClick(View view) {

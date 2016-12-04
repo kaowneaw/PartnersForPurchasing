@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_product_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="su.ict.business59.partnersforpurchasing.ProductDetailActivity">
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/slider"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:padding="@dimen/activity_vertical_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/desciption"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/product_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/price"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="50"
+                    android:background="@color/colorAccent"
+                    android:text="@string/add_to_list"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="50"
+                    android:background="@color/blue"
+                    android:text="@string/share"
+                    android:textColor="@android:color/white" />
+            </TableRow>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

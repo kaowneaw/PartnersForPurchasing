@@ -53,20 +53,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/containerImg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-
             <TableRow
                 android:id="@+id/addMoreImg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:padding="5dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -81,6 +75,15 @@
                     android:textSize="16sp" />
 
             </TableRow>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/containerImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

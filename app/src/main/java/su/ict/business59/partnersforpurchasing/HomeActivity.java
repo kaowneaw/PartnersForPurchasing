@@ -10,9 +10,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
+import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,7 +29,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -34,6 +39,15 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         onNavigationItemSelected(navigationView.getMenu().getItem(1));// init set feed menu
         navigationView.setCheckedItem(R.id.nav_product);// init set check feed menu
+        UserPreference pref = new UserPreference(getApplicationContext());
+        View headView = navigationView.getHeaderView(0);
+        TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);
+        TextView nav_email = (TextView) headView.findViewById(R.id.nav_email);
+        ImageView nav_img = (ImageView) headView.findViewById(R.id.nav_img);
+        nav_username.setText(pref.getUsername());
+        nav_email.setText(pref.getEmail());
+        String host = getResources().getString(R.string.host);
+        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerInside().into(nav_img);
     }
 
     @Override

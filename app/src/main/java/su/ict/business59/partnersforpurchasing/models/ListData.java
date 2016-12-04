@@ -13,12 +13,15 @@ public class ListData {
     @SerializedName("category")
     @Expose()
     private List<Category> itemsCategory;
+    @SerializedName("product")
+    @Expose()
+    private List<Product> itemsProduct;
 
     public List<Category> getItemsCategory() {
         return itemsCategory;
     }
 
-    public void setItemsCategory(List<Category> itemsCategory) {
-        this.itemsCategory = itemsCategory;
+    public List<Product> getItemsProduct() {
+        return itemsProduct;
     }
 }

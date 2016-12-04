@@ -43,8 +43,6 @@ public class ImageUtils {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

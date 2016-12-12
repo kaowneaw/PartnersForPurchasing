@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
  * Created by kaowneaw on 11/20/2016.
  */
 
-public class User extends BaseResponse{
+public class User extends BaseResponse {
     @Expose
     String user_id;
     @Expose
@@ -17,7 +17,16 @@ public class User extends BaseResponse{
     String email;
     @Expose
     String image_url;
+    @Expose
+    String role;
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getUser_id() {
         return user_id;

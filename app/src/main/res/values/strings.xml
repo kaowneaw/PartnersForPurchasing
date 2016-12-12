@@ -21,4 +21,16 @@
     <string name="save">Save</string>
     <string name="add_to_list">Add To List</string>
     <string name="share">Share</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="shop_description">Shop Description</string>
+    <string name="floor">Floor</string>
+    <string name="soi">Soi</string>
+    <string name="room">Room</string>
+    <string name="promotion">Promotion</string>
 </resources>

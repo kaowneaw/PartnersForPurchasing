@@ -111,11 +111,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         RequestBody username = createPartFromString(et.getText().toString());
         RequestBody password = createPartFromString(et2.getText().toString());
         RequestBody email = createPartFromString(et4.getText().toString());
+        RequestBody role = createPartFromString("U");
 
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("email", email);
+        map.put("role", role);
 
         // finally, execute the request
         Call<ResponseBody> call = service.Signup(map, body);

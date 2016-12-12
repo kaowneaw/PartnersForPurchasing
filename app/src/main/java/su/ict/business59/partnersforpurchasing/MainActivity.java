@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UserPreference pref = new UserPreference(this);
         if (!pref.getUserID().equals("NULL")) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            this.finish();
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onResponse(Call<User> call, Response<User> response) {
                     User user = response.body();
                     if (user.isStatus()) {
-                        UserPreference pref = new UserPreference(getApplicationContext(), user.getUser_id(), user.getUsername(), user.getEmail(), user.getImage_url());
+                        UserPreference pref = new UserPreference(getApplicationContext(), user.getUser_id(), user.getUsername(), user.getEmail(), user.getImage_url(), user.getRole());
                         pref.commit();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     } else {

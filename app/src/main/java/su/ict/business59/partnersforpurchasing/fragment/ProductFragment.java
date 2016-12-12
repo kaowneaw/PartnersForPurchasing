@@ -3,6 +3,7 @@ package su.ict.business59.partnersforpurchasing.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,8 +27,6 @@ import su.ict.business59.partnersforpurchasing.ProductDetailActivity;
 import su.ict.business59.partnersforpurchasing.ProductManageActivity;
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.adapter.ProductAdapter;
-import su.ict.business59.partnersforpurchasing.adapter.SelectImageAdapter;
-import su.ict.business59.partnersforpurchasing.interfaces.CategoryService;
 import su.ict.business59.partnersforpurchasing.interfaces.ProductService;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Product;
@@ -37,7 +36,7 @@ import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
  * Created by kaowneaw on 11/26/2016.
  */
 
-public class ProductFragment extends android.app.Fragment {
+public class ProductFragment extends Fragment {
 
     private List<Product> productList = new ArrayList<>();
     private ProductAdapter adapter;
@@ -62,7 +61,6 @@ public class ProductFragment extends android.app.Fragment {
     }
 
     private void init() {
-        getActivity().setTitle(getResources().getString(R.string.product));
         ProductService service = ServiceGenerator.createService(ProductService.class);
         String shopId = "1";
         Call<ListData> call = service.getProductList(shopId);

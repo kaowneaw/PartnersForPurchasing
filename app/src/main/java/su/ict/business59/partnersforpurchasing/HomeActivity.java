@@ -1,10 +1,11 @@
 package su.ict.business59.partnersforpurchasing;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -49,6 +50,13 @@ public class HomeActivity extends AppCompatActivity
         nav_email.setText(pref.getEmail());
         String host = getResources().getString(R.string.host);
         Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(nav_img);
+        headView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -67,18 +75,19 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         Fragment myFragment = null;
         if (id == R.id.nav_feed) {
             myFragment = new FeedFragment();
+            setTitle(getResources().getString(R.string.feeds));
         } else if (id == R.id.nav_product) {
             myFragment = new ProductFragment();
-        } else if (id == R.id.nav_slideshow) {
-
+            setTitle(getResources().getString(R.string.product));
         } else if (id == R.id.nav_logout) {
             UserPreference pref = new UserPreference(this);
             pref.clearPreference();
             startActivity(new Intent(this, MainActivity.class));
+            return false;
         }
         fm.beginTransaction().replace(R.id.container, myFragment).commit();
 

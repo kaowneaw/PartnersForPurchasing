@@ -30,6 +30,8 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     TextView product_desc;
     @Bind(R.id.product_price)
     TextView product_price;
+    @Bind(R.id.category_name)
+    TextView category_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     private void init() {
         product_name.setText(this.productObj.getProductName());
         product_desc.setText(this.productObj.getProductDesc());
+        category_name.setText(this.productObj.getCatName());
         product_price.setText(String.valueOf(this.productObj.getProductPrice()) + " บาท");
         HashMap<Integer, String> url_maps = new HashMap<>();
         String host = getResources().getString(R.string.host);

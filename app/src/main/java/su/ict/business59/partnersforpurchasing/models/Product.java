@@ -32,11 +32,14 @@ public class Product extends BaseResponse implements Parcelable {
     @SerializedName("shop_id")
     @Expose
     String shopId;
+    @SerializedName("category_name")
+    @Expose
+    String catName;
     @SerializedName("img_list")
     @Expose
     List<ProductImg> imgList;
 
-    public Product(int productId, String productName, String productDesc, double productPrice, String created, String categoryId, String shopId, List<ProductImg> imgList) {
+    public Product(int productId, String productName, String productDesc, double productPrice, String created, String categoryId, String shopId, String catName, List<ProductImg> imgList) {
         this.productId = productId;
         this.productName = productName;
         this.productDesc = productDesc;
@@ -44,14 +47,7 @@ public class Product extends BaseResponse implements Parcelable {
         this.created = created;
         this.categoryId = categoryId;
         this.shopId = shopId;
-        this.imgList = imgList;
-    }
-
-    public List<ProductImg> getImgList() {
-        return imgList;
-    }
-
-    public void setImgList(List<ProductImg> imgList) {
+        this.catName = catName;
         this.imgList = imgList;
     }
 
@@ -111,6 +107,22 @@ public class Product extends BaseResponse implements Parcelable {
         this.shopId = shopId;
     }
 
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+
+    public List<ProductImg> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<ProductImg> imgList) {
+        this.imgList = imgList;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -125,7 +137,8 @@ public class Product extends BaseResponse implements Parcelable {
         dest.writeString(this.created);
         dest.writeString(this.categoryId);
         dest.writeString(this.shopId);
-        dest.writeList(this.imgList);
+        dest.writeString(this.catName);
+        dest.writeTypedList(this.imgList);
     }
 
     protected Product(Parcel in) {
@@ -136,8 +149,8 @@ public class Product extends BaseResponse implements Parcelable {
         this.created = in.readString();
         this.categoryId = in.readString();
         this.shopId = in.readString();
-        this.imgList = new ArrayList<ProductImg>();
-        in.readList(this.imgList, ProductImg.class.getClassLoader());
+        this.catName = in.readString();
+        this.imgList = in.createTypedArrayList(ProductImg.CREATOR);
     }
 
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {

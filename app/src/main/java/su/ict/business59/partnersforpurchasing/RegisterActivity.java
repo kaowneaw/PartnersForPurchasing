@@ -32,7 +32,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import su.ict.business59.partnersforpurchasing.interfaces.AuthenApi;
+import su.ict.business59.partnersforpurchasing.interfaces.AuthService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         bt1.setOnClickListener(this);
         imv.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setTitle("Register");
     }
 
     @Override
@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void signUp() {
         if (!vlidateForm()) return;
         progress = ProgressDialog.show(this, "SignUp", "Saving...", true);
-        AuthenApi service = ServiceGenerator.createService(AuthenApi.class);
+        AuthService service = ServiceGenerator.createService(AuthService.class);
         // create part for file (photo, video, ...)
         MultipartBody.Part body = prepareFilePart("img", selectedImage);
         // create a map of data to pass along

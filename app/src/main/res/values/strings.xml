@@ -33,4 +33,7 @@
     <string name="soi">Soi</string>
     <string name="room">Room</string>
     <string name="promotion">Promotion</string>
+    <string name="signup">SignUp</string>
+    <string name="signin">SignIn</string>
+    <string name="category">Category</string>
 </resources>

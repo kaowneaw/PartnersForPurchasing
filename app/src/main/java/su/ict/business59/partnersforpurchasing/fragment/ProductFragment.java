@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +51,7 @@ public class ProductFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View myView = inflater.inflate(R.layout.product_layout, container, false);
+        View myView = inflater.inflate(R.layout.fragment_product, container, false);
         productRc = (RecyclerView) myView.findViewById(R.id.productRc);
         productRc.setHasFixedSize(true);
         ButterKnife.bind(getActivity(), myView);
@@ -79,7 +79,7 @@ public class ProductFragment extends Fragment {
                         }
                     });
                     productRc.setAdapter(adapter);
-                    productRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    productRc.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                     adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();

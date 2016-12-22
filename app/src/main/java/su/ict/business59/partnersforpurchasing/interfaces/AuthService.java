@@ -19,7 +19,7 @@ import su.ict.business59.partnersforpurchasing.models.User;
  * Created by Lenovo on 19/11/2559.
  */
 
-public interface AuthenApi {
+public interface AuthService {
 
     @FormUrlEncoded
     @POST("login")

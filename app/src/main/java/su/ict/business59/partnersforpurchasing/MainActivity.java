@@ -3,26 +3,23 @@ package su.ict.business59.partnersforpurchasing;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import su.ict.business59.partnersforpurchasing.interfaces.AuthenApi;
+import su.ict.business59.partnersforpurchasing.interfaces.AuthService;
 import su.ict.business59.partnersforpurchasing.models.User;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     @Bind(R.id.user)
     EditText et;
     @Bind(R.id.pass)
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String username = et.getText().toString();
         String password = et2.getText().toString();
         if (!username.equals("") && !password.equals("")) {
-            AuthenApi service = ServiceGenerator.createService(AuthenApi.class);
+            AuthService service = ServiceGenerator.createService(AuthService.class);
             Call<User> call = service.login(username, password);
             call.enqueue(new Callback<User>() {
                 @Override

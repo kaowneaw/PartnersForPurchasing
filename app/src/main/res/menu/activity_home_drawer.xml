@@ -8,7 +8,7 @@
             android:title="@string/feeds" />
         <item
             android:id="@+id/nav_product"
-            android:icon="@mipmap/product_ico"
+            android:icon="@mipmap/product_default"
             android:title="@string/product" />
         <item
             android:id="@+id/nav_logout"

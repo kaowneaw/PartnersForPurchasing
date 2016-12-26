@@ -36,4 +36,12 @@
     <string name="signup">SignUp</string>
     <string name="signin">SignIn</string>
     <string name="category">Category</string>
+    <string name="topic">Topic</string>
+    <string name="add_image">Add Image</string>
+    <string name="dateend">DateEnd</string>
+    <string name="datestart">DateStart</string>
+    <string name="timestart">TimeStart</string>
+    <string name="timeend">TimeEnd</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="join">Join</string>
 </resources>

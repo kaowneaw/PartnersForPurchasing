@@ -1,9 +1,11 @@
 package su.ict.business59.partnersforpurchasing;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +21,10 @@ import butterknife.ButterKnife;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.ProductImg;
 
-public class ProductDetailActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
-
+public class ProductDetailActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
+    Product productObj;
     @Bind(R.id.slider)
     SliderLayout mDemoSlider;
-    Product productObj;
     @Bind(R.id.product_name)
     TextView product_name;
     @Bind(R.id.product_desc)
@@ -32,6 +33,8 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     TextView product_price;
     @Bind(R.id.category_name)
     TextView category_name;
+    @Bind(R.id.btn_share)
+    Button btn_share;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         Bundle bundle = getIntent().getExtras();
         this.productObj = bundle.getParcelable("product");
         setTitle(this.productObj.getProductName());
+        btn_share.setOnClickListener(this);
         init();
     }
 
@@ -108,4 +112,10 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     public void onPageScrollStateChanged(int state) {
     }
 
+    @Override
+    public void onClick(View view) {
+        Intent i = new Intent(this, PostProductActivity.class);
+        i.putExtra("product", this.productObj);
+        startActivity(i);
+    }
 }

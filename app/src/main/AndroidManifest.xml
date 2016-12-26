@@ -44,8 +44,14 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />\
-
+                android:value=".HomeActivity" />
+        </activity>
+        <activity
+            android:name=".PostProductActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
         </activity>
     </application>
 

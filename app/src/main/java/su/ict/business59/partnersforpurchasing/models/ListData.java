@@ -16,6 +16,12 @@ public class ListData {
     @SerializedName("product")
     @Expose()
     private List<Product> itemsProduct;
+    @SerializedName("shop")
+    @Expose()
+    private List<Shop> itemsShop;
+    @SerializedName("post")
+    @Expose()
+    private List<Post> itemsPost;
 
     public List<Category> getItemsCategory() {
         return itemsCategory;
@@ -23,5 +29,13 @@ public class ListData {
 
     public List<Product> getItemsProduct() {
         return itemsProduct;
+    }
+
+    public List<Shop> getItemsShop() {
+        return itemsShop;
+    }
+
+    public List<Post> getItemsPost() {
+        return itemsPost;
     }
 }

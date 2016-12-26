@@ -1,6 +1,5 @@
 package su.ict.business59.partnersforpurchasing;
 
-
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,8 +38,8 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        onNavigationItemSelected(navigationView.getMenu().getItem(1));// init set feed menu
-        navigationView.setCheckedItem(R.id.nav_product);// init set check feed menu
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
+        navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
         UserPreference pref = new UserPreference(getApplicationContext());
         View headView = navigationView.getHeaderView(0);
         TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);

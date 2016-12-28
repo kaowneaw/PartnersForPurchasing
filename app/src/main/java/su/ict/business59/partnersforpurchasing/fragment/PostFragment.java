@@ -18,6 +18,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import su.ict.business59.partnersforpurchasing.PostDetailActivity;
 import su.ict.business59.partnersforpurchasing.PostProductActivity;
 import su.ict.business59.partnersforpurchasing.ProductDetailActivity;
 import su.ict.business59.partnersforpurchasing.R;
@@ -31,10 +32,11 @@ import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
 
-public class PostFragment extends Fragment {
-
-    RecyclerView postRc;
-    PostAdapter adapter;
+public class PostFragment extends Fragment implements PostAdapter.OnItemClickListener {
+    //Post List Page
+    private RecyclerView postRc;
+    private PostAdapter adapter;
+    List<Post> listPost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,20 +56,15 @@ public class PostFragment extends Fragment {
     }
 
     private void init() {
+        final PostFragment mContext = this;
         PostService service = ServiceGenerator.createService(PostService.class);
         Call<ListData> call = service.getPostList();
         call.enqueue(new Callback<ListData>() {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
-                    List<Post> listPost = response.body().getItemsPost();
-                    adapter = new PostAdapter(listPost, getContext(), new PostAdapter.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(Post item) {
-
-                        }
-                    });
+                    listPost = response.body().getItemsPost();
+                    adapter = new PostAdapter(listPost, getActivity(), mContext);
                     postRc.setAdapter(adapter);
                     postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
                     adapter.notifyDataSetChanged();
@@ -83,4 +80,16 @@ public class PostFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onItemClick(Post item) {
+        Intent i = new Intent(getActivity(), PostDetailActivity.class);
+        i.putExtra("post", item);
+        startActivity(i);
+    }
+
+    @Override
+    public void onJoinButtonClick(int index) {
+        listPost.remove(index);
+        adapter.notifyDataSetChanged();
+    }
 }

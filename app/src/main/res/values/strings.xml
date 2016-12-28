@@ -44,4 +44,6 @@
     <string name="timeend">TimeEnd</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="join">Join</string>
+    <string name="limit_user_join">Limit User Join</string>
+    <string name="date">Date</string>
 </resources>

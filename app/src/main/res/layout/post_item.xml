@@ -19,8 +19,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_img"
@@ -31,9 +30,27 @@
                     android:id="@+id/user_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@id/user_img"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@id/user_img"
                     android:text="@string/username" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/user_join"
+                    android:src="@mipmap/user_group" />
+
+                <TextView
+                    android:id="@+id/user_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/join_btn"
+                    android:text="10/10" />
 
                 <Button
                     android:id="@+id/join_btn"

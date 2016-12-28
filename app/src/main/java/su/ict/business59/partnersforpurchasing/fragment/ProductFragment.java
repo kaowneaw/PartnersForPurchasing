@@ -32,9 +32,6 @@ import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
-/**
- * Created by kaowneaw on 11/26/2016.
- */
 
 public class ProductFragment extends Fragment {
 

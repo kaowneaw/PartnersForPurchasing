@@ -41,29 +41,18 @@
                         android:ellipsize="end"
                         android:lines="1"
                         android:text="@string/product_name"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
                 </TableRow>
-
-                <TextView
-                    android:id="@+id/product_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:gravity="top"
-                    android:maxLines="2"
-                    android:text="@string/desciption" />
 
                 <TextView
                     android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/price"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

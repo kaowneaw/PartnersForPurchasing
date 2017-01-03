@@ -19,10 +19,6 @@ import java.util.Locale;
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.models.Post;
 
-/**
- * Created by kaowneaw on 12/25/2016.
- */
-
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Store a member variable for the contacts
     private List<Post> postList;
@@ -30,8 +26,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Context mContext;
     private final PostAdapter.OnItemClickListener listener;
     private final String host;
-    String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
-    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    private String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
+    private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
     public PostAdapter(List<Post> postList, Context mContext, PostAdapter.OnItemClickListener listener) {
         this.postList = postList;
@@ -44,6 +40,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void onItemClick(Post item);
 
         void onJoinButtonClick(int index);
+    }
+
+    public void updateData(List<Post> list) {
+        this.postList = list;
     }
 
     // Easy access to the context object in the recyclerview
@@ -75,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
         Picasso.with(mContext).load(host + mPost.getImage_url()).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
+        holder.user_join.setText(mPost.getMemberJoin().size() + " / " + mPost.getMaxJoin());
     }
 
 
@@ -95,6 +96,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private ImageView user_img;
         private TextView user_text;
         private Button join_btn;
+        private TextView user_join;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -111,6 +113,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             user_img = (ImageView) itemView.findViewById(R.id.user_img);
             user_text = (TextView) itemView.findViewById(R.id.user_text);
             join_btn = (Button) itemView.findViewById(R.id.join_btn);
+            user_join = (TextView) itemView.findViewById(R.id.user_join);
             join_btn.setOnClickListener(this);
         }
 

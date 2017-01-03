@@ -75,7 +75,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Product mProduct = productList.get(position);
         holder.product_name.setText(mProduct.getProductName());
-        holder.product_desc.setText(mProduct.getProductDesc());
         holder.product_price.setText(String.valueOf(mProduct.getProductPrice()) + " บาท");
         if (mProduct.getImgList().size() > 0) {
             String host = mContext.getResources().getString(R.string.host);
@@ -96,7 +95,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         private TextView product_name;
-        private TextView product_desc;
         private TextView product_price;
         private ImageView img_product;
 
@@ -109,7 +107,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             product_name = (TextView) itemView.findViewById(R.id.product_name);
-            product_desc = (TextView) itemView.findViewById(R.id.product_desc);
             product_price = (TextView) itemView.findViewById(R.id.product_price);
             img_product = (ImageView) itemView.findViewById(R.id.img_product);
         }

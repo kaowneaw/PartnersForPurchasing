@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kaowneaw on 12/25/2016.
  */
@@ -14,7 +17,7 @@ public class Post extends Shop implements Parcelable {
 
     @SerializedName("post_id")
     @Expose
-    int productId;
+    String postId;
     @SerializedName("post_name")
     @Expose
     String postName;
@@ -39,41 +42,28 @@ public class Post extends Shop implements Parcelable {
     @SerializedName("max_joined")
     @Expose
     String maxJoin;
+    @SerializedName("memberJoin")
+    @Expose
+    List<MemberJoin> memberJoin;
 
-    public int getProductId() {
-        return productId;
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getPostName() {
         return postName;
     }
 
-    public String getPostDesc() {
-        return postDesc;
-    }
-
-    public String getPostEnd() {
-        return postEnd;
-    }
-
-    public String getPostImg() {
-        return postImg;
-    }
-
-    public String getCatId() {
-        return catId;
-    }
-
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
     public void setPostName(String postName) {
         this.postName = postName;
+    }
+
+    public String getPostDesc() {
+        return postDesc;
     }
 
     public void setPostDesc(String postDesc) {
@@ -88,16 +78,32 @@ public class Post extends Shop implements Parcelable {
         this.postStart = postStart;
     }
 
+    public String getPostEnd() {
+        return postEnd;
+    }
+
     public void setPostEnd(String postEnd) {
         this.postEnd = postEnd;
+    }
+
+    public String getPostImg() {
+        return postImg;
     }
 
     public void setPostImg(String postImg) {
         this.postImg = postImg;
     }
 
+    public String getCatId() {
+        return catId;
+    }
+
     public void setCatId(String catId) {
         this.catId = catId;
+    }
+
+    public String getCatName() {
+        return catName;
     }
 
     public void setCatName(String catName) {
@@ -112,6 +118,17 @@ public class Post extends Shop implements Parcelable {
         this.maxJoin = maxJoin;
     }
 
+    public List<MemberJoin> getMemberJoin() {
+        return memberJoin;
+    }
+
+    public void setMemberJoin(List<MemberJoin> memberJoin) {
+        this.memberJoin = memberJoin;
+    }
+
+
+    public Post() {
+    }
 
     @Override
     public int describeContents() {
@@ -120,7 +137,7 @@ public class Post extends Shop implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.productId);
+        dest.writeString(this.postId);
         dest.writeString(this.postName);
         dest.writeString(this.postDesc);
         dest.writeString(this.postStart);
@@ -129,14 +146,29 @@ public class Post extends Shop implements Parcelable {
         dest.writeString(this.catId);
         dest.writeString(this.catName);
         dest.writeString(this.maxJoin);
-        dest.writeString(shopName);
-    }
-
-    public Post() {
+        dest.writeList(this.memberJoin);
+        dest.writeString(this.shopId);
+        dest.writeString(this.shopName);
+        dest.writeString(this.shopDesc);
+        dest.writeString(this.shopImg);
+        dest.writeString(this.shopClass);
+        dest.writeString(this.shopSoi);
+        dest.writeString(this.shopRoom);
+        dest.writeString(this.shopPromotion);
+        dest.writeString(this.adminId);
+        dest.writeInt(this.shopStatus);
+        dest.writeString(this.user_id);
+        dest.writeString(this.username);
+        dest.writeString(this.password);
+        dest.writeString(this.email);
+        dest.writeString(this.image_url);
+        dest.writeString(this.role);
+        dest.writeString(this.message);
+        dest.writeByte(this.status ? (byte) 1 : (byte) 0);
     }
 
     protected Post(Parcel in) {
-        this.productId = in.readInt();
+        this.postId = in.readString();
         this.postName = in.readString();
         this.postDesc = in.readString();
         this.postStart = in.readString();
@@ -145,7 +177,26 @@ public class Post extends Shop implements Parcelable {
         this.catId = in.readString();
         this.catName = in.readString();
         this.maxJoin = in.readString();
-        shopName = in.readString();
+        this.memberJoin = new ArrayList<MemberJoin>();
+        in.readList(this.memberJoin, MemberJoin.class.getClassLoader());
+        this.shopId = in.readString();
+        this.shopName = in.readString();
+        this.shopDesc = in.readString();
+        this.shopImg = in.readString();
+        this.shopClass = in.readString();
+        this.shopSoi = in.readString();
+        this.shopRoom = in.readString();
+        this.shopPromotion = in.readString();
+        this.adminId = in.readString();
+        this.shopStatus = in.readInt();
+        this.user_id = in.readString();
+        this.username = in.readString();
+        this.password = in.readString();
+        this.email = in.readString();
+        this.image_url = in.readString();
+        this.role = in.readString();
+        this.message = in.readString();
+        this.status = in.readByte() != 0;
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {

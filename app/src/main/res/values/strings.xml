@@ -46,4 +46,5 @@
     <string name="join">Join</string>
     <string name="limit_user_join">Limit User Join</string>
     <string name="date">Date</string>
+    <string name="post_by">Post by</string>
 </resources>

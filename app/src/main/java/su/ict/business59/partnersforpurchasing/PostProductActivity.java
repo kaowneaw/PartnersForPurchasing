@@ -106,11 +106,13 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
+        setTitle("Post");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             this.productObj = bundle.getParcelable("product");
+            selectedImage = Uri.EMPTY;
+            initFromShareProduct();
         }
-        setTitle("Post");
         init();
         dateStart.setOnClickListener(this);
         timeStart.setOnClickListener(this);
@@ -119,6 +121,12 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         img_product.setOnClickListener(this);
         shop_name.setOnClickListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
+    }
+
+    private void initFromShareProduct() {
+        String host = getResources().getString(R.string.host);
+        Picasso.with(getApplicationContext()).load(host + this.productObj.getImgList().get(0).getPimg_url()).fit().centerCrop().into(img_product);
+        topic_post.setText(productObj.getProductName());
     }
 
     @Override
@@ -220,6 +228,11 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                     ListData categoryList = response.body();
                     categorys = categoryList.getItemsCategory();
                     populateSpinner(getApplicationContext(), categorys, spin_category);
+                    if (productObj != null) {
+                        int positionCat = findPositionCategory(categorys, productObj.getCategoryId());
+                        spin_category.setSelection(positionCat);
+                    }
+
                 } else {
                     Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -239,8 +252,18 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     ListData shopList = response.body();
                     shops = shopList.getItemsShop();
+                    Shop findShop = null;
                     for (int i = 0; i < shops.size(); i++) {
                         arrayAdapter.add(shops.get(i).getShopName());
+                        if (productObj != null) {
+                            if (productObj.getShopId().equals(shops.get(i).getShopId())) {
+                                findShop = shops.get(i);
+                            }
+                        }
+                    }
+                    if (productObj != null && findShop != null) {
+                        shop_name.setText(findShop.getShopName());
+                        shop_name.setTag(findShop.getShopId());
                     }
 
                 } else {
@@ -253,6 +276,15 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+    private int findPositionCategory(List<Category> categorys, String catId) {
+        for (int i = 0; i < categorys.size(); i++) {
+            if (categorys.get(i).getCategory_id().equals(catId)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {
@@ -297,7 +329,13 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             UserPreference pref = new UserPreference(this);
             progress = ProgressDialog.show(this, "", "Saving...", true);
-            MultipartBody.Part file = prepareFilePart("img", selectedImage);
+            RequestBody img_url = null;
+            MultipartBody.Part file = null;
+            if (productObj != null) {
+                img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
+            } else {
+                file = prepareFilePart("img", selectedImage);
+            }
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
             RequestBody post_desc = createPartFromString(desc_post.getText().toString());
             RequestBody post_start = createPartFromString(sdf.format(myCalendarStart.getTime()));
@@ -306,6 +344,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             RequestBody max_join = createPartFromString(limit_join.getText().toString());
             RequestBody category_id = createPartFromString(categorys.get(spin_category.getSelectedItemPosition()).getCategory_id());
             RequestBody user_id = createPartFromString(pref.getUserID());
+
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("post_name", post_name);
             map.put("post_desc", post_desc);
@@ -315,6 +354,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             map.put("shop_id", shop_id);
             map.put("category_id", category_id);
             map.put("user_id", user_id);
+            map.put("img_url", img_url);
             final PostProductActivity activity = this;
             PostService service = ServiceGenerator.createService(PostService.class);
             Call<ResponseBody> call = service.postProduct(map, file);

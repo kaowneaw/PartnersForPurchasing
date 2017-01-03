@@ -97,7 +97,6 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }

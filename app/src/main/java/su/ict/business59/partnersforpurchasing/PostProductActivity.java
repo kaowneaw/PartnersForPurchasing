@@ -337,6 +337,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             if (productObj != null) {
                 img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
             } else {
+                img_url = createPartFromString("");// send blank value
                 file = prepareFilePart("img", selectedImage);
             }
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
@@ -391,7 +392,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                    Log.v("onFailure", t.getMessage());
                 }
             });
         } else {

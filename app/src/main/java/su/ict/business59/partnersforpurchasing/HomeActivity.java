@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,12 +18,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,13 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
         navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
         UserPreference pref = new UserPreference(getApplicationContext());
+        if (pref.getRoleKey().equals("U")) {
+            hideMenuNavLeftForNormalUser(navigationView);
+        }
         View headView = navigationView.getHeaderView(0);
         TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);
         TextView nav_email = (TextView) headView.findViewById(R.id.nav_email);
@@ -56,6 +61,11 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    private void hideMenuNavLeftForNormalUser(NavigationView navigationView) {
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_product).setVisible(false);
     }
 
     @Override
@@ -82,6 +92,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_product) {
             myFragment = new ProductFragment();
             setTitle(getResources().getString(R.string.product));
+        } else if (id == R.id.nav_fav) {
+            myFragment = new FavoriteProductFragment();
+            setTitle(getResources().getString(R.string.favorite_product));
         } else if (id == R.id.nav_logout) {
             UserPreference pref = new UserPreference(this);
             pref.clearPreference();

@@ -35,11 +35,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-        <activity android:name=".ProductDetailActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
+        <activity android:name=".ProductDetailActivity" />
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
@@ -52,16 +48,8 @@
         <activity
             android:name=".PostProductActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
-        <activity android:name=".PostDetailActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".PostDetailActivity" />
     </application>
 
 </manifest>

@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         UserPreference pref = new UserPreference(getApplicationContext(), user.getUser_id(), user.getUsername(), user.getEmail(), user.getImage_url(), user.getRole());
                         pref.commit();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Username or Password incorrect", Toast.LENGTH_SHORT).show();
                     }

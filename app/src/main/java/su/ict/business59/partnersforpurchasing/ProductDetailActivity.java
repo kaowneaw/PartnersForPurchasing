@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,8 +20,15 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import su.ict.business59.partnersforpurchasing.interfaces.ProductService;
+import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.ProductImg;
+import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
+import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class ProductDetailActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
     Product productObj;
@@ -35,16 +44,20 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     TextView category_name;
     @Bind(R.id.btn_share)
     Button btn_share;
+    @Bind(R.id.btn_fav)
+    Button btn_fav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         this.productObj = bundle.getParcelable("product");
         setTitle(this.productObj.getProductName());
         btn_share.setOnClickListener(this);
+        btn_fav.setOnClickListener(this);
         init();
     }
 
@@ -81,9 +94,16 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);
-
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStop() {
@@ -112,8 +132,39 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
 
     @Override
     public void onClick(View view) {
-        Intent i = new Intent(this, PostProductActivity.class);
-        i.putExtra("product", this.productObj);
-        startActivity(i);
+        if (view == btn_share) {
+            Intent i = new Intent(this, PostProductActivity.class);
+            i.putExtra("product", this.productObj);
+            startActivity(i);
+        } else if (view == btn_fav) {
+            favoriteProduct();
+        }
+    }
+
+    private void favoriteProduct() {
+        UserPreference pref = new UserPreference(this);
+        String userId = pref.getUserID();
+        ProductService service = ServiceGenerator.createService(ProductService.class);
+        Call<BaseResponse> call = service.favoriteProduct(String.valueOf(this.productObj.getProductId()), userId);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse res = response.body();
+                    if (res.isStatus()) {
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.models.Post;
+import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Store a member variable for the contacts
@@ -28,12 +29,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private final String host;
     private String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
     private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    private UserPreference pref;
 
     public PostAdapter(List<Post> postList, Context mContext, PostAdapter.OnItemClickListener listener) {
         this.postList = postList;
         this.mContext = mContext;
         this.listener = listener;
         this.host = mContext.getResources().getString(R.string.host);
+        this.pref = new UserPreference(this.mContext);
     }
 
     public interface OnItemClickListener {
@@ -76,6 +79,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(host + mPost.getImage_url()).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.user_join.setText(mPost.getMemberJoin().size() + " / " + mPost.getMaxJoin());
+        if (mPost.getUser_id().equals(this.pref.getUserID())) {
+            holder.join_btn.setVisibility(View.GONE);
+        } else {
+            holder.join_btn.setVisibility(View.VISIBLE);
+        }
     }
 
 

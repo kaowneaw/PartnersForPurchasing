@@ -1,126 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="su.ict.business59.partnersforpurchasing.ProfileActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_vertical_margin">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/profile_img"
-                android:layout_width="match_parent"
+                android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/username" />
-
-            <EditText
-                android:id="@+id/profile_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/email" />
-
-            <EditText
-                android:id="@+id/profile_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
-
             <LinearLayout
-                android:id="@+id/info_shop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
 
-                <TextView
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@mipmap/user_group" />
+
+                    <TextView
+                        android:id="@+id/profile_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@mipmap/mail" />
+
+                    <TextView
+                        android:id="@+id/profile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="5555555"
+                        android:textSize="16sp" />
+                </TableRow>
+
+
+                <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/shop_name" />
+                    android:layout_marginTop="10dp"
+                    android:gravity="right">
 
-                <EditText
-                    android:id="@+id/shop_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp" />
+                    <Button
+                        android:id="@+id/shop_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Shop Info" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shop_description" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/shop_desc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:lines="3" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/floor" />
-
-                <EditText
-                    android:id="@+id/shop_class"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/soi" />
-
-                <EditText
-                    android:id="@+id/shop_soi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/room" />
-
-                <EditText
-                    android:id="@+id/shop_room"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/promotion" />
-
-                <EditText
-                    android:id="@+id/shop_promotion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:lines="3" />
             </LinearLayout>
-        </LinearLayout>
 
-    </ScrollView>
+        </TableRow>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/orange"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/orange"
+        app:tabTextColor="@android:color/white" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
 
 </LinearLayout>

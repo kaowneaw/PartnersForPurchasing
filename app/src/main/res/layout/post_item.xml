@@ -17,51 +17,64 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
-
-                <TextView
-                    android:id="@+id/user_text"
-                    android:layout_width="wrap_content"
+                <TableRow
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toEndOf="@id/user_img"
-                    android:text="@string/username" />
+                    android:layout_weight="50">
 
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@+id/user_join"
-                    android:src="@mipmap/user_group" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
 
-                <TextView
-                    android:id="@+id/user_join"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/user_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@id/user_img"
+                        android:text="@string/username" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@+id/join_btn"
-                    android:text="10/10" />
+                    android:layout_weight="50"
+                    android:gravity="right">
 
-                <Button
-                    android:id="@+id/join_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/orange"
-                    android:text="@string/join"
-                    android:textColor="@android:color/white" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:src="@mipmap/user_group" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/user_join"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="10/10" />
+
+                    <Button
+                        android:id="@+id/join_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/orange"
+                        android:text="@string/join"
+                        android:textColor="@android:color/white" />
+                </TableRow>
+
+            </LinearLayout>
 
             <TableRow
                 android:layout_width="match_parent"

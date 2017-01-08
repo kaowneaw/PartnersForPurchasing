@@ -47,4 +47,5 @@
     <string name="limit_user_join">Limit User Join</string>
     <string name="date">Date</string>
     <string name="post_by">Post by</string>
+    <string name="favorite_product">Favorite</string>
 </resources>

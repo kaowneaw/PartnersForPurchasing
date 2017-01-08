@@ -107,6 +107,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
         setTitle("Post");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             this.productObj = bundle.getParcelable("product");
@@ -319,6 +320,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         int id = item.getItemId();
         if (id == R.id.save) {
             post();
+        } else if (id == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

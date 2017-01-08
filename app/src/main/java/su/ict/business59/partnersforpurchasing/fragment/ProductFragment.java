@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +14,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -27,18 +32,24 @@ import su.ict.business59.partnersforpurchasing.ProductDetailActivity;
 import su.ict.business59.partnersforpurchasing.ProductManageActivity;
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.adapter.ProductAdapter;
+import su.ict.business59.partnersforpurchasing.interfaces.CategoryService;
 import su.ict.business59.partnersforpurchasing.interfaces.ProductService;
+import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
+import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
 
-public class ProductFragment extends Fragment {
+public class ProductFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private List<Product> productList = new ArrayList<>();
+    private List<Product> productLisFilter = new ArrayList<>();
     private ProductAdapter adapter;
     @Bind(R.id.productRc)
     RecyclerView productRc;
+    Spinner spinner_cat;
+    private List<Category> categorys = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +61,9 @@ public class ProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_product, container, false);
         productRc = (RecyclerView) myView.findViewById(R.id.productRc);
+        spinner_cat = (Spinner) myView.findViewById(R.id.spinner_cat);
         productRc.setHasFixedSize(true);
+        spinner_cat.setOnItemSelectedListener(this);
         ButterKnife.bind(getActivity(), myView);
         setHasOptionsMenu(true);
         init();
@@ -65,8 +78,9 @@ public class ProductFragment extends Fragment {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
-                    productList = response.body().getItemsProduct();
-                    adapter = new ProductAdapter(productList, getActivity(), new ProductAdapter.OnItemClickListener() {
+                    productList = response.body().getItemsProduct(); // list product original
+                    productLisFilter = new ArrayList<>(productList);
+                    adapter = new ProductAdapter(productLisFilter, getActivity(), new ProductAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Product item) {
                             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
@@ -88,6 +102,38 @@ public class ProductFragment extends Fragment {
                 Log.v("onFailure", t.getMessage());
             }
         });
+
+        CategoryService serviceCat = ServiceGenerator.createService(CategoryService.class);
+        Call<ListData> datas = serviceCat.CategoryList();
+        datas.enqueue(new Callback<ListData>() {
+            @Override
+            public void onResponse(Call<ListData> call, Response<ListData> response) {
+                if (response.isSuccessful()) {
+                    ListData categoryList = response.body();
+                    categorys = categoryList.getItemsCategory();
+                    Category catAll = new Category();
+                    catAll.setCategory_id("ALL");
+                    catAll.setCategory_name("ALL");
+                    categorys.add(0, catAll);
+                    populateSpinner(getActivity(), categorys, spinner_cat);
+
+                } else {
+                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListData> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {
+        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(context, R.layout.spinner_item, categorys);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -105,5 +151,38 @@ public class ProductFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
+        Toast.makeText(getActivity(), categorys.get(index).getCategory_name(), Toast.LENGTH_SHORT).show();
+        if (categorys.get(index).getCategory_name().equals("ALL")) {
+            productLisFilter = new ArrayList<>(productList);
+        } else {
+            productLisFilter.clear();
+            for (int i = 0; i < productList.size(); i++) {
+                Product product = productList.get(i);
+                if (product.getCategoryId().equals(categorys.get(index).getCategory_id())) {
+                    productLisFilter.add(product);
+                }
+            }
+        }
+        adapter = new ProductAdapter(productLisFilter, getActivity(), new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Product item) {
+                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                intent.putExtra("product", item);
+                startActivity(intent);
+                Toast.makeText(getActivity(), item.getProductName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        productRc.setAdapter(adapter);
+        productRc.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

@@ -69,6 +69,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         text_joined.setPaintFlags(text_joined.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         pref = new UserPreference(this);
         try {
@@ -133,6 +134,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.join_menu, menu);
+        MenuItem item = menu.findItem(R.id.join);
+        if (this.postObj.getUser_id().equals(pref.getUserID())) item.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -162,6 +165,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
 
                 }
             });
+        } else if (id == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

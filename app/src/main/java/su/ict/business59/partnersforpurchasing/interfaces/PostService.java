@@ -13,6 +13,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Query;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 
@@ -28,6 +29,9 @@ public interface PostService {
 
     @GET("post")
     Call<ListData> getPostList();
+
+    @GET("post")
+    Call<ListData> getPostList(@Query("user_id") String userId);
 
     @FormUrlEncoded
     @POST("joinpost")

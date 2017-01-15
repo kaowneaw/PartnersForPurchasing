@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,10 +47,6 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     SliderLayout mDemoSlider;
     @Bind(R.id.topic)
     TextView topic;
-    @Bind(R.id.dateStart)
-    TextView dateStart;
-    @Bind(R.id.dateEnd)
-    TextView dateEnd;
     @Bind(R.id.category_name)
     TextView category_name;
     @Bind(R.id.shop_name)
@@ -61,7 +59,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     TextView user_text;
     @Bind(R.id.text_joined)
     TextView text_joined;
-
+    @Bind(R.id.chat)
+    Button chat;
     private UserPreference pref;
 
     @Override
@@ -72,6 +71,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         text_joined.setPaintFlags(text_joined.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         pref = new UserPreference(this);
+        chat.setOnClickListener(this);
         try {
             init();
         } catch (ParseException e) {
@@ -84,16 +84,12 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         this.postObj = bundle.getParcelable("post");
         assert this.postObj != null;
         setTitle(this.postObj.getPostName());
-        String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         String host = getResources().getString(R.string.host);
         Picasso.with(getApplicationContext()).load(host + this.postObj.getImage_url()).fit().centerCrop().into(user_img);
         user_text.setText(this.postObj.getUsername());
         topic.setText(this.postObj.getPostName());
-        dateStart.setText((sdf.format(sdf.parse(this.postObj.getPostStart()))));
-        dateEnd.setText((sdf.format(sdf.parse(this.postObj.getPostEnd()))));
         category_name.setText(this.postObj.getCatName());
-        shop_name.setText(this.postObj.getShopName());
+        shop_name.setText(this.postObj.getShopName() + "\n\n" + this.postObj.getAddressShopString());
         desc.setText(this.postObj.getPostDesc());
         text_joined.setText(String.valueOf(this.postObj.getMemberJoin().size()));
         text_joined.setOnClickListener(this);
@@ -196,6 +192,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         if (view == text_joined) {
 //            Toast.makeText(getApplicationContext(), "E", Toast.LENGTH_SHORT).show();
             dialog();
+        } else if (view == chat) {
+            startActivity(new Intent(this, ChatActivity.class));
         }
     }
 

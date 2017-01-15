@@ -33,6 +33,9 @@ public interface PostService {
     @GET("post")
     Call<ListData> getPostList(@Query("user_id") String userId);
 
+    @GET("post")
+    Call<ListData> getPostListByCategory(@Query("cat_id") String catId);
+
     @FormUrlEncoded
     @POST("joinpost")
     Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId);

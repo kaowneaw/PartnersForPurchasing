@@ -50,6 +50,9 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".PostDetailActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".PostByCategoryActivity"></activity>
     </application>
 
 </manifest>

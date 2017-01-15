@@ -68,20 +68,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(PostAdapter.ViewHolder holder, int position) {
         Post mPost = postList.get(position);
         holder.title_text.setText(mPost.getPostName());
-        holder.shop_text.setText("Shop : " + mPost.getShopName());
-        try {
-            holder.date_text.setText("Due Date : " + sdf.format(sdf.parse(mPost.getPostEnd())));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        holder.category_text.setText("Category : " + mPost.getCatName());
+        holder.shop_text.setText(mPost.getShopName() + mPost.getAddressShopString());
+        holder.category_text.setText(mPost.getCatName());
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
         Picasso.with(mContext).load(host + mPost.getImage_url()).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
-        holder.user_join.setText(mPost.getMemberJoin().size() + " / " + mPost.getMaxJoin());
         if (mPost.getUser_id().equals(this.pref.getUserID())) {
             holder.join_btn.setVisibility(View.GONE);
+            holder.close_post_btn.setVisibility(View.VISIBLE);
         } else {
+            holder.close_post_btn.setVisibility(View.GONE);
             holder.join_btn.setVisibility(View.VISIBLE);
         }
     }
@@ -99,12 +95,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView title_text;
         private TextView category_text;
         private TextView shop_text;
-        private TextView date_text;
         private ImageView img_product;
         private ImageView user_img;
         private TextView user_text;
         private Button join_btn;
-        private TextView user_join;
+        private Button close_post_btn;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -116,13 +111,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             title_text = (TextView) itemView.findViewById(R.id.title_text);
             category_text = (TextView) itemView.findViewById(R.id.category_text);
             shop_text = (TextView) itemView.findViewById(R.id.shop_text);
-            date_text = (TextView) itemView.findViewById(R.id.date_text);
             img_product = (ImageView) itemView.findViewById(R.id.img_product);
             user_img = (ImageView) itemView.findViewById(R.id.user_img);
             user_text = (TextView) itemView.findViewById(R.id.user_text);
             join_btn = (Button) itemView.findViewById(R.id.join_btn);
-            user_join = (TextView) itemView.findViewById(R.id.user_join);
             join_btn.setOnClickListener(this);
+            close_post_btn = (Button) itemView.findViewById(R.id.close_post_btn);
         }
 
 

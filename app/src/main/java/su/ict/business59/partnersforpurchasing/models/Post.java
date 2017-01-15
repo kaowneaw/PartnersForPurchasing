@@ -33,15 +33,12 @@ public class Post extends Shop implements Parcelable {
     @SerializedName("post_img")
     @Expose
     String postImg;
-    @SerializedName("category_id")
+    @SerializedName("cat_id")
     @Expose
     String catId;
-    @SerializedName("category_name")
+    @SerializedName("cat_name")
     @Expose
     String catName;
-    @SerializedName("max_joined")
-    @Expose
-    String maxJoin;
     @SerializedName("memberJoin")
     @Expose
     List<MemberJoin> memberJoin;
@@ -110,13 +107,6 @@ public class Post extends Shop implements Parcelable {
         this.catName = catName;
     }
 
-    public String getMaxJoin() {
-        return maxJoin;
-    }
-
-    public void setMaxJoin(String maxJoin) {
-        this.maxJoin = maxJoin;
-    }
 
     public List<MemberJoin> getMemberJoin() {
         return memberJoin;
@@ -126,6 +116,9 @@ public class Post extends Shop implements Parcelable {
         this.memberJoin = memberJoin;
     }
 
+    public String getAddressShopString() {
+        return "ชั้นที่ " + shopClass + " ซอยที่ " + shopSoi + " ห้องที่ " + shopRoom;
+    }
 
     public Post() {
     }
@@ -145,7 +138,6 @@ public class Post extends Shop implements Parcelable {
         dest.writeString(this.postImg);
         dest.writeString(this.catId);
         dest.writeString(this.catName);
-        dest.writeString(this.maxJoin);
         dest.writeList(this.memberJoin);
         dest.writeString(this.shopId);
         dest.writeString(this.shopName);
@@ -176,7 +168,6 @@ public class Post extends Shop implements Parcelable {
         this.postImg = in.readString();
         this.catId = in.readString();
         this.catName = in.readString();
-        this.maxJoin = in.readString();
         this.memberJoin = new ArrayList<MemberJoin>();
         in.readList(this.memberJoin, MemberJoin.class.getClassLoader());
         this.shopId = in.readString();

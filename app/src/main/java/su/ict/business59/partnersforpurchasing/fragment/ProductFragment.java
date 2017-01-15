@@ -48,8 +48,6 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     private ProductAdapter adapter;
     @Bind(R.id.productRc)
     RecyclerView productRc;
-    Spinner spinner_cat;
-    private List<Category> categorys = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,9 +59,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_product, container, false);
         productRc = (RecyclerView) myView.findViewById(R.id.productRc);
-        spinner_cat = (Spinner) myView.findViewById(R.id.spinner_cat);
         productRc.setHasFixedSize(true);
-        spinner_cat.setOnItemSelectedListener(this);
         ButterKnife.bind(getActivity(), myView);
         setHasOptionsMenu(true);
         init();
@@ -103,31 +99,6 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
 
-        CategoryService serviceCat = ServiceGenerator.createService(CategoryService.class);
-        Call<ListData> datas = serviceCat.CategoryList();
-        datas.enqueue(new Callback<ListData>() {
-            @Override
-            public void onResponse(Call<ListData> call, Response<ListData> response) {
-                if (response.isSuccessful()) {
-                    ListData categoryList = response.body();
-                    categorys = categoryList.getItemsCategory();
-                    Category catAll = new Category();
-                    catAll.setCategory_id("ALL");
-                    catAll.setCategory_name("ALL");
-                    categorys.add(0, catAll);
-                    populateSpinner(getActivity(), categorys, spinner_cat);
-
-                } else {
-                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListData> call, Throwable t) {
-
-            }
-        });
-
     }
 
     public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {
@@ -155,30 +126,30 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
-        Toast.makeText(getActivity(), categorys.get(index).getCategory_name(), Toast.LENGTH_SHORT).show();
-        if (categorys.get(index).getCategory_name().equals("ALL")) {
-            productLisFilter = new ArrayList<>(productList);
-        } else {
-            productLisFilter.clear();
-            for (int i = 0; i < productList.size(); i++) {
-                Product product = productList.get(i);
-                if (product.getCategoryId().equals(categorys.get(index).getCategory_id())) {
-                    productLisFilter.add(product);
-                }
-            }
-        }
-        adapter = new ProductAdapter(productLisFilter, getActivity(), new ProductAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Product item) {
-                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                intent.putExtra("product", item);
-                startActivity(intent);
-                Toast.makeText(getActivity(), item.getProductName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        productRc.setAdapter(adapter);
-        productRc.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        adapter.notifyDataSetChanged();
+//        Toast.makeText(getActivity(), categorys.get(index).getCategory_name(), Toast.LENGTH_SHORT).show();
+//        if (categorys.get(index).getCategory_name().equals("ALL")) {
+//            productLisFilter = new ArrayList<>(productList);
+//        } else {
+//            productLisFilter.clear();
+//            for (int i = 0; i < productList.size(); i++) {
+//                Product product = productList.get(i);
+//                if (product.getCategoryId().equals(categorys.get(index).getCategory_id())) {
+//                    productLisFilter.add(product);
+//                }
+//            }
+//        }
+//        adapter = new ProductAdapter(productLisFilter, getActivity(), new ProductAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Product item) {
+//                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+//                intent.putExtra("product", item);
+//                startActivity(intent);
+//                Toast.makeText(getActivity(), item.getProductName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        productRc.setAdapter(adapter);
+//        productRc.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//        adapter.notifyDataSetChanged();
     }
 
     @Override

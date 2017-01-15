@@ -23,6 +23,10 @@ public class ListData {
     @Expose()
     private List<Post> itemsPost;
 
+    @SerializedName("promotion")
+    @Expose()
+    private List<Promotion> itemsPromotion;
+
     public List<Category> getItemsCategory() {
         return itemsCategory;
     }
@@ -37,5 +41,9 @@ public class ListData {
 
     public List<Post> getItemsPost() {
         return itemsPost;
+    }
+
+    public List<Promotion> getItemsPromotion() {
+        return itemsPromotion;
     }
 }

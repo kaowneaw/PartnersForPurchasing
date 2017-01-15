@@ -16,9 +16,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -41,16 +43,19 @@ import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.adapter.SelectImageAdapter;
 import su.ict.business59.partnersforpurchasing.interfaces.CategoryService;
 import su.ict.business59.partnersforpurchasing.interfaces.ProductService;
+import su.ict.business59.partnersforpurchasing.interfaces.PromotionService;
+import su.ict.business59.partnersforpurchasing.interfaces.UserService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
+import su.ict.business59.partnersforpurchasing.models.Promotion;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
+import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class ProductManageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @Bind(R.id.spin_category)
-    Spinner spin_category;
     @Bind(R.id.addMoreImg)
     TableRow addMoreImg;
     @Bind(R.id.containerImg)
@@ -61,12 +66,21 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
     EditText edt_product_desc;
     @Bind(R.id.edt_product_price)
     EditText edt_product_price;
+    @Bind(R.id.category_btn)
+    Button category_btn;
+    @Bind(R.id.category_name)
+    TextView category_name;
+    @Bind(R.id.spinner_promotion)
+    Spinner spinner_promotion;
+    String catId = "";
     private final int PICK_IMAGE = 1;
+    private final int PICK_CATEGORY = 2;
     private List<Uri> imgList;
     private SelectImageAdapter adapter;
-    private List<Category> categorys = new ArrayList<>();
-    public static final String MULTIPART_FORM_DATA = "multipart/form-data";
-    ProgressDialog progress;
+    private static final String MULTIPART_FORM_DATA = "multipart/form-data";
+    private ProgressDialog progress;
+    private Shop myShopInfo;
+    List<Promotion> promotions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,22 +89,57 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
         setTitle(getResources().getString(R.string.new_product));
         addMoreImg.setOnClickListener(this);
+        category_btn.setOnClickListener(this);
         init();
     }
 
     private void init() {
         imgList = new ArrayList<>();
-        CategoryService service = ServiceGenerator.createService(CategoryService.class);
-        Call<ListData> datas = service.CategoryList();
-        datas.enqueue(new Callback<ListData>() {
+        adapter = new SelectImageAdapter(this, imgList);
+        containerImg.setAdapter(adapter);
+        containerImg.setLayoutManager(new LinearLayoutManager(this));
+        UserPreference pref = new UserPreference(this);
+        UserService service = ServiceGenerator.createService(UserService.class);
+        Call<Shop> call = service.me(pref.getUserID());
+        call.enqueue(new Callback<Shop>() {
+            @Override
+            public void onResponse(Call<Shop> call, Response<Shop> response) {
+                if (response.isSuccessful()) {
+                    Shop myShop = response.body();
+                    if (myShop.getRole().equals("S")) {
+                        myShopInfo = myShop;
+                    } else {
+                        myShopInfo = new Shop();
+                    }
+                } else {
+                    try {
+                        Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Shop> call, Throwable t) {
+
+            }
+        });
+
+        PromotionService servicePromotion = ServiceGenerator.createService(PromotionService.class);
+        Call<ListData> callPromotion = servicePromotion.getPromotion();
+        callPromotion.enqueue(new Callback<ListData>() {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
-                    ListData categoryList = response.body();
-                    categorys = categoryList.getItemsCategory();
-                    populateSpinner(getApplicationContext(), categorys, spin_category);
+                    promotions = response.body().getItemsPromotion();
+                    Promotion promotion = new Promotion();
+                    promotion.setPromotion_id("-1");
+                    promotion.setPromotion_name("ไม่มีโปรโมชั่น");
+                    promotions.add(0, promotion);
+                    populateSpinner(getApplication(), promotions, spinner_promotion);
                 } else {
-                    Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -99,14 +148,10 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
 
             }
         });
-
-        adapter = new SelectImageAdapter(this, imgList);
-        containerImg.setAdapter(adapter);
-        containerImg.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(context, R.layout.spinner_item, categorys);
+    public void populateSpinner(Context context, List<Promotion> promotions, Spinner spinner) {
+        ArrayAdapter<Promotion> adapter = new ArrayAdapter<Promotion>(context, R.layout.spinner_item, promotions);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
     }
@@ -160,8 +205,9 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         RequestBody productName = createPartFromString(edt_product_name.getText().toString());
         RequestBody productDesc = createPartFromString(edt_product_desc.getText().toString());
         RequestBody productPrice = createPartFromString(edt_product_price.getText().toString());
-        RequestBody catId = createPartFromString(categorys.get(spin_category.getSelectedItemPosition()).getCategory_id());
-        RequestBody shopId = createPartFromString("1");
+        RequestBody catId = createPartFromString(this.catId);
+        RequestBody shopId = createPartFromString(this.myShopInfo.getShopId());
+        RequestBody promotionId = createPartFromString(promotions.get(spinner_promotion.getSelectedItemPosition()).getPromotion_id());
 
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("product_name", productName);
@@ -169,6 +215,7 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         map.put("product_price", productPrice);
         map.put("category_id", catId);
         map.put("shop_id", shopId);
+        map.put("promotion_id", promotionId);
         final Activity mActivity = this;
         ProductService service = ServiceGenerator.createService(ProductService.class);
         Call<ResponseBody> call = service.addProduct(map, file1, file2, file3);
@@ -216,6 +263,9 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        } else if (view == category_btn) {
+            Intent intent = new Intent(this, CategoryActivity.class);
+            startActivityForResult(intent, PICK_CATEGORY);
         }
     }
 
@@ -236,6 +286,10 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
                 Toast.makeText(getApplicationContext(), "Limit File Max at 3 Item", Toast.LENGTH_SHORT).show();
             }
 
+        } else if (requestCode == PICK_CATEGORY && resultCode == Activity.RESULT_OK) {
+            this.catId = data.getStringExtra("catId");
+            String catName = data.getStringExtra("catName");
+            category_name.setText(catName);
         }
     }
 

@@ -40,6 +40,7 @@
                 android:id="@+id/topic_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="20dp"
                 android:hint="@string/topic" />
 
@@ -61,77 +62,49 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/dateStart"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:focusable="false"
-                        android:hint="@string/datestart"
-                        android:inputType="datetime" />
-
-                    <EditText
-                        android:id="@+id/timeStart"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:focusable="false"
-                        android:hint="@string/timestart"
-                        android:inputType="datetime" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/dateEnd"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:focusable="false"
-                        android:hint="@string/dateend"
-                        android:inputType="datetime" />
-
-                    <EditText
-                        android:id="@+id/timeEnd"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:focusable="false"
-                        android:hint="@string/timeend"
-                        android:inputType="datetime" />
-
-                </TableRow>
-
-                <Spinner
-                    android:id="@+id/spin_category"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp">
+
+                    <TextView
+                        android:id="@+id/category_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="70"
+                        android:gravity="center_vertical"
+                        android:text="@string/category"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/category_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30"
+                        android:text="@string/category" />
+                </TableRow>
+
 
                 <EditText
                     android:id="@+id/shop_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:focusable="false"
                     android:hint="@string/shop_name"
                     android:inputType="none" />
 
-                <EditText
-                    android:id="@+id/limit_join"
+                <TextView
+                    android:id="@+id/shopDescShow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/limit_user_join"
-                    android:inputType="number" />
+                    android:layout_marginTop="5dp"
+                    android:textSize="13sp" />
 
                 <EditText
                     android:id="@+id/desc_post"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:hint="@string/desciption"
                     android:lines="2"
                     android:maxLines="4" />

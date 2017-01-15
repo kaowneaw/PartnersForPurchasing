@@ -27,17 +27,6 @@
                 android:hint="@string/product_name"
                 android:inputType="text" />
 
-            <EditText
-                android:id="@+id/edt_product_desc"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:gravity="top"
-                android:hint="@string/desciption"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLines="6"
-                android:minLines="2" />
 
             <EditText
                 android:id="@+id/edt_product_price"
@@ -47,11 +36,47 @@
                 android:hint="@string/price"
                 android:inputType="numberDecimal" />
 
-            <Spinner
-                android:id="@+id/spin_category"
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/category_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="70"
+                    android:gravity="center_vertical"
+                    android:text="@string/category"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/category_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:text="@string/category" />
+
+            </TableRow>
+
+            <Spinner
+                android:id="@+id/spinner_promotion"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp" />
+
+            <EditText
+                android:id="@+id/edt_product_desc"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"
+                android:gravity="top"
+                android:hint="@string/desciption"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:maxLines="6"
+                android:minLines="2" />
 
             <TableRow
                 android:id="@+id/addMoreImg"
@@ -83,7 +108,8 @@
 
             </android.support.v7.widget.RecyclerView>
 
-
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

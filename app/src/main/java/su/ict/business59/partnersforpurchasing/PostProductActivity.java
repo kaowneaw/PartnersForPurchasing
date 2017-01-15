@@ -20,16 +20,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,41 +76,33 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     LinearLayout is_share_product;
     @Bind(R.id.is_create_product)
     LinearLayout is_create_product;
-    @Bind(R.id.dateStart)
-    EditText dateStart;
-    @Bind(R.id.timeStart)
-    EditText timeStart;
-    @Bind(R.id.dateEnd)
-    EditText dateEnd;
-    @Bind(R.id.timeEnd)
-    EditText timeEnd;
-    @Bind(R.id.spin_category)
-    Spinner spin_category;
     @Bind(R.id.img_product)
     ImageView img_product;
     @Bind(R.id.shop_name)
     EditText shop_name;
-    @Bind(R.id.limit_join)
-    EditText limit_join;
-    TimePickerDialog mTimePicker;
-    DatePickerDialog mDatePickerDialog;
-    Calendar myCalendarStart = Calendar.getInstance();
-    Calendar myCalendarEnd = Calendar.getInstance();
-    private List<Category> categorys = new ArrayList<>();
+    @Bind(R.id.category_btn)
+    Button category_btn;
+    @Bind(R.id.category_name)
+    TextView category_name;
+    @Bind(R.id.shopDescShow)
+    TextView shopDescShow;
+
     private List<Shop> shops = new ArrayList<>();
     private final int PICK_IMAGE = 1;
+    private final int PICK_CATEGORY = 2;
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private Uri selectedImage = null;
     private final int FILE_MAX_SIZE = 500;
     ProgressDialog progress;
     ArrayAdapter<String> arrayAdapter;
+    private String catId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
-        setTitle("Post");
+        setTitle("โพสต์");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -115,12 +111,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             initFromShareProduct();
         }
         init();
-        dateStart.setOnClickListener(this);
-        timeStart.setOnClickListener(this);
-        dateEnd.setOnClickListener(this);
-        timeEnd.setOnClickListener(this);
         img_product.setOnClickListener(this);
         shop_name.setOnClickListener(this);
+        category_btn.setOnClickListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
     }
 
@@ -132,53 +125,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if (view == dateEnd) {
-            mDatePickerDialog = new DatePickerDialog(PostProductActivity.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    myCalendarEnd.set(Calendar.YEAR, year);
-                    myCalendarEnd.set(Calendar.MONTH, monthOfYear);
-                    myCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    setDateLabel(dateEnd, myCalendarEnd);
-                }
-            }, myCalendarEnd.get(Calendar.YEAR), myCalendarEnd.get(Calendar.MONTH), myCalendarEnd.get(Calendar.DAY_OF_MONTH));
-            mDatePickerDialog.show();
-        } else if (view == timeEnd) {
-            int hour = myCalendarEnd.get(Calendar.HOUR_OF_DAY);
-            int minute = myCalendarEnd.get(Calendar.MINUTE);
-            mTimePicker = new TimePickerDialog(PostProductActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                    myCalendarEnd.set(Calendar.HOUR, selectedHour);
-                    myCalendarEnd.set(Calendar.MINUTE, selectedMinute);
-                    setTimeLabel(timeEnd, myCalendarEnd);
-                }
-            }, hour, minute, true);//Yes 24 hour time
-            mTimePicker.show();
-        } else if (view == dateStart) {
-            mDatePickerDialog = new DatePickerDialog(PostProductActivity.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    myCalendarStart.set(Calendar.YEAR, year);
-                    myCalendarStart.set(Calendar.MONTH, monthOfYear);
-                    myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    setDateLabel(dateStart, myCalendarStart);
-                }
-            }, myCalendarStart.get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH), myCalendarStart.get(Calendar.DAY_OF_MONTH));
-            mDatePickerDialog.show();
-        } else if (view == timeStart) {
-            int hour = myCalendarStart.get(Calendar.HOUR_OF_DAY);
-            int minute = myCalendarStart.get(Calendar.MINUTE);
-            mTimePicker = new TimePickerDialog(PostProductActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                    myCalendarStart.set(Calendar.HOUR, selectedHour);
-                    myCalendarStart.set(Calendar.MINUTE, selectedMinute);
-                    setTimeLabel(timeStart, myCalendarStart);
-                }
-            }, hour, minute, true);//Yes 24 hour time
-            mTimePicker.show();
-        } else if (view == img_product) {
+        if (view == img_product) {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -198,53 +145,20 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 public void onClick(DialogInterface dialog, int which) {
                     String strName = arrayAdapter.getItem(which);
                     shop_name.setText(strName);
-                    shop_name.setTag(shops.get(which).getShopId() + "");
+                    Shop shopSelected = shops.get(which);
+                    shop_name.setTag(shopSelected.getShopId() + "");
+                    shopDescShow.setText("ที่อยู่ร้านค้า \n" + "ชั้นที่ " + shopSelected.getShopClass() + " ซอยที่ " + shopSelected.getShopSoi() + " ห้องที่ " + shopSelected.getShopRoom());
                 }
             });
             builderSingle.show();
+        } else if (view == category_btn) {
+            Intent i = new Intent(this, CategoryActivity.class);
+            startActivityForResult(i, PICK_CATEGORY);
         }
     }
 
-    private void setDateLabel(EditText v, Calendar mCalendar) {
-
-        String myFormat = "dd/MM/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        v.setText(sdf.format(mCalendar.getTime()));
-    }
-
-    private void setTimeLabel(EditText v, Calendar mCalendar) {
-
-        String myFormat = "hh:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        v.setText(sdf.format(mCalendar.getTime()));
-    }
 
     private void init() {
-        CategoryService service = ServiceGenerator.createService(CategoryService.class);
-        Call<ListData> datas = service.CategoryList();
-        datas.enqueue(new Callback<ListData>() {
-            @Override
-            public void onResponse(Call<ListData> call, Response<ListData> response) {
-                if (response.isSuccessful()) {
-                    ListData categoryList = response.body();
-                    categorys = categoryList.getItemsCategory();
-                    populateSpinner(getApplicationContext(), categorys, spin_category);
-                    if (productObj != null) {
-                        int positionCat = findPositionCategory(categorys, productObj.getCategoryId());
-                        spin_category.setSelection(positionCat);
-                    }
-
-                } else {
-                    Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListData> call, Throwable t) {
-
-            }
-        });
-
         ShopService shopService = ServiceGenerator.createService(ShopService.class);
         Call<ListData> dataShop = shopService.ShopList();
         dataShop.enqueue(new Callback<ListData>() {
@@ -279,21 +193,6 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private int findPositionCategory(List<Category> categorys, String catId) {
-        for (int i = 0; i < categorys.size(); i++) {
-            if (categorys.get(i).getCategory_id().equals(catId)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(context, R.layout.spinner_item, categorys);
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        spinner.setAdapter(adapter);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -305,6 +204,11 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             }
             selectedImage = data.getData();
             Picasso.with(getApplicationContext()).load(selectedImage).fit().centerCrop().into(img_product);
+        } else if (requestCode == PICK_CATEGORY && resultCode == Activity.RESULT_OK) {
+            this.catId = data.getStringExtra("catId");
+            String catName = data.getStringExtra("catName");
+            Toast.makeText(getApplicationContext(), this.catId, Toast.LENGTH_SHORT).show();
+            category_name.setText(catName);
         }
     }
 
@@ -329,7 +233,6 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private void post() {
         if (validPost()) {
             String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             UserPreference pref = new UserPreference(this);
             progress = ProgressDialog.show(this, "", "Saving...", true);
             RequestBody img_url = null;
@@ -342,19 +245,13 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             }
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
             RequestBody post_desc = createPartFromString(desc_post.getText().toString());
-            RequestBody post_start = createPartFromString(sdf.format(myCalendarStart.getTime()));
-            RequestBody post_end = createPartFromString(sdf.format(myCalendarEnd.getTime()));
             RequestBody shop_id = createPartFromString(shop_name.getTag().toString());
-            RequestBody max_join = createPartFromString(limit_join.getText().toString());
-            RequestBody category_id = createPartFromString(categorys.get(spin_category.getSelectedItemPosition()).getCategory_id());
+            RequestBody category_id = createPartFromString(catId);
             RequestBody user_id = createPartFromString(pref.getUserID());
 
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("post_name", post_name);
             map.put("post_desc", post_desc);
-            map.put("post_start", post_start);
-            map.put("post_end", post_end);
-            map.put("max_join", max_join);
             map.put("shop_id", shop_id);
             map.put("category_id", category_id);
             map.put("user_id", user_id);
@@ -402,8 +299,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean validPost() {
-        if (selectedImage != null && !topic_post.getText().toString().equals("") && !desc_post.getText().toString().equals("") && !dateStart.getText().toString().equals("") && !timeStart.getText().toString().equals("")
-                && !dateEnd.getText().toString().equals("") && !timeEnd.getText().toString().equals("") && !shop_name.getText().toString().equals("") && !limit_join.getText().toString().equals("")) {
+        if (selectedImage != null && !topic_post.getText().toString().equals("") && !desc_post.getText().toString().equals("") && !shop_name.getText().toString().equals("") && !catId.equals("")) {
             return true;
         }
 

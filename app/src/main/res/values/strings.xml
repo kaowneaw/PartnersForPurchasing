@@ -56,4 +56,5 @@
     <string name="accept">ตกลง</string>
     <string name="close_post">ปิดโพส</string>
     <string name="txt_notfound">ไม่พบข้อมูล</string>
+    <string name="shop_info">ข้อมูลร้านค้า</string>
 </resources>

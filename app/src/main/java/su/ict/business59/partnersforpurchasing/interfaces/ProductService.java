@@ -27,6 +27,9 @@ public interface ProductService {
     @GET("product")
     Call<ListData> getProductList(@Query("shopId") String shopId);
 
+    @GET("product")
+    Call<ListData> getProductList();
+
     @GET("product/remove")
     Call<BaseResponse> removeProduct(@Query("id") String productId);
 

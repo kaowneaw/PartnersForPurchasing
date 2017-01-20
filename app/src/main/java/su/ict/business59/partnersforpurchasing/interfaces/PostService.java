@@ -39,4 +39,8 @@ public interface PostService {
     @FormUrlEncoded
     @POST("joinpost")
     Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId);
+
+    @FormUrlEncoded
+    @POST("post/search")
+    Call<ListData> searchPost(@Field("keyword") String keyword);
 }

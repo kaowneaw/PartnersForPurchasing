@@ -116,9 +116,6 @@ public class Post extends Shop implements Parcelable {
         this.memberJoin = memberJoin;
     }
 
-    public String getAddressShopString() {
-        return "ชั้นที่ " + shopClass + " ซอยที่ " + shopSoi + " ห้องที่ " + shopRoom;
-    }
 
     public Post() {
     }

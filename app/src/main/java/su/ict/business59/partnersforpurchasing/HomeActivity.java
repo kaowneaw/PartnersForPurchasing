@@ -45,6 +45,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         UserPreference pref = new UserPreference(getApplicationContext());
         if (pref.getRoleKey().equals("U")) {
             hideMenuNavLeftForNormalUser(navigationView);
+        } else {
+            hideMenuNavLeftForShopUser(navigationView);
         }
         View headView = navigationView.getHeaderView(0);
         TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);
@@ -66,6 +68,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void hideMenuNavLeftForNormalUser(NavigationView navigationView) {
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_product).setVisible(false);
+    }
+
+    private void hideMenuNavLeftForShopUser(NavigationView navigationView) {
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_fav).setVisible(false);
+        nav_Menu.findItem(R.id.nav_feed).setVisible(false);
     }
 
     @Override

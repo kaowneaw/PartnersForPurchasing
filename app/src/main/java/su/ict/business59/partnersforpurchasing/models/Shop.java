@@ -118,4 +118,8 @@ public class Shop extends User{
     public void setShopStatus(int shopStatus) {
         this.shopStatus = shopStatus;
     }
+
+    public String getAddressShopString() {
+        return "ชั้นที่ " + shopClass + " ซอยที่ " + shopSoi + " ห้องที่ " + shopRoom;
+    }
 }

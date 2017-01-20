@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import su.ict.business59.partnersforpurchasing.fragment.PostFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
+import su.ict.business59.partnersforpurchasing.fragment.ProductPostFragment;
 
 /**
  * Created by kaowneaw on 12/10/2016.
@@ -24,7 +25,7 @@ public class TabAdapter extends FragmentPagerAdapter {
             case 0:
                 return new PostFragment();
             case 1:
-                return new ProductFragment();
+                return new ProductPostFragment();
 
         }
         return new ProductFragment();

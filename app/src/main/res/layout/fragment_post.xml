@@ -9,19 +9,21 @@
         android:id="@+id/option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:padding="8dp">
 
         <Spinner
             android:id="@+id/promotion_spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="70" />
+            android:layout_weight="80" />
 
-        <Button
+        <ImageButton
             android:id="@+id/category_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/filter"
             android:text="@string/category" />
 
     </TableRow>

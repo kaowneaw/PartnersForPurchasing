@@ -4,7 +4,7 @@
     android:id="@+id/activity_product_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="su.ict.business59.partnersforpurchasing.ProductDetailActivity">
+    tools:context="su.ict.business59.partnersforpurchasing.ProductPostDetailActivity">
 
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
@@ -106,6 +106,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:text="@string/shop_info"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/shop_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:lines="2" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/desciption"
                     android:textStyle="bold" />
 
@@ -128,25 +148,25 @@
                     android:layout_gravity="bottom"
                     android:layout_marginTop="25dp">
 
-                    <!--<Button-->
-                    <!--android:id="@+id/btn_fav"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:layout_weight="50"-->
-                    <!--android:background="@color/colorAccent"-->
-                    <!--android:text="@string/add_to_list"-->
-                    <!--android:textColor="@android:color/white" />-->
+                    <Button
+                        android:id="@+id/btn_fav"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="50"
+                        android:background="@color/colorAccent"
+                        android:text="@string/add_to_list"
+                        android:textColor="@android:color/white" />
 
-                    <!--<Button-->
-                    <!--android:id="@+id/btn_share"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:layout_weight="50"-->
-                    <!--android:background="@color/blue"-->
-                    <!--android:text="@string/share"-->
-                    <!--android:textColor="@android:color/white" />-->
+                    <Button
+                        android:id="@+id/btn_share"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="50"
+                        android:background="@color/blue"
+                        android:text="@string/share"
+                        android:textColor="@android:color/white" />
                 </TableRow>
 
             </LinearLayout>

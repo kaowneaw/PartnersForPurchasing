@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     List<Promotion> listPromotion;
     private UserPreference pref;
     private FloatingActionButton fab;
-    private Button category_btn;
+    private ImageButton category_btn;
     Spinner promotion_spinner;
 
     @Override
@@ -97,7 +98,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                 startActivity(i);
             }
         });
-        category_btn = (Button) v.findViewById(R.id.category_btn);
+        category_btn = (ImageButton) v.findViewById(R.id.category_btn);
         category_btn.setOnClickListener(this);
         promotion_spinner = (Spinner) v.findViewById(R.id.promotion_spinner);
 
@@ -217,5 +218,5 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             startActivity(i);
         }
     }
-  
+
 }

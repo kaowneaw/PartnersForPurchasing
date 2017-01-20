@@ -53,9 +53,8 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     private ProductAdapter adapter;
     @Bind(R.id.productRc)
     RecyclerView productRc;
-    private Button category_btn;
-    Spinner promotion_spinner;
 
+    // this view use only shop
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +69,6 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
         ButterKnife.bind(getActivity(), myView);
         setHasOptionsMenu(true);
         init();
-        category_btn = (Button) myView.findViewById(R.id.category_btn);
-        category_btn.setOnClickListener(this);
-        promotion_spinner = (Spinner) myView.findViewById(R.id.promotion_spinner);
         return myView;
     }
 
@@ -169,11 +165,9 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onClick(View view) {
-        if (view == category_btn) {
-            Intent i = new Intent(getActivity(), CategoryActivity.class);
-            startActivityForResult(i, 1);
-        }
+
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

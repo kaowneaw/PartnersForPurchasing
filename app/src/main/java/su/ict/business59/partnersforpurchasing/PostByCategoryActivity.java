@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.adapter.PostAdapter;
 import su.ict.business59.partnersforpurchasing.fragment.PostFragment;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
+import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
@@ -40,6 +42,7 @@ public class PostByCategoryActivity extends AppCompatActivity implements PostAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_by_category);
         ButterKnife.bind(this);
+        pref = new UserPreference(this);
         String catId = getIntent().getExtras().getString("catId");
         String catName = getIntent().getExtras().getString("catName");
         setTitle("หมวด " + catName);
@@ -81,11 +84,36 @@ public class PostByCategoryActivity extends AppCompatActivity implements PostAda
 
     @Override
     public void onItemClick(Post item) {
-
+        Intent i = new Intent(this, PostDetailActivity.class);
+        i.putExtra("post", item);
+        startActivity(i);
     }
 
     @Override
-    public void onJoinButtonClick(int index) {
+    public void onJoinButtonClick(final int index) {
+        PostService service = ServiceGenerator.createService(PostService.class);
+        Call<BaseResponse> call = service.joinPost(pref.getUserID(), listPost.get(index).getPostId() + "");
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse res = response.body();
+                    if (res.isStatus()) {
+                        listPost.remove(index);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

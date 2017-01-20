@@ -52,7 +52,8 @@
         <activity android:name=".PostDetailActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".PostByCategoryActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".ProductPostDetailActivity"></activity>
     </application>
 
 </manifest>

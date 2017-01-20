@@ -92,7 +92,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         }
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setDuration(4000);
+        mDemoSlider.setDuration(6000);
         mDemoSlider.addOnPageChangeListener(this);
     }
 
@@ -152,7 +152,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
                 if (response.isSuccessful()) {
                     BaseResponse res = response.body();
                     if (res.isStatus()) {
-                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
                     }

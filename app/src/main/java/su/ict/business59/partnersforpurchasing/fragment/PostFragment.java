@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -29,6 +32,7 @@ import su.ict.business59.partnersforpurchasing.PostByCategoryActivity;
 import su.ict.business59.partnersforpurchasing.PostDetailActivity;
 import su.ict.business59.partnersforpurchasing.PostProductActivity;
 import su.ict.business59.partnersforpurchasing.ProductDetailActivity;
+import su.ict.business59.partnersforpurchasing.ProductManageActivity;
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.adapter.PostAdapter;
 import su.ict.business59.partnersforpurchasing.adapter.ProductAdapter;
@@ -68,6 +72,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_post, container, false);
         postRc = (RecyclerView) v.findViewById(R.id.postRc);
+        setHasOptionsMenu(true);
         postRc.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -212,4 +217,5 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             startActivity(i);
         }
     }
+  
 }

@@ -88,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment myFragment = null;
         if (id == R.id.nav_feed) {
             myFragment = new FeedFragment();
-            setTitle(getResources().getString(R.string.feeds));
+            setTitle("หน้าแรก");
         } else if (id == R.id.nav_product) {
             myFragment = new ProductFragment();
             setTitle(getResources().getString(R.string.product));

@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,10 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import su.ict.business59.partnersforpurchasing.ProductManageActivity;
 import su.ict.business59.partnersforpurchasing.R;
+import su.ict.business59.partnersforpurchasing.SearchActivity;
 import su.ict.business59.partnersforpurchasing.adapter.TabAdapter;
 
 /**
@@ -41,12 +46,28 @@ public class FeedFragment extends Fragment {
     }
 
     private void init(View rootView) {
-        getActivity().setTitle("Feed");
+        getActivity().setTitle("หน้าแรก");
 
     }
 
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        menu.clear();
+//    }
+
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_menu, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.search) {
+            startActivity(new Intent(getActivity(), SearchActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

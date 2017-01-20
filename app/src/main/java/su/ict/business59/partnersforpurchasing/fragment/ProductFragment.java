@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +29,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import su.ict.business59.partnersforpurchasing.CategoryActivity;
+import su.ict.business59.partnersforpurchasing.PostByCategoryActivity;
 import su.ict.business59.partnersforpurchasing.ProductDetailActivity;
 import su.ict.business59.partnersforpurchasing.ProductManageActivity;
 import su.ict.business59.partnersforpurchasing.R;
@@ -40,14 +43,18 @@ import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
+import static android.app.Activity.RESULT_OK;
 
-public class ProductFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+public class ProductFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private List<Product> productList = new ArrayList<>();
     private List<Product> productLisFilter = new ArrayList<>();
     private ProductAdapter adapter;
     @Bind(R.id.productRc)
     RecyclerView productRc;
+    private Button category_btn;
+    Spinner promotion_spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,9 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
         ButterKnife.bind(getActivity(), myView);
         setHasOptionsMenu(true);
         init();
+        category_btn = (Button) myView.findViewById(R.id.category_btn);
+        category_btn.setOnClickListener(this);
+        promotion_spinner = (Spinner) myView.findViewById(R.id.promotion_spinner);
         return myView;
     }
 
@@ -155,5 +165,25 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == category_btn) {
+            Intent i = new Intent(getActivity(), CategoryActivity.class);
+            startActivityForResult(i, 1);
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String catId = data.getStringExtra("catId");
+            String catName = data.getStringExtra("catName");
+            Intent i = new Intent(getActivity(), PostByCategoryActivity.class);
+            i.putExtra("catId", catId);
+            i.putExtra("catName", catName);
+            startActivity(i);
+        }
     }
 }

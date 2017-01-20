@@ -115,7 +115,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         }
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setDuration(4000);
+        mDemoSlider.setDuration(0);
         mDemoSlider.addOnPageChangeListener(this);
     }
 
@@ -193,7 +193,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
 //            Toast.makeText(getApplicationContext(), "E", Toast.LENGTH_SHORT).show();
             dialog();
         } else if (view == chat) {
-            startActivity(new Intent(this, ChatActivity.class));
+           // startActivity(new Intent(this, ChatActivity.class));
         }
     }
 

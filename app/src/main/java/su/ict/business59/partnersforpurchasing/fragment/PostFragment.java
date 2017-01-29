@@ -74,8 +74,8 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_post, container, false);
-        postRc = (RecyclerView) v.findViewById(R.id.postRc);
         setHasOptionsMenu(true);
+        postRc = (RecyclerView) v.findViewById(R.id.postRc);
         postRc.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

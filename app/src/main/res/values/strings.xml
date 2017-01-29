@@ -60,4 +60,5 @@
     <string name="txt_notfound">ไม่พบข้อมูล</string>
     <string name="shop_info">ข้อมูลร้านค้า</string>
     <string name="send">ส่ง</string>
+    <string name="enter_chat_room">เข้าสู่ห้องสนทนา</string>
 </resources>

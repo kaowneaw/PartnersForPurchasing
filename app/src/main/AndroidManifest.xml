@@ -55,12 +55,7 @@
         <activity android:name=".ProductPostDetailActivity" />
         <activity
             android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PostDetailActivity" />
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

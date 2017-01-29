@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,6 @@ import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class PostDetailActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
 
-    private Post postObj;
     @Bind(R.id.slider)
     SliderLayout mDemoSlider;
     @Bind(R.id.topic)
@@ -61,8 +61,9 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     @Bind(R.id.text_joined)
     TextView text_joined;
     @Bind(R.id.chat)
-    Button chat;
+    TableRow chat;
     private Shop currentUser;
+    private Post postObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

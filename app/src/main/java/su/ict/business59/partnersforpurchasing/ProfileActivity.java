@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     ViewPager viewPager;
     @Bind(R.id.shop_info)
     Button shop_info;
+    private Shop CurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,33 +57,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void init() {
-        UserService service = ServiceGenerator.createService(UserService.class);
         UserPreference pref = new UserPreference(this);
-        Call<Shop> call = service.me("1");
-        call.enqueue(new Callback<Shop>() {
-            @Override
-            public void onResponse(Call<Shop> call, Response<Shop> response) {
-                if (response.isSuccessful()) {
-                    Shop myShop = response.body();
-                    if (myShop.getRole().equals("S")) {
-
-                    } else {
-                        shop_info.setVisibility(View.GONE);
-                    }
-                } else {
-                    try {
-                        Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Shop> call, Throwable t) {
-
-            }
-        });
+        CurrentUser = pref.getUserObject();
         viewPager.setAdapter(new TabProfileAdapter(getSupportFragmentManager()));
         tabLayout.post(new Runnable() {
             @Override
@@ -90,11 +66,10 @@ public class ProfileActivity extends AppCompatActivity {
                 tabLayout.setupWithViewPager(viewPager);
             }
         });
-//        profile_username.setText(pref.getUsername());
-//        profile_email.setText(pref.getEmail());
-//        Toast.makeText(getApplicationContext(), pref.getEmail(), Toast.LENGTH_SHORT).show();
-//        String host = getResources().getString(R.string.host);
-//        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(profile_img);
+        profile_username.setText(CurrentUser.getUsername());
+        profile_email.setText(CurrentUser.getEmail());
+        String host = getResources().getString(R.string.host);
+        Picasso.with(getApplicationContext()).load(host + CurrentUser.getImage_url()).fit().centerCrop().into(profile_img);
     }
 
 }

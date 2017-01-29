@@ -24,20 +24,22 @@ import su.ict.business59.partnersforpurchasing.adapter.PostAdapter;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Post;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class MyPostFragment extends Fragment implements PostAdapter.OnItemClickListener {
 
-    private UserPreference pref;
     private List<Post> listPost;
     private RecyclerView mypostRc;
     private PostAdapter adapter;
+    private Shop CurrentUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pref = new UserPreference(getActivity());
+        UserPreference pref = new UserPreference(getActivity());
+        CurrentUser = pref.getUserObject();
     }
 
     @Override
@@ -54,7 +56,7 @@ public class MyPostFragment extends Fragment implements PostAdapter.OnItemClickL
         adapter = new PostAdapter(listPost, getActivity(), this);
         mypostRc.setAdapter(adapter);
         PostService service = ServiceGenerator.createService(PostService.class);
-        Call<ListData> call = service.getPostList("1");
+        Call<ListData> call = service.getPostList(CurrentUser.getUser_id());
         call.enqueue(new Callback<ListData>() {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {

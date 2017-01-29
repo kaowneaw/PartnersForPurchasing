@@ -47,6 +47,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
+        setTitle("ห้องสนทนา");
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         pref = new UserPreference(this);
@@ -127,6 +128,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         if (view == btn_send) {
             Message msg = new Message(currentUser.getUser_id(), currentUser.getUsername(), currentUser.getImage_url(), edt_msg.getText().toString());
             roomMsgRef.push().setValue(msg);
+            edt_msg.setText("");
         }
     }
 

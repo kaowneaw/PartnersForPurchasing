@@ -3,6 +3,7 @@ package su.ict.business59.partnersforpurchasing.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
 import su.ict.business59.partnersforpurchasing.fragment.MyPostFragment;
 
 public class TabProfileAdapter extends FragmentPagerAdapter {

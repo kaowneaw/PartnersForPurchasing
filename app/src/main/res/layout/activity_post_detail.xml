@@ -4,6 +4,7 @@
     android:id="@+id/activity_post_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context="su.ict.business59.partnersforpurchasing.PostDetailActivity">
 
@@ -137,7 +138,7 @@
                 android:id="@+id/category_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="8dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -169,7 +170,7 @@
                 android:id="@+id/shop_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="8dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -195,9 +196,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="@drawable/rounded_corner1"
+                android:background="@drawable/round_corner2"
                 android:gravity="center_vertical"
-                android:padding="6dp">
+                android:paddingBottom="6dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"

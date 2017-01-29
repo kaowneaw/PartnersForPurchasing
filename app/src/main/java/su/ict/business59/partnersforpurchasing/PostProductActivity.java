@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -61,12 +62,15 @@ import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.Shop;
+import su.ict.business59.partnersforpurchasing.models.ShopClass;
+import su.ict.business59.partnersforpurchasing.models.ShopRoom;
+import su.ict.business59.partnersforpurchasing.models.ShopSoi;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-public class PostProductActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostProductActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     Product productObj;
     @Bind(R.id.topic_post)
     EditText topic_post;
@@ -84,18 +88,29 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     Button category_btn;
     @Bind(R.id.category_name)
     TextView category_name;
-    @Bind(R.id.shopDescShow)
-    TextView shopDescShow;
+    //    @Bind(R.id.shopDescShow)
+//    TextView shopDescShow;
+    @Bind(R.id.spin_class)
+    Spinner spin_class;
+    @Bind(R.id.spin_soi)
+    Spinner spin_soi;
+    @Bind(R.id.spin_room)
+    Spinner spin_room;
 
+    private List<ShopSoi> listSoi;
+    private List<ShopClass> listClass;
+    private List<ShopRoom> listRoom;
     private List<Shop> shops = new ArrayList<>();
     private final int PICK_IMAGE = 1;
     private final int PICK_CATEGORY = 2;
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private Uri selectedImage = null;
     private final int FILE_MAX_SIZE = 500;
-    ProgressDialog progress;
-    ArrayAdapter<String> arrayAdapter;
+    private ProgressDialog progress;
+    private ArrayAdapter<String> arrayAdapter;
     private String catId = "";
+    private ShopService shopService;
+    private UserPreference pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +118,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
         setTitle("โพสต์");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        pref = new UserPreference(getApplicationContext());
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             this.productObj = bundle.getParcelable("product");
@@ -114,6 +130,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         img_product.setOnClickListener(this);
         shop_name.setOnClickListener(this);
         category_btn.setOnClickListener(this);
+        spin_class.setOnItemSelectedListener(this);
+        spin_soi.setOnItemSelectedListener(this);
+        spin_room.setOnItemSelectedListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
     }
 
@@ -147,7 +166,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                     shop_name.setText(strName);
                     Shop shopSelected = shops.get(which);
                     shop_name.setTag(shopSelected.getShopId() + "");
-                    shopDescShow.setText("ที่อยู่ร้านค้า \n" + "ชั้นที่ " + shopSelected.getShopClass() + " ซอยที่ " + shopSelected.getShopSoi() + " ห้องที่ " + shopSelected.getShopRoom());
+//                    shopDescShow.setText("ที่อยู่ร้านค้า \n" + "ชั้นที่ " + shopSelected.getShopClass() + " ซอยที่ " + shopSelected.getShopSoi() + " ห้องที่ " + shopSelected.getShopRoom());
                 }
             });
             builderSingle.show();
@@ -159,7 +178,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
 
     private void init() {
-        ShopService shopService = ServiceGenerator.createService(ShopService.class);
+        this.shopService = ServiceGenerator.createService(ShopService.class);
         Call<ListData> dataShop = shopService.ShopList();
         dataShop.enqueue(new Callback<ListData>() {
             @Override
@@ -191,6 +210,44 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+
+        Call<ListData> dataShopClass = shopService.ShopListClass();
+        dataShopClass.enqueue(new Callback<ListData>() {
+            @Override
+            public void onResponse(Call<ListData> call, Response<ListData> response) {
+                if (response.isSuccessful()) {
+                    ListData data = response.body();
+                    listClass = data.getItemsShopClass();
+                    populateClassSpinner(getApplicationContext(), listClass, spin_class);
+                } else {
+                    Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListData> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void populateRoomSpinner(Context context, List<ShopRoom> shopRoom, Spinner spinner) {
+        ArrayAdapter<ShopRoom> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, shopRoom);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+    }
+
+    public void populateClassSpinner(Context context, List<ShopClass> shopClass, Spinner spinner) {
+        ArrayAdapter<ShopClass> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, shopClass);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+    }
+
+    public void populateSoiSpinner(Context context, List<ShopSoi> shopSoi, Spinner spinner) {
+        ArrayAdapter<ShopSoi> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, shopSoi);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -232,10 +289,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
     private void post() {
         if (validPost()) {
-            String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
-            UserPreference pref = new UserPreference(this);
             progress = ProgressDialog.show(this, "", "Saving...", true);
-            RequestBody img_url = null;
+            RequestBody img_url;
             MultipartBody.Part file = null;
             if (productObj != null) {
                 img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
@@ -243,16 +298,35 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 img_url = createPartFromString("");// send blank value
                 file = prepareFilePart("img", selectedImage);
             }
+            RequestBody category_id = createPartFromString(catId);
+            RequestBody user_id = createPartFromString(pref.getUserObject().getUser_id());
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
             RequestBody post_desc = createPartFromString(desc_post.getText().toString());
-            RequestBody shop_id = createPartFromString(shop_name.getTag().toString());
-            RequestBody category_id = createPartFromString(catId);
-            RequestBody user_id = createPartFromString(pref.getUserID());
+            RequestBody shopName = createPartFromString(shop_name.getText().toString());
+            RequestBody shop_class, shop_soi, shop_room;
+            if (spin_class.getSelectedItemPosition() != -1) {
+                shop_class = createPartFromString(listClass.get(spin_class.getSelectedItemPosition()).getClass_name());
+            } else {
+                shop_class = createPartFromString("");
+            }
+            if (spin_soi.getSelectedItemPosition() != -1) {
+                shop_soi = createPartFromString(listSoi.get(spin_soi.getSelectedItemPosition()).toString());
+            } else {
+                shop_soi = createPartFromString("");
+            }
+            if (spin_room.getSelectedItemPosition() != -1) {
+                shop_room = createPartFromString(listRoom.get(spin_room.getSelectedItemPosition()).getRoom_no());
+            } else {
+                shop_room = createPartFromString("");
+            }
 
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("post_name", post_name);
             map.put("post_desc", post_desc);
-            map.put("shop_id", shop_id);
+            map.put("shop_name", shopName);
+            map.put("shop_class", shop_class);
+            map.put("shop_soi", shop_soi);
+            map.put("shop_room", shop_room);
             map.put("category_id", category_id);
             map.put("user_id", user_id);
             map.put("img_url", img_url);
@@ -295,15 +369,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         } else {
             Toast.makeText(getApplicationContext(), "Plese Fill in the blank", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private boolean validPost() {
-        if (selectedImage != null && !topic_post.getText().toString().equals("") && !desc_post.getText().toString().equals("") && !shop_name.getText().toString().equals("") && !catId.equals("")) {
-            return true;
-        }
-
-        return false;
+        return selectedImage != null && !topic_post.getText().toString().equals("") && !catId.equals("");
     }
 
     @NonNull
@@ -325,5 +394,58 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (adapterView.getId() == R.id.spin_class) {
+            Call<ListData> dataShopSoi = shopService.ShopListSoiByClassId(listClass.get(i).getClass_id());
+            dataShopSoi.enqueue(new Callback<ListData>() {
+                @Override
+                public void onResponse(Call<ListData> call, Response<ListData> response) {
+                    if (response.isSuccessful()) {
+                        ListData data = response.body();
+                        listSoi = data.getItemsShopSoi();
+                        populateSoiSpinner(getApplicationContext(), listSoi, spin_soi);
+                    } else {
+                        Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ListData> call, Throwable t) {
+
+                }
+            });
+        } else if (adapterView.getId() == R.id.spin_soi) {
+            if (i < listSoi.size()) {
+                Call<ListData> dataShopRoom = shopService.ShopListRoomBySoiId(listSoi.get(i).getSoi_id());
+                dataShopRoom.enqueue(new Callback<ListData>() {
+                    @Override
+                    public void onResponse(Call<ListData> call, Response<ListData> response) {
+                        if (response.isSuccessful()) {
+                            ListData data = response.body();
+                            listRoom = data.getItemsShopRoom();
+                            populateRoomSpinner(getApplicationContext(), listRoom, spin_room);
+                        } else {
+                            Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ListData> call, Throwable t) {
+
+                    }
+                });
+            } else {
+                listRoom = new ArrayList<>();
+            }
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

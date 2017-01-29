@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,12 +57,13 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     //Post List Page
     private RecyclerView postRc;
     private PostAdapter adapter;
-    List<Post> listPost;
-    List<Promotion> listPromotion;
+    private List<Post> listPost;
+    private List<Promotion> listPromotion;
     private UserPreference pref;
     private FloatingActionButton fab;
     private ImageButton category_btn;
-    Spinner promotion_spinner;
+    private Spinner promotion_spinner;
+    private ProgressDialog progress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +118,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
         listPost = new ArrayList<>();
         adapter = new PostAdapter(listPost, getActivity(), PostFragment.this);
         postRc.setAdapter(adapter);
+        progress = ProgressDialog.show(getActivity(), "", "Loading...", true);
         PostService service = ServiceGenerator.createService(PostService.class);
         Call<ListData> call = service.getPostList();
         call.enqueue(new Callback<ListData>() {
@@ -129,6 +132,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                 } else {
                     Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                 }
+                progress.dismiss();
             }
 
             @Override
@@ -173,7 +177,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     @Override
     public void onJoinButtonClick(final int index) {
         PostService service = ServiceGenerator.createService(PostService.class);
-        Call<BaseResponse> call = service.joinPost(pref.getUserID(), listPost.get(index).getPostId() + "");
+        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "");
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

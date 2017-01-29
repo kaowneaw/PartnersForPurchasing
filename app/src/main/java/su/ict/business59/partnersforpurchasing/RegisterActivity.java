@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -38,7 +40,7 @@ import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     @Bind(R.id.user2)
     EditText et;
     @Bind(R.id.pass2)
@@ -49,10 +51,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     ImageView imv;
     @Bind(R.id.btregis)
     Button bt1;
+    @Bind(R.id.radioGroupSex)
+    RadioGroup radioGroupSex;
+    @Bind(R.id.radioMale)
+    RadioButton radioMale;
+    @Bind(R.id.radioFemale)
+    RadioButton radioFemale;
     private final int PICK_IMAGE = 1;
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private Uri selectedImage = null;
     private final int FILE_MAX_SIZE = 500;
+    private String sex = "M";
     ProgressDialog progress;
 
     @Override
@@ -62,8 +71,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ButterKnife.bind(this);
         bt1.setOnClickListener(this);
         imv.setOnClickListener(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Register");
+        radioGroupSex.setOnCheckedChangeListener(this);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Register");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     @Override
@@ -75,7 +88,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-
         }
     }
 
@@ -102,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void signUp() {
-        if (!vlidateForm()) return;
+        if (!validateForm()) return;
         progress = ProgressDialog.show(this, "SignUp", "Saving...", true);
         AuthService service = ServiceGenerator.createService(AuthService.class);
         // create part for file (photo, video, ...)
@@ -112,12 +124,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         RequestBody password = createPartFromString(et2.getText().toString());
         RequestBody email = createPartFromString(et4.getText().toString());
         RequestBody role = createPartFromString("U");
-
+        RequestBody sex = createPartFromString(this.sex);
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("email", email);
         map.put("role", role);
+        map.put("sex", sex);
 
         // finally, execute the request
         Call<ResponseBody> call = service.Signup(map, body);
@@ -159,7 +172,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private boolean vlidateForm() {
+    private boolean validateForm() {
         boolean check = true;
         if (et.getText().toString().equals("")) {
             et.requestFocus();
@@ -191,6 +204,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
             selectedImage = data.getData();
             Picasso.with(getApplicationContext()).load(selectedImage).fit().centerCrop().into(imv);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        if (radioMale.isChecked()) {
+            sex = "M";
+        } else if (radioFemale.isChecked()) {
+            sex = "F";
         }
     }
 }

@@ -3,40 +3,31 @@ package su.ict.business59.partnersforpurchasing.utills;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by kaowneaw on 12/4/2016.
- */
+import com.google.gson.Gson;
+
+import su.ict.business59.partnersforpurchasing.models.Shop;
 
 public class UserPreference {
 
     public static final String PREFERENCE_KEY = "pref_shop";
-    public static final String USER_ID_KEY = "user_id";
-    public static final String USERNAME_KEY = "username";
-    public static final String IMG_KEY = "img";
-    public static final String EMAIL_KEY = "email";
-    public static final String ROLE_KEY = "role";
+    public static final String STR_OBJ = "user";
 
     private SharedPreferences sh_pref;
     private SharedPreferences.Editor sh_edit;
 
     public UserPreference(Context context) {
-
         sh_pref = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
         sh_edit = sh_pref.edit();
     }
 
-    public UserPreference(Context context, String userid, String username, String email, String img, String role) {
+    public UserPreference(Context context, Shop userObj) {
         this(context);
-        registerUserPreference(userid, username, email, img, role);
+        setUserObject(userObj);
     }
 
-    public void registerUserPreference(String userid, String username, String email, String img, String role) {
-        sh_edit.putString(USER_ID_KEY, userid);
-        sh_edit.putString(USERNAME_KEY, username);
-        sh_edit.putString(EMAIL_KEY, email);
-        sh_edit.putString(IMG_KEY, img);
-        sh_edit.putString(ROLE_KEY, role);
-    }
+//    public void registerUserPreference(String strObj) {
+//        sh_edit.putString(STR_OBJ, strObj);
+//    }
 
     public boolean commit() {
         return sh_edit.commit();
@@ -47,23 +38,17 @@ public class UserPreference {
         return sh_edit.commit();
     }
 
-    public String getUserID() {
-        return sh_pref.getString(USER_ID_KEY, "NULL");
+    public Shop getUserObject() {
+        Gson gson = new Gson();
+        String json = sh_pref.getString(STR_OBJ, "");
+        return gson.fromJson(json, Shop.class);
     }
 
-    public String getUsername() {
-        return sh_pref.getString(USERNAME_KEY, "NULL");
+    public void setUserObject(Shop userObj) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userObj);
+        sh_edit.putString(STR_OBJ, json);
+        commit();
     }
 
-    public String getEmail() {
-        return sh_pref.getString(EMAIL_KEY, "NULL");
-    }
-
-    public String getImg() {
-        return sh_pref.getString(IMG_KEY, "NULL");
-    }
-
-    public String getRoleKey() {
-        return sh_pref.getString(ROLE_KEY, "NULL");
-    }
 }

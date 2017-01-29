@@ -15,7 +15,15 @@ public interface ShopService {
     @GET("shop")
     Call<ListData> ShopList();
 
-
     @GET("oneShop")
     Call<Shop> getOneShop(@Query("shopId") String shopId);
+
+    @GET("shop/class")
+    Call<ListData> ShopListClass();
+
+    @GET("shop/room")
+    Call<ListData> ShopListRoomBySoiId(@Query("soiId") String soiId);
+
+    @GET("shop/soi")
+    Call<ListData> ShopListSoiByClassId(@Query("classId") String classId);
 }

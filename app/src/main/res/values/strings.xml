@@ -36,6 +36,8 @@
     <string name="signup">SignUp</string>
     <string name="signin">Login</string>
     <string name="category">หมวดหมู่</string>
+    <string name="category_product">หมวดหมู่สินค้า</string>
+    <string name="choose">เลือก</string>
     <string name="topic">หัวข้อโพสต์</string>
     <string name="add_image">เพิ่มรูป</string>
     <string name="dateend">DateEnd</string>
@@ -57,4 +59,5 @@
     <string name="close_post">ปิดโพส</string>
     <string name="txt_notfound">ไม่พบข้อมูล</string>
     <string name="shop_info">ข้อมูลร้านค้า</string>
+    <string name="send">ส่ง</string>
 </resources>

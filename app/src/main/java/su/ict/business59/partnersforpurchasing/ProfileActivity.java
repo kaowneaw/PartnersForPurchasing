@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void init() {
         UserService service = ServiceGenerator.createService(UserService.class);
         UserPreference pref = new UserPreference(this);
-        Call<Shop> call = service.me(pref.getUserID());
+        Call<Shop> call = service.me("1");
         call.enqueue(new Callback<Shop>() {
             @Override
             public void onResponse(Call<Shop> call, Response<Shop> response) {
@@ -90,11 +90,11 @@ public class ProfileActivity extends AppCompatActivity {
                 tabLayout.setupWithViewPager(viewPager);
             }
         });
-        profile_username.setText(pref.getUsername());
-        profile_email.setText(pref.getEmail());
-        Toast.makeText(getApplicationContext(), pref.getEmail(), Toast.LENGTH_SHORT).show();
-        String host = getResources().getString(R.string.host);
-        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(profile_img);
+//        profile_username.setText(pref.getUsername());
+//        profile_email.setText(pref.getEmail());
+//        Toast.makeText(getApplicationContext(), pref.getEmail(), Toast.LENGTH_SHORT).show();
+//        String host = getResources().getString(R.string.host);
+//        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(profile_img);
     }
 
 }

@@ -37,6 +37,7 @@ import su.ict.business59.partnersforpurchasing.adapter.MemberJoinAdapter;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Post;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -61,16 +62,17 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     TextView text_joined;
     @Bind(R.id.chat)
     Button chat;
-    private UserPreference pref;
+    private Shop currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         ButterKnife.bind(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         text_joined.setPaintFlags(text_joined.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        pref = new UserPreference(this);
+        UserPreference pref = new UserPreference(this);
+        this.currentUser = pref.getUserObject();
         chat.setOnClickListener(this);
         try {
             init();
@@ -89,7 +91,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         user_text.setText(this.postObj.getUsername());
         topic.setText(this.postObj.getPostName());
         category_name.setText(this.postObj.getCatName());
-        shop_name.setText(this.postObj.getShopName() + "\n\n" + this.postObj.getAddressShopString());
+        shop_name.setText(this.postObj.getShopName() + "\n\n" + this.postObj.getAddressPostShop());
         desc.setText(this.postObj.getPostDesc());
         text_joined.setText(String.valueOf(this.postObj.getMemberJoin().size()));
         text_joined.setOnClickListener(this);
@@ -131,7 +133,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.join_menu, menu);
         MenuItem item = menu.findItem(R.id.join);
-        if (this.postObj.getUser_id().equals(pref.getUserID())) item.setVisible(false);
+        if (this.postObj.getUser_id().equals(currentUser.getUser_id()))
+            item.setVisible(false); // check if own post
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -140,7 +143,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         int id = item.getItemId();
         if (id == R.id.join) {
             PostService service = ServiceGenerator.createService(PostService.class);
-            Call<BaseResponse> call = service.joinPost(pref.getUserID(), this.postObj.getPostId() + "");
+            Call<BaseResponse> call = service.joinPost("1", this.postObj.getPostId() + "");
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -190,10 +193,11 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     @Override
     public void onClick(View view) {
         if (view == text_joined) {
-//            Toast.makeText(getApplicationContext(), "E", Toast.LENGTH_SHORT).show();
             dialog();
         } else if (view == chat) {
-           // startActivity(new Intent(this, ChatActivity.class));
+            Intent i = new Intent(this, ChatActivity.class);
+            i.putExtra("postId", this.postObj.getPostId());
+            startActivity(i);
         }
     }
 

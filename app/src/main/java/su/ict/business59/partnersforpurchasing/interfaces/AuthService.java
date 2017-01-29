@@ -13,6 +13,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.models.User;
 
 /**
@@ -23,7 +24,7 @@ public interface AuthService {
 
     @FormUrlEncoded
     @POST("login")
-    Call<User> login(@Field("username") String username, @Field("password") String password);
+    Call<Shop> login(@Field("username") String username, @Field("password") String password);
 
     @Multipart
     @POST("signup")

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by kaowneaw on 12/25/2016.
  */
 
-public class Post extends Shop implements Parcelable {
+public class Post extends User implements Parcelable {
 
     @SerializedName("post_id")
     @Expose
@@ -39,6 +39,18 @@ public class Post extends Shop implements Parcelable {
     @SerializedName("cat_name")
     @Expose
     String catName;
+    @SerializedName("shop_name")
+    @Expose
+    String shopName;
+    @SerializedName("shop_class")
+    @Expose
+    String shopClass;
+    @SerializedName("shop_soi")
+    @Expose
+    String shopSoi;
+    @SerializedName("shop_room")
+    @Expose
+    String shopRoom;
     @SerializedName("memberJoin")
     @Expose
     List<MemberJoin> memberJoin;
@@ -116,8 +128,41 @@ public class Post extends Shop implements Parcelable {
         this.memberJoin = memberJoin;
     }
 
+    public String getShopName() {
+        return shopName;
+    }
 
-    public Post() {
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getShopClass() {
+        return shopClass;
+    }
+
+    public void setShopClass(String shopClass) {
+        this.shopClass = shopClass;
+    }
+
+    public String getShopSoi() {
+        return shopSoi;
+    }
+
+    public void setShopSoi(String shopSoi) {
+        this.shopSoi = shopSoi;
+    }
+
+    public String getShopRoom() {
+        return shopRoom;
+    }
+
+    public void setShopRoom(String shopRoom) {
+        this.shopRoom = shopRoom;
+    }
+
+
+    public String getAddressPostShop() {
+        return "ชั้นที่:  " + this.shopClass + " ซอยที่:  " + this.shopSoi + " ห้องที่:  " + this.shopRoom;
     }
 
     @Override
@@ -135,25 +180,23 @@ public class Post extends Shop implements Parcelable {
         dest.writeString(this.postImg);
         dest.writeString(this.catId);
         dest.writeString(this.catName);
-        dest.writeList(this.memberJoin);
-        dest.writeString(this.shopId);
         dest.writeString(this.shopName);
-        dest.writeString(this.shopDesc);
-        dest.writeString(this.shopImg);
         dest.writeString(this.shopClass);
         dest.writeString(this.shopSoi);
         dest.writeString(this.shopRoom);
-        dest.writeString(this.shopPromotion);
-        dest.writeString(this.adminId);
-        dest.writeInt(this.shopStatus);
+        dest.writeTypedList(this.memberJoin);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
         dest.writeString(this.password);
         dest.writeString(this.email);
         dest.writeString(this.image_url);
         dest.writeString(this.role);
+        dest.writeString(this.sex);
         dest.writeString(this.message);
         dest.writeByte(this.status ? (byte) 1 : (byte) 0);
+    }
+
+    public Post() {
     }
 
     protected Post(Parcel in) {
@@ -165,24 +208,18 @@ public class Post extends Shop implements Parcelable {
         this.postImg = in.readString();
         this.catId = in.readString();
         this.catName = in.readString();
-        this.memberJoin = new ArrayList<MemberJoin>();
-        in.readList(this.memberJoin, MemberJoin.class.getClassLoader());
-        this.shopId = in.readString();
         this.shopName = in.readString();
-        this.shopDesc = in.readString();
-        this.shopImg = in.readString();
         this.shopClass = in.readString();
         this.shopSoi = in.readString();
         this.shopRoom = in.readString();
-        this.shopPromotion = in.readString();
-        this.adminId = in.readString();
-        this.shopStatus = in.readInt();
+        this.memberJoin = in.createTypedArrayList(MemberJoin.CREATOR);
         this.user_id = in.readString();
         this.username = in.readString();
         this.password = in.readString();
         this.email = in.readString();
         this.image_url = in.readString();
         this.role = in.readString();
+        this.sex = in.readString();
         this.message = in.readString();
         this.status = in.readByte() != 0;
     }

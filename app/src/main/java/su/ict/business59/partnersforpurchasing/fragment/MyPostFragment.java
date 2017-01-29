@@ -54,7 +54,7 @@ public class MyPostFragment extends Fragment implements PostAdapter.OnItemClickL
         adapter = new PostAdapter(listPost, getActivity(), this);
         mypostRc.setAdapter(adapter);
         PostService service = ServiceGenerator.createService(PostService.class);
-        Call<ListData> call = service.getPostList(pref.getUserID());
+        Call<ListData> call = service.getPostList("1");
         call.enqueue(new Callback<ListData>() {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {

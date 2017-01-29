@@ -27,6 +27,18 @@ public class ListData {
     @Expose()
     private List<Promotion> itemsPromotion;
 
+    @SerializedName("shop_class")
+    @Expose()
+    private List<ShopClass> itemsShopClass;
+
+    @SerializedName("shop_room")
+    @Expose()
+    private List<ShopRoom> itemsShopRoom;
+
+    @SerializedName("shop_soi")
+    @Expose()
+    private List<ShopSoi> itemsShopSoi;
+
     public List<Category> getItemsCategory() {
         return itemsCategory;
     }
@@ -45,5 +57,17 @@ public class ListData {
 
     public List<Promotion> getItemsPromotion() {
         return itemsPromotion;
+    }
+
+    public List<ShopClass> getItemsShopClass() {
+        return itemsShopClass;
+    }
+
+    public List<ShopRoom> getItemsShopRoom() {
+        return itemsShopRoom;
+    }
+
+    public List<ShopSoi> getItemsShopSoi() {
+        return itemsShopSoi;
     }
 }

@@ -72,7 +72,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="70"
                         android:gravity="center_vertical"
-                        android:text="@string/category"
+                        android:text="@string/category_product"
                         android:textSize="18sp" />
 
                     <Button
@@ -80,7 +80,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="30"
-                        android:text="@string/category" />
+                        android:text="@string/choose" />
                 </TableRow>
 
 
@@ -93,12 +93,71 @@
                     android:hint="@string/shop_name"
                     android:inputType="none" />
 
-                <TextView
-                    android:id="@+id/shopDescShow"
+                <!--<TextView-->
+                <!--android:id="@+id/shopDescShow"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:textSize="13sp" />-->
+
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textSize="13sp" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30"
+                        android:gravity="center_vertical"
+                        android:text="@string/floor"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/spin_class"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30"
+                        android:gravity="center_vertical"
+                        android:text="@string/soi"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/spin_soi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30"
+                        android:gravity="center_vertical"
+                        android:text="@string/room"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/spin_room"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30" />
+                </TableRow>
 
                 <EditText
                     android:id="@+id/desc_post"

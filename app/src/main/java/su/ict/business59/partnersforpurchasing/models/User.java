@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
  */
 
 public class User extends BaseResponse {
+
     @Expose
     String user_id;
     @Expose
@@ -19,6 +20,8 @@ public class User extends BaseResponse {
     String image_url;
     @Expose
     String role;
+    @Expose
+    String sex;
 
     public String getRole() {
         return role;
@@ -66,5 +69,13 @@ public class User extends BaseResponse {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

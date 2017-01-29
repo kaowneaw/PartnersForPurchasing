@@ -100,7 +100,7 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         containerImg.setLayoutManager(new LinearLayoutManager(this));
         UserPreference pref = new UserPreference(this);
         UserService service = ServiceGenerator.createService(UserService.class);
-        Call<Shop> call = service.me(pref.getUserID());
+        Call<Shop> call = service.me("1");
         call.enqueue(new Callback<Shop>() {
             @Override
             public void onResponse(Call<Shop> call, Response<Shop> response) {

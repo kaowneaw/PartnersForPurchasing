@@ -21,14 +21,19 @@ import com.squareup.picasso.Picasso;
 import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private UserPreference pref;
+    private Shop userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        pref = new UserPreference(getApplicationContext());
+        userInfo = pref.getUserObject();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -42,8 +47,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
         navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
-        UserPreference pref = new UserPreference(getApplicationContext());
-        if (pref.getRoleKey().equals("U")) {
+        if (userInfo.getRole().equals("U")) {
             hideMenuNavLeftForNormalUser(navigationView);
         } else {
             hideMenuNavLeftForShopUser(navigationView);
@@ -52,10 +56,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);
         TextView nav_email = (TextView) headView.findViewById(R.id.nav_email);
         ImageView nav_img = (ImageView) headView.findViewById(R.id.nav_img);
-        nav_username.setText(pref.getUsername());
-        nav_email.setText(pref.getEmail());
+        nav_username.setText(userInfo.getUsername());
+        nav_email.setText(userInfo.getEmail());
         String host = getResources().getString(R.string.host);
-        Picasso.with(getApplicationContext()).load(host + pref.getImg()).fit().centerCrop().into(nav_img);
+        Picasso.with(getApplicationContext()).load(host + userInfo.getImage_url()).fit().centerCrop().into(nav_img);
         headView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

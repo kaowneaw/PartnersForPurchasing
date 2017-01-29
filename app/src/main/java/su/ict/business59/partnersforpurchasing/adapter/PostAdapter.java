@@ -30,6 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private String myFormat = "yyyy-MM-dd hh:mm"; //In which you need put here
     private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
     private UserPreference pref;
+    private String CurrentUserId;
 
     public PostAdapter(List<Post> postList, Context mContext, PostAdapter.OnItemClickListener listener) {
         this.postList = postList;
@@ -37,6 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.listener = listener;
         this.host = mContext.getResources().getString(R.string.host);
         this.pref = new UserPreference(this.mContext);
+        this.CurrentUserId = this.pref.getUserObject().getUser_id();
     }
 
     public interface OnItemClickListener {
@@ -68,12 +70,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(PostAdapter.ViewHolder holder, int position) {
         Post mPost = postList.get(position);
         holder.title_text.setText(mPost.getPostName());
-        holder.shop_text.setText(mPost.getShopName() + mPost.getAddressShopString());
+        holder.shop_text.setText(mPost.getShopName() + "\n" + mPost.getAddressPostShop());
         holder.category_text.setText(mPost.getCatName());
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
         Picasso.with(mContext).load(host + mPost.getImage_url()).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
-        if (mPost.getUser_id().equals(this.pref.getUserID())) {
+        if (mPost.getUser_id().equals(this.CurrentUserId)) {
             holder.join_btn.setVisibility(View.GONE);
             holder.close_post_btn.setVisibility(View.VISIBLE);
         } else {

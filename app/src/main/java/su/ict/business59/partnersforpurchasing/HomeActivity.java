@@ -15,13 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
+import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Shop;
+import su.ict.business59.partnersforpurchasing.utills.UpdateStatusUser;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -119,4 +122,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        UpdateStatusUser update = new UpdateStatusUser(userInfo.getUser_id(), SHOPSHARE.OFLINE, new UpdateStatusUser.UpdateResponse() {
+            @Override
+            public void updateCallback(BaseResponse response) {
+                Toast.makeText(getApplicationContext(), "OFFLINE NOW", Toast.LENGTH_SHORT).show();
+            }
+        });
+        update.update();
+    }
+
 }

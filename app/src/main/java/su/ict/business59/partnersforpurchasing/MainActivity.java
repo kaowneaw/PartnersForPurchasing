@@ -17,12 +17,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.interfaces.AuthService;
+import su.ict.business59.partnersforpurchasing.interfaces.UserService;
+import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.models.User;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
+import su.ict.business59.partnersforpurchasing.utills.UpdateStatusUser;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Bind(R.id.user)
     EditText et;
@@ -75,6 +78,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Shop user = response.body();
                     if (user.isStatus()) {
                         pref.setUserObject(user);
+                        UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
+                            @Override
+                            public void updateCallback(BaseResponse response) {
+                                Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        update.update();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     } else {
@@ -90,5 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(getApplicationContext(), "Fill in the blank", Toast.LENGTH_SHORT).show();
         }
+
     }
+
 }

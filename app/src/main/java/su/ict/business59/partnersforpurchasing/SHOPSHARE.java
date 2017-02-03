@@ -9,5 +9,7 @@ import android.app.Application;
 public class SHOPSHARE extends Application {
     public static final String MALE_ID = "11";
     public static final String FEMALE_ID = "12";
+    public static final String ONLINE = "true";
+    public static final String OFLINE = "false";
 
 }

@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="50"
-                    android:background="@color/blue"
+                    android:background="@color/colorAccent"
                     android:text="@string/signin"
                     android:textColor="@android:color/white" />
 
@@ -75,6 +75,24 @@
                     android:text="@string/signup" />
 
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp" />
+
         </LinearLayout>
     </ScrollView>
 

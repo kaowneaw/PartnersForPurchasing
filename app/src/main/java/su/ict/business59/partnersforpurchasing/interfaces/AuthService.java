@@ -29,4 +29,8 @@ public interface AuthService {
     @Multipart
     @POST("signup")
     Call<ResponseBody> Signup(@PartMap() Map<String, RequestBody> datastr, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("signup/facebook")
+    Call<ResponseBody> Signup(@PartMap() Map<String, RequestBody> datastr);
 }

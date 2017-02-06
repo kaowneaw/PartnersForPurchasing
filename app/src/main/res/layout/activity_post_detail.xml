@@ -191,6 +191,12 @@
                 android:layout_height="wrap_content"
                 android:lines="2" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/black" />
+
             <TableRow
                 android:id="@+id/chat"
                 android:layout_width="wrap_content"
@@ -198,6 +204,7 @@
                 android:layout_gravity="right"
                 android:background="@drawable/round_corner2"
                 android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
                 android:paddingBottom="6dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

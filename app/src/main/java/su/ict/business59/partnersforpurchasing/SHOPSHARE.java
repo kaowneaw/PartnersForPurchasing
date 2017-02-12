@@ -12,4 +12,11 @@ public class SHOPSHARE extends Application {
     public static final String ONLINE = "true";
     public static final String OFLINE = "false";
 
+    public static String getPathImg(String path) {
+        if (path.charAt(0) == 'a') {
+            return "http://www.itmystyle.com/ict_shopshare/" + path;
+        } else {
+            return path;
+        }
+    }
 }

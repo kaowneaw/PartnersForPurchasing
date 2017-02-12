@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,7 +44,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private UserPreference pref;
     private Shop currentUser;
     private List<Message> msgList = new ArrayList<>();
-    ChatMsgAdapter adapter;
+    private ChatMsgAdapter adapter;
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         pref = new UserPreference(this);
         currentUser = pref.getUserObject();
-        init();
         btn_send.setOnClickListener(this);
+        init();
     }
 
     private void init() {
@@ -63,21 +68,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         roomRef = mRootRef.child("room");
         roomRef.child("room-" + postId);
         roomMsgRef = roomRef.child("room-" + postId);
-//        roomRef.child("room-" + postId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                    Message value = data.getValue(Message.class);
-//                    msgList.add(value);
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                Log.v("error", error.getMessage() + "");
-//            }
-//        });
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -116,17 +106,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.LENGTH_SHORT).show();
             }
         };
+
         roomRef.child("room-" + postId).addChildEventListener(childEventListener);
         adapter = new ChatMsgAdapter(msgList, getApplicationContext());
         rc_chat.setAdapter(adapter);
         rc_chat.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override
     public void onClick(View view) {
         if (view == btn_send) {
-            Message msg = new Message(currentUser.getUser_id(), currentUser.getUsername(), currentUser.getImage_url(), edt_msg.getText().toString());
+            Date date = new Date();
+            Message msg = new Message(currentUser.getUser_id(), currentUser.getUsername(), currentUser.getImage_url(), edt_msg.getText().toString(), dateFormat.format(date));
             roomMsgRef.push().setValue(msg);
             edt_msg.setText("");
         }

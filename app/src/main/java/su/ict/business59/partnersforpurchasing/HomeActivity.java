@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
@@ -40,29 +41,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
         navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
+
         if (userInfo.getRole().equals("U")) {
             hideMenuNavLeftForNormalUser(navigationView);
         } else {
             hideMenuNavLeftForShopUser(navigationView);
         }
+
         View headView = navigationView.getHeaderView(0);
         TextView nav_username = (TextView) headView.findViewById(R.id.nav_username);
         TextView nav_email = (TextView) headView.findViewById(R.id.nav_email);
         ImageView nav_img = (ImageView) headView.findViewById(R.id.nav_img);
         nav_username.setText(userInfo.getUsername());
         nav_email.setText(userInfo.getEmail());
-        String host = getResources().getString(R.string.host);
-        Picasso.with(getApplicationContext()).load(host + userInfo.getImage_url()).fit().centerCrop().into(nav_img);
+        Picasso.with(getApplicationContext()).load(SHOPSHARE.getPathImg(userInfo.getImage_url())).fit().centerCrop().into(nav_img);
+
         headView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +114,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_logout) {
             UserPreference pref = new UserPreference(this);
             pref.clearPreference();
+            LoginManager.getInstance().logOut();
             startActivity(new Intent(this, MainActivity.class));
             return false;
         }
@@ -126,13 +128,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStop() {
         super.onStop();
-        UpdateStatusUser update = new UpdateStatusUser(userInfo.getUser_id(), SHOPSHARE.OFLINE, new UpdateStatusUser.UpdateResponse() {
-            @Override
-            public void updateCallback(BaseResponse response) {
-                Toast.makeText(getApplicationContext(), "OFFLINE NOW", Toast.LENGTH_SHORT).show();
-            }
-        });
-        update.update();
+//        UpdateStatusUser update = new UpdateStatusUser(userInfo.getUser_id(), SHOPSHARE.OFLINE, new UpdateStatusUser.UpdateResponse() {
+//            @Override
+//            public void updateCallback(BaseResponse response) {
+//                Toast.makeText(getApplicationContext(), "OFFLINE NOW", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        update.update();
     }
 
 }

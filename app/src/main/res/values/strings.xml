@@ -27,7 +27,7 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
-    <string name="shop_name">ชื่อร้านค้า</string>
+    <string name="shop_name">ข้อมูลร้านค้า</string>
     <string name="shop_description">รายละเอียดร้านค้า</string>
     <string name="floor">ชั้น</string>
     <string name="soi">ซอย</string>

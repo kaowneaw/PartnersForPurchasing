@@ -68,8 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         profile_username.setText(CurrentUser.getUsername());
         profile_email.setText(CurrentUser.getEmail());
-        String host = getResources().getString(R.string.host);
-        Picasso.with(getApplicationContext()).load(host + CurrentUser.getImage_url()).fit().centerCrop().into(profile_img);
+        Picasso.with(getApplicationContext()).load(SHOPSHARE.getPathImg(CurrentUser.getImage_url())).fit().centerCrop().into(profile_img);
     }
 
 }

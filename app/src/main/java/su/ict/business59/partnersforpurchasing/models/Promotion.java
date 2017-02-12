@@ -30,6 +30,6 @@ public class Promotion {
 
     @Override
     public String toString() {
-        return promotion_name;
+        return this.promotion_name;
     }
 }

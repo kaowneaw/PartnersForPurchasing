@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="5dp"
+    android:paddingBottom="3dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="5dp">
+    android:paddingTop="3dp">
 
     <RelativeLayout
         android:id="@+id/warp_self"
@@ -22,6 +22,15 @@
             android:padding="10dp"
             android:text="Android charting application xml uidesign tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example. Android charting application xml ui design tutorial with example."
             android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/date_self"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_msg_self"
+            android:textSize="10sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -33,7 +42,7 @@
             android:id="@+id/tv_msg_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="40dp"
             android:background="@drawable/rounded_corner1"
             android:padding="10dp"
@@ -48,6 +57,13 @@
             android:layout_alignParentLeft="true"
             android:src="@mipmap/user_pacific" />
 
+        <TextView
+            android:id="@+id/date_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_msg_other"
+            android:layout_marginLeft="50dp"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

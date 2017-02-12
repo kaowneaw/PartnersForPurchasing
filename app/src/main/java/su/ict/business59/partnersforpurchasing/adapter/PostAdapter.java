@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import su.ict.business59.partnersforpurchasing.R;
+import su.ict.business59.partnersforpurchasing.SHOPSHARE;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -73,8 +74,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.shop_text.setText(mPost.getShopName() + "\n" + mPost.getAddressPostShop());
         holder.category_text.setText(mPost.getCatName());
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
-        Picasso.with(mContext).load(host + mPost.getImage_url()).fit().centerCrop().into(holder.user_img);
+        Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
+        holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
         if (mPost.getUser_id().equals(this.CurrentUserId)) {
             holder.join_btn.setVisibility(View.GONE);
             holder.close_post_btn.setVisibility(View.VISIBLE);
@@ -96,6 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         // for any view that will be set as you render a row
         private TextView title_text;
         private TextView category_text;
+        private TextView date;
         private TextView shop_text;
         private ImageView img_product;
         private ImageView user_img;
@@ -119,6 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             join_btn = (Button) itemView.findViewById(R.id.join_btn);
             join_btn.setOnClickListener(this);
             close_post_btn = (Button) itemView.findViewById(R.id.close_post_btn);
+            date = (TextView) itemView.findViewById(R.id.date);
         }
 
 

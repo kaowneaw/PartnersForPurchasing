@@ -22,6 +22,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import su.ict.business59.partnersforpurchasing.HomeActivity;
 import su.ict.business59.partnersforpurchasing.ProductPostDetailActivity;
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.adapter.ProductPostAdapter;
@@ -67,7 +68,6 @@ public class ProductPostFragment extends Fragment implements AdapterView.OnItemS
 
 
     private void init() {
-
         PromotionService service2 = ServiceGenerator.createService(PromotionService.class);
         Call<ListData> call2 = service2.getPromotion();
         call2.enqueue(new Callback<ListData>() {
@@ -75,7 +75,9 @@ public class ProductPostFragment extends Fragment implements AdapterView.OnItemS
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
                     listPromotion = response.body().getItemsPromotion();
-                    populateSpinner(getActivity(), listPromotion, promotion_spinner);
+                    if (getActivity() != null) {
+                        populateSpinner(getActivity(), listPromotion, promotion_spinner);
+                    }
                 } else {
                     Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -117,6 +119,11 @@ public class ProductPostFragment extends Fragment implements AdapterView.OnItemS
             }
         });
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override

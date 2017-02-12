@@ -24,12 +24,9 @@ public class Post extends User implements Parcelable {
     @SerializedName("post_desc")
     @Expose
     String postDesc;
-    @SerializedName("post_start")
+    @SerializedName("post_time")
     @Expose
-    String postStart;
-    @SerializedName("post_end")
-    @Expose
-    String postEnd;
+    String postTime;
     @SerializedName("post_img")
     @Expose
     String postImg;
@@ -79,20 +76,12 @@ public class Post extends User implements Parcelable {
         this.postDesc = postDesc;
     }
 
-    public String getPostStart() {
-        return postStart;
+    public String getPostTime() {
+        return postTime;
     }
 
-    public void setPostStart(String postStart) {
-        this.postStart = postStart;
-    }
-
-    public String getPostEnd() {
-        return postEnd;
-    }
-
-    public void setPostEnd(String postEnd) {
-        this.postEnd = postEnd;
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
     }
 
     public String getPostImg() {
@@ -175,8 +164,7 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.postId);
         dest.writeString(this.postName);
         dest.writeString(this.postDesc);
-        dest.writeString(this.postStart);
-        dest.writeString(this.postEnd);
+        dest.writeString(this.postTime);
         dest.writeString(this.postImg);
         dest.writeString(this.catId);
         dest.writeString(this.catName);
@@ -203,8 +191,7 @@ public class Post extends User implements Parcelable {
         this.postId = in.readString();
         this.postName = in.readString();
         this.postDesc = in.readString();
-        this.postStart = in.readString();
-        this.postEnd = in.readString();
+        this.postTime = in.readString();
         this.postImg = in.readString();
         this.catId = in.readString();
         this.catName = in.readString();

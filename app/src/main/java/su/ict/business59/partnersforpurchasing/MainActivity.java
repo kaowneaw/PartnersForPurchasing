@@ -1,9 +1,13 @@
 package su.ict.business59.partnersforpurchasing;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +32,9 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -60,36 +67,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.btsignup)
     Button bt2;
     private UserPreference pref;
-    private Gson gson;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
+    private FacebookCallback<LoginResult> callback;
     //facebook
     // https://www.sitepoint.com/integrating-the-facebook-api-with-android/
-
-    // Callback registration
-    private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            Profile profile = Profile.getCurrentProfile();
-            nextActivity(profile);
-        }
-
-        @Override
-        public void onCancel() {
-        }
-
-        @Override
-        public void onError(FacebookException e) {
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gson = new Gson();
+        getKeyHash();
         pref = new UserPreference(this);
         if (pref.getUserObject() != null) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -105,43 +93,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void getKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("su.ict.business59.partnersforpurchasing", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+    }
+
     private void initFacebookBtn() {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
-            }
-        };
-
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
-            }
-        };
-//        accessTokenTracker.startTracking();
-//        profileTracker.startTracking();
-
         // callback on click button login
         callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-                nextActivity(profile);
-                // Facebook Email address
+                final Profile profile = Profile.getCurrentProfile();
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("LoginActivity Response ", response.toString());
+                        Log.v("LoginActivityResponse", response.toString());
                         try {
+                            String fbId = object.getString("id");
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String gender = object.getString("gender");
-                            Log.v("Email = ", email);
-                            Toast.makeText(getApplicationContext(), "Name " + name, Toast.LENGTH_LONG).show();
-
+                            String imgUrl = profile.getProfilePictureUri(300, 300).toString();
+                            loginFacebook(fbId, name, email, gender, imgUrl); // insert if not have data this user
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -214,6 +200,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    private void loginFacebook(String fbId, String username, String email, String gender, String imgUrl) {
+        AuthService service = ServiceGenerator.createService(AuthService.class);
+        // create a map of data to pass along
+        RequestBody fbIdBody = createPartFromString(fbId);
+        RequestBody usernameBody = createPartFromString(username);
+        RequestBody emailBody = createPartFromString(email);
+        RequestBody sex = createPartFromString(gender.toUpperCase().charAt(0) + "");
+        RequestBody imgBody = createPartFromString(imgUrl);
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("fb_id", fbIdBody);
+        map.put("username", usernameBody);
+        map.put("email", emailBody);
+        map.put("sex", sex);
+        map.put("img_url", imgBody);
+
+        // finally, execute the request
+        Call<Shop> call = service.loginFacebook(map);
+        call.enqueue(new Callback<Shop>() {
+            @Override
+            public void onResponse(Call<Shop> call, Response<Shop> response) {
+                Shop user = response.body();
+                if (user.isStatus()) {
+                    pref.setUserObject(user);
+                    UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
+                        @Override
+                        public void updateCallback(BaseResponse response) {
+                            Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    update.update();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Username or Password incorrect", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Shop> call, Throwable t) {
+
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -223,9 +254,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        //Facebook login
-        Profile profile = Profile.getCurrentProfile();
-        nextActivity(profile);
     }
 
     @Override
@@ -235,39 +263,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onStop() {
         super.onStop();
-        //Facebook login
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
     }
 
-    private void nextActivity(Profile profile) {
-        if (profile != null) {
-            Log.v("FirstName", profile.getFirstName());
-            Log.v("LastName", profile.getLastName());
-            Log.v("ID", profile.getId());
-            Log.v("Img", profile.getProfilePictureUri(200, 200).toString());
-            Log.v("Name", profile.getName());
-        }
-    }
-
-    private void signUpApi() {
-//        AuthService service = ServiceGenerator.createService(AuthService.class);
-//        // create a map of data to pass along
-//        RequestBody username = createPartFromString(et.getText().toString());
-//        RequestBody password = createPartFromString(et2.getText().toString());
-//        RequestBody email = createPartFromString(et4.getText().toString());
-//        RequestBody role = createPartFromString("U");
-//        RequestBody sex = createPartFromString(this.sex);
-//        HashMap<String, RequestBody> map = new HashMap<>();
-//        map.put("username", username);
-//        map.put("password", password);
-//        map.put("email", email);
-//        map.put("role", role);
-//        map.put("sex", sex);
-//
-//        // finally, execute the request
-//        Call<ResponseBody> call = service.Signup(map, body);
-    }
 
     @NonNull
     private RequestBody createPartFromString(String descriptionString) {

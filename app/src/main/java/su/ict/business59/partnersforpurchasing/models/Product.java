@@ -143,6 +143,7 @@ public class Product extends Shop implements Parcelable {
         this.promotion_name = promotion_name;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -156,7 +157,6 @@ public class Product extends Shop implements Parcelable {
         dest.writeDouble(this.productPrice);
         dest.writeString(this.created);
         dest.writeString(this.categoryId);
-        dest.writeString(this.shopId);
         dest.writeString(this.catName);
         dest.writeTypedList(this.imgList);
         dest.writeString(this.promotion_id);
@@ -171,12 +171,17 @@ public class Product extends Shop implements Parcelable {
         dest.writeString(this.shopPromotion);
         dest.writeString(this.adminId);
         dest.writeInt(this.shopStatus);
+        dest.writeString(this.class_name);
+        dest.writeString(this.room_no);
+        dest.writeString(this.soi_name);
+        dest.writeString(this.soi_zone);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
         dest.writeString(this.password);
         dest.writeString(this.email);
         dest.writeString(this.image_url);
         dest.writeString(this.role);
+        dest.writeString(this.sex);
         dest.writeString(this.message);
         dest.writeByte(this.status ? (byte) 1 : (byte) 0);
     }
@@ -188,7 +193,6 @@ public class Product extends Shop implements Parcelable {
         this.productPrice = in.readDouble();
         this.created = in.readString();
         this.categoryId = in.readString();
-        this.shopId = in.readString();
         this.catName = in.readString();
         this.imgList = in.createTypedArrayList(ProductImg.CREATOR);
         this.promotion_id = in.readString();
@@ -203,12 +207,17 @@ public class Product extends Shop implements Parcelable {
         this.shopPromotion = in.readString();
         this.adminId = in.readString();
         this.shopStatus = in.readInt();
+        this.class_name = in.readString();
+        this.room_no = in.readString();
+        this.soi_name = in.readString();
+        this.soi_zone = in.readString();
         this.user_id = in.readString();
         this.username = in.readString();
         this.password = in.readString();
         this.email = in.readString();
         this.image_url = in.readString();
         this.role = in.readString();
+        this.sex = in.readString();
         this.message = in.readString();
         this.status = in.readByte() != 0;
     }

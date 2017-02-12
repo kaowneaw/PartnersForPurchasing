@@ -119,16 +119,10 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/product_default" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/category"
+                    android:text="@string/type"
                     android:textStyle="bold" />
 
             </TableRow>
@@ -202,9 +196,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corner2"
                 android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
                 android:paddingBottom="6dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

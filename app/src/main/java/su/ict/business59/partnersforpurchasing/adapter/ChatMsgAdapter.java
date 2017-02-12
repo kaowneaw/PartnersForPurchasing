@@ -58,11 +58,13 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
             holder.warp_self.setVisibility(View.VISIBLE);
             holder.warp_other.setVisibility(View.GONE);
             holder.tv_msg_self.setText(msg.getText());
+            holder.date_self.setText(msg.getDate());
         } else {
             holder.warp_self.setVisibility(View.GONE);
             holder.warp_other.setVisibility(View.VISIBLE);
             holder.tv_msg_other.setText(msg.getText());
             Picasso.with(mContext).load(host + msg.getImgProfile()).fit().centerCrop().into(holder.img_profile_other);
+            holder.date_other.setText(msg.getDate());
         }
     }
 
@@ -74,6 +76,8 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_msg_self;
         private TextView tv_msg_other;
+        private TextView date_other;
+        private TextView date_self;
         private RelativeLayout warp_self;
         private RelativeLayout warp_other;
         private ImageView img_profile_other;
@@ -82,6 +86,8 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
             super(itemView);
             tv_msg_self = (TextView) itemView.findViewById(R.id.tv_msg_self);
             tv_msg_other = (TextView) itemView.findViewById(R.id.tv_msg_other);
+            date_other = (TextView) itemView.findViewById(R.id.date_other);
+            date_self = (TextView) itemView.findViewById(R.id.date_self);
             warp_self = (RelativeLayout) itemView.findViewById(R.id.warp_self);
             warp_other = (RelativeLayout) itemView.findViewById(R.id.warp_other);
             img_profile_other = (ImageView) itemView.findViewById(R.id.img_profile_other);

@@ -140,7 +140,7 @@ public class ProductPostDetailActivity extends AppCompatActivity implements Base
 
     private void favoriteProduct() {
         UserPreference pref = new UserPreference(this);
-        String userId = "1";
+        String userId = pref.getUserObject().getUser_id();
         ProductService service = ServiceGenerator.createService(ProductService.class);
         Call<BaseResponse> call = service.favoriteProduct(String.valueOf(this.productObj.getProductId()), userId);
         call.enqueue(new Callback<BaseResponse>() {

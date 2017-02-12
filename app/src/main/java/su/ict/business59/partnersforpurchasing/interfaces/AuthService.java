@@ -31,6 +31,6 @@ public interface AuthService {
     Call<ResponseBody> Signup(@PartMap() Map<String, RequestBody> datastr, @Part MultipartBody.Part file);
 
     @Multipart
-    @POST("signup/facebook")
-    Call<ResponseBody> Signup(@PartMap() Map<String, RequestBody> datastr);
+    @POST("login/facebook")
+    Call<Shop> loginFacebook(@PartMap() Map<String, RequestBody> datastr);
 }

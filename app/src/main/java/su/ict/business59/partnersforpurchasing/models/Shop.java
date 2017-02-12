@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by kaowneaw on 12/11/2016.
  */
 
-public class Shop extends User{
+public class Shop extends User {
     @SerializedName("shop_id")
     @Expose
     String shopId;
@@ -38,6 +38,18 @@ public class Shop extends User{
     @SerializedName("shop_status")
     @Expose
     int shopStatus;
+    @SerializedName("class_name")
+    @Expose
+    String class_name;
+    @SerializedName("room_no")
+    @Expose
+    String room_no;
+    @SerializedName("soi_name")
+    @Expose
+    String soi_name;
+    @SerializedName("soi_zone")
+    @Expose
+    String soi_zone;
 
     public String getShopId() {
         return shopId;
@@ -120,6 +132,6 @@ public class Shop extends User{
     }
 
     public String getAddressShopString() {
-        return "ชั้นที่ " + shopClass + " ซอยที่ " + shopSoi + " ห้องที่ " + shopRoom;
+        return "ชั้นที่:  " + this.class_name + " ซอยที่:  Zone " + this.soi_zone + " " + this.soi_name + " ห้องที่:  " + this.room_no;
     }
 }

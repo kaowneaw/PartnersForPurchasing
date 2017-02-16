@@ -48,6 +48,12 @@ public class Post extends User implements Parcelable {
     @SerializedName("shop_room")
     @Expose
     String shopRoom;
+    @SerializedName("promotion_id")
+    @Expose
+    String promotionId;
+    @SerializedName("promotion_name")
+    @Expose
+    String promotionName;
     @SerializedName("memberJoin")
     @Expose
     List<MemberJoin> memberJoin;
@@ -149,10 +155,26 @@ public class Post extends User implements Parcelable {
         this.shopRoom = shopRoom;
     }
 
+    public String getPromotionId() {
+        return promotionId;
+    }
+
+    public void setPromotionId(String promotionId) {
+        this.promotionId = promotionId;
+    }
+
+    public String getPromotionName() {
+        return promotionName;
+    }
+
+    public void setPromotionName(String promotionName) {
+        this.promotionName = promotionName;
+    }
 
     public String getAddressPostShop() {
         return "ชั้นที่:  " + this.shopClass + " ซอยที่:  " + this.shopSoi + " ห้องที่:  " + this.shopRoom;
     }
+
 
     @Override
     public int describeContents() {
@@ -172,6 +194,8 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.shopClass);
         dest.writeString(this.shopSoi);
         dest.writeString(this.shopRoom);
+        dest.writeString(this.promotionId);
+        dest.writeString(this.promotionName);
         dest.writeTypedList(this.memberJoin);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
@@ -199,6 +223,8 @@ public class Post extends User implements Parcelable {
         this.shopClass = in.readString();
         this.shopSoi = in.readString();
         this.shopRoom = in.readString();
+        this.promotionId = in.readString();
+        this.promotionName = in.readString();
         this.memberJoin = in.createTypedArrayList(MemberJoin.CREATOR);
         this.user_id = in.readString();
         this.username = in.readString();

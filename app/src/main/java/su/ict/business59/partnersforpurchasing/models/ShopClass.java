@@ -12,6 +12,11 @@ public class ShopClass {
     @Expose
     String class_name;
 
+    public ShopClass(String class_id, String class_name) {
+        this.class_id = class_id;
+        this.class_name = class_name;
+    }
+
     public String getClass_id() {
         return class_id;
     }

@@ -47,12 +47,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
-        navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
-
         if (userInfo.getRole().equals("U")) {
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));// init set feed menu
+            navigationView.setCheckedItem(R.id.nav_feed);// init set selected check feed menu
             hideMenuNavLeftForNormalUser(navigationView);
         } else {
+            onNavigationItemSelected(navigationView.getMenu().getItem(1));// init set product menu
+            navigationView.setCheckedItem(R.id.nav_product);// init set selected check feed menu
             hideMenuNavLeftForShopUser(navigationView);
         }
 

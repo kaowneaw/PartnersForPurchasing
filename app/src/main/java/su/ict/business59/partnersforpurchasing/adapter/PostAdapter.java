@@ -77,6 +77,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
+        if (mPost.getPromotionId() == null || mPost.getPromotionId().equals("")) {
+            holder.promotion.setVisibility(View.GONE);
+        } else {
+            holder.promotion.setVisibility(View.VISIBLE);
+            holder.promotion.setText(mPost.getPromotionName());
+        }
         if (mPost.getUser_id().equals(this.CurrentUserId)) {
             holder.join_btn.setVisibility(View.GONE);
             holder.close_post_btn.setVisibility(View.VISIBLE);
@@ -105,6 +111,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView user_text;
         private Button join_btn;
         private Button close_post_btn;
+        private TextView promotion;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -123,6 +130,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             join_btn.setOnClickListener(this);
             close_post_btn = (Button) itemView.findViewById(R.id.close_post_btn);
             date = (TextView) itemView.findViewById(R.id.date);
+            promotion = (TextView) itemView.findViewById(R.id.promotion);
         }
 
 

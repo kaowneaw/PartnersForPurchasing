@@ -88,8 +88,6 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     Button category_btn;
     @Bind(R.id.category_name)
     TextView category_name;
-    //    @Bind(R.id.shopDescShow)
-//    TextView shopDescShow;
     @Bind(R.id.spin_class)
     Spinner spin_class;
     @Bind(R.id.spin_soi)
@@ -217,7 +215,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
                     ListData data = response.body();
+                    ShopClass defaultObj = new ShopClass("-1", "กรุณาเลือกชั้น");
                     listClass = data.getItemsShopClass();
+                    listClass.add(0, defaultObj);
                     populateClassSpinner(getApplicationContext(), listClass, spin_class);
                 } else {
                     Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();

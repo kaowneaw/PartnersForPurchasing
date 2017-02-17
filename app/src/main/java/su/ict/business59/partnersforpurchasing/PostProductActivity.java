@@ -164,7 +164,6 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                     shop_name.setText(strName);
                     Shop shopSelected = shops.get(which);
                     shop_name.setTag(shopSelected.getShopId() + "");
-//                    shopDescShow.setText("ที่อยู่ร้านค้า \n" + "ชั้นที่ " + shopSelected.getShopClass() + " ซอยที่ " + shopSelected.getShopSoi() + " ห้องที่ " + shopSelected.getShopRoom());
                 }
             });
             builderSingle.show();
@@ -306,16 +305,25 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             RequestBody shop_class, shop_soi, shop_room;
             if (spin_class.getSelectedItemPosition() != -1) {
                 shop_class = createPartFromString(listClass.get(spin_class.getSelectedItemPosition()).getClass_name());
+                if (listClass.get(spin_class.getSelectedItemPosition()).getClass_id().equals("-1")) {
+                    shop_class = createPartFromString("");
+                }
             } else {
                 shop_class = createPartFromString("");
             }
             if (spin_soi.getSelectedItemPosition() != -1) {
                 shop_soi = createPartFromString(listSoi.get(spin_soi.getSelectedItemPosition()).toString());
+                if (listSoi.get(spin_soi.getSelectedItemPosition()).getSoi_id().equals("-1")) {
+                    shop_soi = createPartFromString("");
+                }
             } else {
                 shop_soi = createPartFromString("");
             }
             if (spin_room.getSelectedItemPosition() != -1) {
                 shop_room = createPartFromString(listRoom.get(spin_room.getSelectedItemPosition()).getRoom_no());
+                if (listRoom.get(spin_room.getSelectedItemPosition()).getRoom_id().equals("-1")) {
+                    shop_room = createPartFromString("");
+                }
             } else {
                 shop_room = createPartFromString("");
             }
@@ -405,7 +413,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 public void onResponse(Call<ListData> call, Response<ListData> response) {
                     if (response.isSuccessful()) {
                         ListData data = response.body();
+                        ShopSoi defaultObj = new ShopSoi("-1", "กรุณาเลือกซอย", "", "");
                         listSoi = data.getItemsShopSoi();
+                        listSoi.add(0, defaultObj);
                         populateSoiSpinner(getApplicationContext(), listSoi, spin_soi);
                     } else {
                         Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
@@ -425,7 +435,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                     public void onResponse(Call<ListData> call, Response<ListData> response) {
                         if (response.isSuccessful()) {
                             ListData data = response.body();
+                            ShopRoom defaultObj = new ShopRoom("-1", "กรุณาเลือกห้อง", "");
                             listRoom = data.getItemsShopRoom();
+                            listRoom.add(0, defaultObj);
                             populateRoomSpinner(getApplicationContext(), listRoom, spin_room);
                         } else {
                             Toast.makeText(getApplication(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();

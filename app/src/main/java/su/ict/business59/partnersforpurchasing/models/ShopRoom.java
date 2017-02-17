@@ -14,6 +14,12 @@ public class ShopRoom {
     @Expose
     String soi_id;
 
+    public ShopRoom(String room_id, String room_no, String soi_id) {
+        this.room_id = room_id;
+        this.room_no = room_no;
+        this.soi_id = soi_id;
+    }
+
     public String getRoom_id() {
         return room_id;
     }

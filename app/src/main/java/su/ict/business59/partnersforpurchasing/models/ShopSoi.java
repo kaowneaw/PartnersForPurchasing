@@ -16,6 +16,13 @@ public class ShopSoi {
     @Expose
     String class_id;
 
+    public ShopSoi(String soi_id, String soi_name, String soi_zone, String class_id) {
+        this.soi_id = soi_id;
+        this.soi_name = soi_name;
+        this.soi_zone = soi_zone;
+        this.class_id = class_id;
+    }
+
     public String getSoi_id() {
         return soi_id;
     }
@@ -51,6 +58,11 @@ public class ShopSoi {
 
     @Override
     public String toString() {
-        return "Zone " + this.soi_zone +" "+ this.soi_name;
+        if (this.soi_id.equals("-1")) {
+            return this.soi_name;
+        } else {
+            return "Zone " + this.soi_zone + " " + this.soi_name;
+        }
+
     }
 }

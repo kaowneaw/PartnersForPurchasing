@@ -172,7 +172,7 @@ public class Post extends User implements Parcelable {
     }
 
     public String getAddressPostShop() {
-        return "ชั้นที่:  " + this.shopClass + " ซอยที่:  " + this.shopSoi + " ห้องที่:  " + this.shopRoom;
+        return "ชั้นที่:  " + this.shopClass + "  ซอยที่:  " + this.shopSoi + "  ห้องที่:  " + this.shopRoom;
     }
 
 

@@ -36,6 +36,9 @@ public interface PostService {
     @GET("post")
     Call<ListData> getPostListByCategory(@Query("cat_id") String catId);
 
+    @GET("post/status")
+    Call<BaseResponse> postStatus(@Query("post_id") String postId, @Query("post_status") String postStatus);
+
     @FormUrlEncoded
     @POST("joinpost")
     Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId);

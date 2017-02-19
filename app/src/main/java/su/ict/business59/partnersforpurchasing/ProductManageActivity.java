@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ import su.ict.business59.partnersforpurchasing.utills.FileUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-public class ProductManageActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProductManageActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     @Bind(R.id.addMoreImg)
     TableRow addMoreImg;
@@ -72,6 +73,8 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
     TextView category_name;
     @Bind(R.id.spinner_promotion)
     Spinner spinner_promotion;
+    @Bind(R.id.edtPromotionOther)
+    EditText edtPromotionOther;
     String catId = "";
     private final int PICK_IMAGE = 1;
     private final int PICK_CATEGORY = 2;
@@ -79,8 +82,8 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
     private SelectImageAdapter adapter;
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private ProgressDialog progress;
-    private Shop myShopInfo;
-    List<Promotion> promotions;
+    private Shop currentUser;
+    private List<Promotion> promotions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,42 +93,17 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         setTitle(getResources().getString(R.string.new_product));
         addMoreImg.setOnClickListener(this);
         category_btn.setOnClickListener(this);
+        spinner_promotion.setOnItemSelectedListener(this);
         init();
     }
 
     private void init() {
+        UserPreference pref = new UserPreference(this);
+        currentUser = pref.getUserObject();
         imgList = new ArrayList<>();
         adapter = new SelectImageAdapter(this, imgList);
         containerImg.setAdapter(adapter);
         containerImg.setLayoutManager(new LinearLayoutManager(this));
-        UserPreference pref = new UserPreference(this);
-        UserService service = ServiceGenerator.createService(UserService.class);
-        Call<Shop> call = service.me("1");
-        call.enqueue(new Callback<Shop>() {
-            @Override
-            public void onResponse(Call<Shop> call, Response<Shop> response) {
-                if (response.isSuccessful()) {
-                    Shop myShop = response.body();
-                    if (myShop.getRole().equals("S")) {
-                        myShopInfo = myShop;
-                    } else {
-                        myShopInfo = new Shop();
-                    }
-                } else {
-                    try {
-                        Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Shop> call, Throwable t) {
-
-            }
-        });
-
         PromotionService servicePromotion = ServiceGenerator.createService(PromotionService.class);
         Call<ListData> callPromotion = servicePromotion.getPromotion();
         callPromotion.enqueue(new Callback<ListData>() {
@@ -138,8 +116,6 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
                     promotion.setPromotion_name("ไม่มีโปรโมชั่น");
                     promotions.add(0, promotion);
                     populateSpinner(getApplication(), promotions, spinner_promotion);
-                } else {
-
                 }
             }
 
@@ -206,9 +182,9 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         RequestBody productDesc = createPartFromString(edt_product_desc.getText().toString());
         RequestBody productPrice = createPartFromString(edt_product_price.getText().toString());
         RequestBody catId = createPartFromString(this.catId);
-        RequestBody shopId = createPartFromString(this.myShopInfo.getShopId());
+        RequestBody shopId = createPartFromString(this.currentUser.getShopId());
         RequestBody promotionId = createPartFromString(promotions.get(spinner_promotion.getSelectedItemPosition()).getPromotion_id());
-
+        RequestBody promotionDesc = createPartFromString(promotionDesc(edtPromotionOther.getText().toString()));
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("product_name", productName);
         map.put("product_desc", productDesc);
@@ -216,6 +192,7 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
         map.put("category_id", catId);
         map.put("shop_id", shopId);
         map.put("promotion_id", promotionId);
+        map.put("promotion_desc", promotionDesc);
         final Activity mActivity = this;
         ProductService service = ServiceGenerator.createService(ProductService.class);
         Call<ResponseBody> call = service.addProduct(map, file1, file2, file3);
@@ -294,4 +271,25 @@ public class ProductManageActivity extends AppCompatActivity implements View.OnC
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (promotions.get(i).getPromotion_id().equals("20")) {
+            //id other promotion
+            edtPromotionOther.setVisibility(View.VISIBLE);
+        } else {
+            edtPromotionOther.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    private String promotionDesc(String str) {
+        if (edtPromotionOther.getVisibility() == View.VISIBLE) {
+            return str;
+        }
+        return "";
+    }
 }

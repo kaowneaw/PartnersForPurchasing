@@ -131,6 +131,38 @@ public class Shop extends User {
         this.shopStatus = shopStatus;
     }
 
+    public String getClass_name() {
+        return class_name;
+    }
+
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
+    }
+
+    public String getRoom_no() {
+        return room_no;
+    }
+
+    public void setRoom_no(String room_no) {
+        this.room_no = room_no;
+    }
+
+    public String getSoi_name() {
+        return soi_name;
+    }
+
+    public void setSoi_name(String soi_name) {
+        this.soi_name = soi_name;
+    }
+
+    public String getSoi_zone() {
+        return soi_zone;
+    }
+
+    public void setSoi_zone(String soi_zone) {
+        this.soi_zone = soi_zone;
+    }
+
     public String getAddressShopString() {
         return "ชั้นที่:  " + this.class_name + " ซอยที่:  Zone " + this.soi_zone + " " + this.soi_name + " ห้องที่:  " + this.room_no;
     }

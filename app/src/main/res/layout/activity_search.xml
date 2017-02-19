@@ -5,28 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="su.ict.business59.partnersforpurchasing.SearchActivity">
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin">
 
         <EditText
             android:id="@+id/textsearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="70"
-            android:hint="พิมพ์คำค้นหา" />
+            android:layout_weight="80"
+            android:hint="ค้นหาหัวข้อโพส" />
 
         <Button
             android:id="@+id/btn_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="30"
+            android:layout_weight="20"
             android:text="ค้นหา" />
     </TableRow>
 

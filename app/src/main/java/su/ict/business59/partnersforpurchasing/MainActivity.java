@@ -176,13 +176,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Shop user = response.body();
                     if (user.isStatus()) {
                         pref.setUserObject(user);
-                        UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
-                            @Override
-                            public void updateCallback(BaseResponse response) {
-                                Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        update.update();
+//                        UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
+//                            @Override
+//                            public void updateCallback(BaseResponse response) {
+//                                Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                        update.update();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     } else {
@@ -224,13 +224,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Shop user = response.body();
                 if (user.isStatus()) {
                     pref.setUserObject(user);
-                    UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
-                        @Override
-                        public void updateCallback(BaseResponse response) {
-                            Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    update.update();
+//                    UpdateStatusUser update = new UpdateStatusUser(user.getUser_id(), SHOPSHARE.ONLINE, new UpdateStatusUser.UpdateResponse() {
+//                        @Override
+//                        public void updateCallback(BaseResponse response) {
+//                            Toast.makeText(getApplicationContext(), "ONLINE NOW", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    update.update();
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     finish();
                 } else {

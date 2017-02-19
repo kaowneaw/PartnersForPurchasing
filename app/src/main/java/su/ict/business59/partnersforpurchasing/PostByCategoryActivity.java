@@ -116,4 +116,9 @@ public class PostByCategoryActivity extends AppCompatActivity implements PostAda
             }
         });
     }
+
+    @Override
+    public void onClosePost(int index) {
+
+    }
 }

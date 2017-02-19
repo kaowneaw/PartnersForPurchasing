@@ -41,7 +41,9 @@ import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
+import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,11 +55,14 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     private ProductAdapter adapter;
     @Bind(R.id.productRc)
     RecyclerView productRc;
+    private Shop currentUser;
 
     // this view use only shop
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserPreference pref = new UserPreference(getContext());
+        currentUser = pref.getUserObject();
     }
 
     @Nullable
@@ -74,8 +79,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
 
     private void init() {
         ProductService service = ServiceGenerator.createService(ProductService.class);
-        String shopId = "1";
-        Call<ListData> call = service.getProductList(shopId);
+        Call<ListData> call = service.getProductList(currentUser.getShopId());
         call.enqueue(new Callback<ListData>() {
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
@@ -104,7 +108,12 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 Log.v("onFailure", t.getMessage());
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
     }
 
     public void populateSpinner(Context context, List<Category> categorys, Spinner spinner) {

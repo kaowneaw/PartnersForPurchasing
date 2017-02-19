@@ -11,7 +11,7 @@
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="180dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -91,6 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:text="@string/join" />
+
                     </TableRow>
 
                     <TextView
@@ -98,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="1"
+                        android:text="0"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -106,6 +107,26 @@
                 </LinearLayout>
 
             </TableRow>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/promotion"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/promotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

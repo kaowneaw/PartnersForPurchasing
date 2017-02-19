@@ -61,7 +61,12 @@ public class ProductPostAdapter extends RecyclerView.Adapter<ProductPostAdapter.
         Product mProduct = productList.get(position);
         holder.title_text.setText(mProduct.getProductName());
         holder.category_text.setText(mProduct.getCatName());
-        holder.promotion.setText(mProduct.getPromotion_name());
+        if (checkNoPromotion(mProduct.getPromotion_name())) {
+            holder.promotion.setVisibility(View.GONE);
+        } else {
+            holder.promotion.setVisibility(View.VISIBLE);
+            holder.promotion.setText(mProduct.getPromotion_name());
+        }
         holder.shop_text.setText(mProduct.getShopName() + '\n' + mProduct.getAddressShopString());
         if (mProduct.getImgList().size() > 0) {
             String host = mContext.getResources().getString(R.string.host);
@@ -69,6 +74,13 @@ public class ProductPostAdapter extends RecyclerView.Adapter<ProductPostAdapter.
         } else {
             Picasso.with(mContext).load(R.mipmap.product_default).fit().centerInside().into(holder.img_product);
         }
+    }
+
+    boolean checkNoPromotion(String val) {
+        if (val == null) {
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,13 +1,11 @@
 package su.ict.business59.partnersforpurchasing;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,15 +18,8 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import su.ict.business59.partnersforpurchasing.interfaces.ProductService;
-import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.ProductImg;
-import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
-import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class ProductDetailActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
     Product productObj;
@@ -42,7 +33,10 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
     TextView product_price;
     @Bind(R.id.category_name)
     TextView category_name;
-
+    @Bind(R.id.promotion)
+    TextView promotion;
+    @Bind(R.id.tvPromotionDesc)
+    TextView tvPromotionDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +55,15 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         product_desc.setText(this.productObj.getProductDesc());
         category_name.setText(this.productObj.getCatName());
         product_price.setText(String.valueOf(this.productObj.getProductPrice()) + " บาท");
+        promotion.setText(checkNoPromotion(this.productObj.getPromotion_name()));
+        if (this.productObj.getPromotion_id() != null) {
+            if (this.productObj.getPromotion_id().equals("20")) { // id promotion other
+                tvPromotionDesc.setVisibility(View.VISIBLE);
+                tvPromotionDesc.setText(Html.fromHtml("<b>รายละเอียดโปรโมชั่น : </b>" + this.productObj.getPromotion_desc()));
+            } else {
+                tvPromotionDesc.setVisibility(View.GONE);
+            }
+        }
         HashMap<Integer, String> url_maps = new HashMap<>();
         String host = getResources().getString(R.string.host);
         int index = 0;
@@ -89,6 +92,13 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setDuration(6000);
         mDemoSlider.addOnPageChangeListener(this);
+    }
+
+    String checkNoPromotion(String val) {
+        if (val == null) {
+            return "ไม่มีโปรโมชั่น";
+        }
+        return val;
     }
 
     @Override

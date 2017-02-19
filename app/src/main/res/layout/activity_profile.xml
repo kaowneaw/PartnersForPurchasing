@@ -67,21 +67,6 @@
                         android:textSize="16sp" />
                 </TableRow>
 
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right">
-
-                    <Button
-                        android:id="@+id/shop_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Shop Info" />
-
-                </TableRow>
-
             </LinearLayout>
 
         </TableRow>

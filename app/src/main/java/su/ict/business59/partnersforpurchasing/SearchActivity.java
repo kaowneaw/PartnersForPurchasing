@@ -127,4 +127,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+    @Override
+    public void onClosePost(int index) {
+
+    }
 }

@@ -134,8 +134,10 @@ public class ProductPostFragment extends Fragment implements AdapterView.OnItemS
             productListFilter.clear();
             for (int i = 0; i < productList.size(); i++) {
                 Product product = productList.get(i);
-                if (product.getPromotion_id().equals(listPromotion.get(index).getPromotion_id())) {
-                    productListFilter.add(product);
+                if (product.getPromotion_id() != null) {
+                    if (product.getPromotion_id().equals(listPromotion.get(index).getPromotion_id())) {
+                        productListFilter.add(product);
+                    }
                 }
             }
         }

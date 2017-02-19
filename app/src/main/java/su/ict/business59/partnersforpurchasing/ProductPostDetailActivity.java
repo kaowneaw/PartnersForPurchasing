@@ -3,9 +3,11 @@ package su.ict.business59.partnersforpurchasing;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +44,15 @@ public class ProductPostDetailActivity extends AppCompatActivity implements Base
     @Bind(R.id.category_name)
     TextView category_name;
     @Bind(R.id.btn_share)
-    Button btn_share;
+    TableRow btn_share;
     @Bind(R.id.btn_fav)
-    Button btn_fav;
+    TableRow btn_fav;
     @Bind(R.id.shop_info)
     TextView shop_info;
+    @Bind(R.id.promotion)
+    TextView promotion;
+    @Bind(R.id.tvPromotionDesc)
+    TextView tvPromotionDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,15 @@ public class ProductPostDetailActivity extends AppCompatActivity implements Base
         category_name.setText(this.productObj.getCatName());
         product_price.setText(String.valueOf(this.productObj.getProductPrice()) + " บาท");
         shop_info.setText(this.productObj.getShopName() + '\n' + this.productObj.getAddressShopString());
+        promotion.setText(checkNoPromotion(this.productObj.getPromotion_name()));
+        if (this.productObj.getPromotion_id() != null) {
+            if (this.productObj.getPromotion_id().equals("20")) { // id promotion other
+                tvPromotionDesc.setVisibility(View.VISIBLE);
+                tvPromotionDesc.setText(Html.fromHtml("<b>รายละเอียดโปรโมชั่น : </b>" + this.productObj.getPromotion_desc()));
+            } else {
+                tvPromotionDesc.setVisibility(View.GONE);
+            }
+        }
         HashMap<Integer, String> url_maps = new HashMap<>();
         String host = getResources().getString(R.string.host);
         int index = 0;
@@ -97,6 +112,15 @@ public class ProductPostDetailActivity extends AppCompatActivity implements Base
         mDemoSlider.setDuration(6000);
         mDemoSlider.addOnPageChangeListener(this);
     }
+
+
+    String checkNoPromotion(String val) {
+        if (val == null) {
+            return "ไม่มีโปรโมชั่น";
+        }
+        return val;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

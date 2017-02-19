@@ -54,6 +54,9 @@ public class Post extends User implements Parcelable {
     @SerializedName("promotion_name")
     @Expose
     String promotionName;
+    @SerializedName("promotion_desc")
+    @Expose
+    String promotionDesc;
     @SerializedName("memberJoin")
     @Expose
     List<MemberJoin> memberJoin;
@@ -175,6 +178,14 @@ public class Post extends User implements Parcelable {
         return "ชั้นที่:  " + this.shopClass + "  ซอยที่:  " + this.shopSoi + "  ห้องที่:  " + this.shopRoom;
     }
 
+    public String getPromotionDesc() {
+        return promotionDesc;
+    }
+
+    public void setPromotionDesc(String promotionDesc) {
+        this.promotionDesc = promotionDesc;
+    }
+
 
     @Override
     public int describeContents() {
@@ -196,6 +207,7 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.shopRoom);
         dest.writeString(this.promotionId);
         dest.writeString(this.promotionName);
+        dest.writeString(this.promotionDesc);
         dest.writeTypedList(this.memberJoin);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
@@ -225,6 +237,7 @@ public class Post extends User implements Parcelable {
         this.shopRoom = in.readString();
         this.promotionId = in.readString();
         this.promotionName = in.readString();
+        this.promotionDesc = in.readString();
         this.memberJoin = in.createTypedArrayList(MemberJoin.CREATOR);
         this.user_id = in.readString();
         this.username = in.readString();

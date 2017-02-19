@@ -43,8 +43,6 @@ public class ProfileActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @Bind(R.id.viewpager)
     ViewPager viewPager;
-    @Bind(R.id.shop_info)
-    Button shop_info;
     private Shop CurrentUser;
 
     @Override
@@ -59,13 +57,17 @@ public class ProfileActivity extends AppCompatActivity {
     private void init() {
         UserPreference pref = new UserPreference(this);
         CurrentUser = pref.getUserObject();
-        viewPager.setAdapter(new TabProfileAdapter(getSupportFragmentManager()));
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+        if (CurrentUser.getRole().equals("S")) {
+
+        } else {
+            viewPager.setAdapter(new TabProfileAdapter(getSupportFragmentManager()));
+            tabLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    tabLayout.setupWithViewPager(viewPager);
+                }
+            });
+        }
         profile_username.setText(CurrentUser.getUsername());
         profile_email.setText(CurrentUser.getEmail());
         Picasso.with(getApplicationContext()).load(SHOPSHARE.getPathImg(CurrentUser.getImage_url())).fit().centerCrop().into(profile_img);

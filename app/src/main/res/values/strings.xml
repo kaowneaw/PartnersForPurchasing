@@ -59,7 +59,12 @@
     <string name="close_post">ปิดโพส</string>
     <string name="txt_notfound">ไม่พบข้อมูล</string>
     <string name="shop_info">ข้อมูลร้านค้า</string>
+    <string name="shop_address">ที่อยู่ร้านค้า</string>
     <string name="send">ส่ง</string>
     <string name="enter_chat_room">เข้าสู่ห้องสนทนา</string>
     <string name="facebook_app_id">262724854151263</string>
+    <string name="option_more">ตัวเลือกเพิ่มเติม</string>
+    <string name="require_field">*จำเป็นต้องกรอก</string>
+    <string name="promotion_detail">รายละเอียดโปรโมชั่น</string>
+    <string name="male_female">ชายและหญิง</string>
 </resources>

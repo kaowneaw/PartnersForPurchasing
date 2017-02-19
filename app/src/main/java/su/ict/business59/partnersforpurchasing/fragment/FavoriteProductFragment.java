@@ -51,8 +51,7 @@ public class FavoriteProductFragment extends Fragment {
 
     private void init() {
         UserPreference pref = new UserPreference(getActivity());
-//        String userId = pref.getUserID();
-        String userId = "1";
+        String userId = pref.getUserObject().getUser_id();
         ProductService service = ServiceGenerator.createService(ProductService.class);
         Call<ListData> call = service.getFavoriteProduct(userId);
         call.enqueue(new Callback<ListData>() {

@@ -88,4 +88,9 @@ public class MyPostFragment extends Fragment implements PostAdapter.OnItemClickL
     public void onJoinButtonClick(int index) {
 
     }
+
+    @Override
+    public void onClosePost(int index) {
+
+    }
 }

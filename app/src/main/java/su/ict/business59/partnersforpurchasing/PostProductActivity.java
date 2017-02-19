@@ -76,24 +76,26 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     EditText topic_post;
     @Bind(R.id.desc_post)
     EditText desc_post;
-    @Bind(R.id.is_share_product)
-    LinearLayout is_share_product;
-    @Bind(R.id.is_create_product)
-    LinearLayout is_create_product;
     @Bind(R.id.img_product)
     ImageView img_product;
     @Bind(R.id.shop_name)
     EditText shop_name;
-    @Bind(R.id.category_btn)
-    Button category_btn;
     @Bind(R.id.category_name)
-    TextView category_name;
+    EditText category_name;
     @Bind(R.id.spin_class)
     Spinner spin_class;
     @Bind(R.id.spin_soi)
     Spinner spin_soi;
     @Bind(R.id.spin_room)
     Spinner spin_room;
+    @Bind(R.id.btnOptionPost)
+    Button btnOptionPost;
+    @Bind(R.id.optionPost)
+    LinearLayout optionPost;
+    @Bind(R.id.shop_address)
+    TextView shop_address;
+    @Bind(R.id.warpSpinAddress)
+    LinearLayout warpSpinAddress;
 
     private List<ShopSoi> listSoi;
     private List<ShopClass> listClass;
@@ -109,6 +111,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private String catId = "";
     private ShopService shopService;
     private UserPreference pref;
+    private boolean isShareProduct = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,17 +123,21 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            isShareProduct = true;
             this.productObj = bundle.getParcelable("product");
             selectedImage = Uri.EMPTY;
             initFromShareProduct();
+        } else {
+            isShareProduct = false;
         }
         init();
         img_product.setOnClickListener(this);
         shop_name.setOnClickListener(this);
-        category_btn.setOnClickListener(this);
+        category_name.setOnClickListener(this);
         spin_class.setOnItemSelectedListener(this);
         spin_soi.setOnItemSelectedListener(this);
         spin_room.setOnItemSelectedListener(this);
+        btnOptionPost.setOnClickListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
     }
 
@@ -138,6 +145,11 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         String host = getResources().getString(R.string.host);
         Picasso.with(getApplicationContext()).load(host + this.productObj.getImgList().get(0).getPimg_url()).fit().centerCrop().into(img_product);
         topic_post.setText(productObj.getProductName());
+        category_name.setText(productObj.getCatName());
+        this.catId = productObj.getCategoryId();
+        btnOptionPost.setVisibility(View.GONE);
+        optionPost.setVisibility(View.VISIBLE);
+        shop_address.setText(productObj.getAddressShopString());
     }
 
     @Override
@@ -167,14 +179,25 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 }
             });
             builderSingle.show();
-        } else if (view == category_btn) {
+        } else if (view == category_name) {
             Intent i = new Intent(this, CategoryActivity.class);
             startActivityForResult(i, PICK_CATEGORY);
+        } else if (view == btnOptionPost) {
+            if (optionPost.getVisibility() == View.VISIBLE) {
+                optionPost.setVisibility(View.GONE);
+            } else {
+                optionPost.setVisibility(View.VISIBLE);
+            }
         }
     }
 
 
     private void init() {
+        if (isShareProduct) {
+            warpSpinAddress.setVisibility(View.GONE);
+        } else {
+            warpSpinAddress.setVisibility(View.VISIBLE);
+        }
         this.shopService = ServiceGenerator.createService(ShopService.class);
         Call<ListData> dataShop = shopService.ShopList();
         dataShop.enqueue(new Callback<ListData>() {
@@ -263,7 +286,6 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         } else if (requestCode == PICK_CATEGORY && resultCode == Activity.RESULT_OK) {
             this.catId = data.getStringExtra("catId");
             String catName = data.getStringExtra("catName");
-            Toast.makeText(getApplicationContext(), this.catId, Toast.LENGTH_SHORT).show();
             category_name.setText(catName);
         }
     }
@@ -302,7 +324,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
             RequestBody post_desc = createPartFromString(desc_post.getText().toString());
             RequestBody shopName = createPartFromString(shop_name.getText().toString());
-            RequestBody shop_class, shop_soi, shop_room;
+            RequestBody shop_class, shop_soi, shop_room, promotionId, promotion_desc;
             if (spin_class.getSelectedItemPosition() != -1) {
                 shop_class = createPartFromString(listClass.get(spin_class.getSelectedItemPosition()).getClass_name());
                 if (listClass.get(spin_class.getSelectedItemPosition()).getClass_id().equals("-1")) {
@@ -327,6 +349,15 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             } else {
                 shop_room = createPartFromString("");
             }
+            promotionId = createPartFromString("0");
+            promotion_desc = createPartFromString("");
+            if (isShareProduct) {
+                shop_class = createPartFromString(productObj.getClass_name());
+                shop_soi = createPartFromString(productObj.getSoi_zone() + " " + productObj.getSoi_name());
+                shop_room = createPartFromString(productObj.getRoom_no());
+                promotionId = createPartFromString(productObj.getPromotion_id());
+                promotion_desc = createPartFromString(productObj.getPromotion_desc());
+            }
 
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("post_name", post_name);
@@ -338,6 +369,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             map.put("category_id", category_id);
             map.put("user_id", user_id);
             map.put("img_url", img_url);
+            map.put("promotion_id", promotionId);
+            map.put("promotion_desc", promotion_desc);
+
             final PostProductActivity activity = this;
             PostService service = ServiceGenerator.createService(PostService.class);
             Call<ResponseBody> call = service.postProduct(map, file);

@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -47,28 +48,33 @@ import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.Promotion;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class PostFragment extends Fragment implements PostAdapter.OnItemClickListener, View.OnClickListener {
+public class PostFragment extends Fragment implements PostAdapter.OnItemClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     //Post List Page
     private RecyclerView postRc;
     private PostAdapter adapter;
     private List<Post> listPost;
+    private List<Post> postListFilter = new ArrayList<>();
     private List<Promotion> listPromotion;
     private UserPreference pref;
     private FloatingActionButton fab;
     private ImageButton category_btn;
     private Spinner promotion_spinner;
     private ProgressDialog progress;
+    private Shop currentUser;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = new UserPreference(getActivity());
+        currentUser = pref.getUserObject();
     }
 
     @Override
@@ -103,7 +109,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
         category_btn = (ImageButton) v.findViewById(R.id.category_btn);
         category_btn.setOnClickListener(this);
         promotion_spinner = (Spinner) v.findViewById(R.id.promotion_spinner);
-
+        promotion_spinner.setOnItemSelectedListener(this);
         // Inflate the layout for this fragment
         return v;
     }
@@ -177,7 +183,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     @Override
     public void onJoinButtonClick(final int index) {
         PostService service = ServiceGenerator.createService(PostService.class);
-        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "");
+        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), listPost.get(index).getPostId() + "");
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -192,6 +198,30 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                     }
                 } else {
                     Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClosePost(final int index) {
+        PostService service = ServiceGenerator.createService(PostService.class);
+        String StatusClosePost = "0";
+        Call<BaseResponse> call = service.postStatus(listPost.get(index).getPostId(), StatusClosePost);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    listPost.remove(index);
+                    adapter.updateData(listPost);
+                    postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "Close Post", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -223,4 +253,29 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
+        if (listPromotion.get(index).getPromotion_id().equals("1")) { // 1 id is all promotion
+            postListFilter = new ArrayList<>(listPost);
+        } else {
+            postListFilter.clear();
+            for (int i = 0; i < listPost.size(); i++) {
+                Post post = listPost.get(i);
+                if (post.getPromotionId() != null) {
+                    if (post.getPromotionId().equals(listPromotion.get(index).getPromotion_id())) {
+                        postListFilter.add(post);
+                    }
+                }
+            }
+        }
+        adapter = new PostAdapter(postListFilter, getActivity(), PostFragment.this);
+        postRc.setAdapter(adapter);
+        postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

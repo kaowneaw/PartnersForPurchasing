@@ -35,24 +35,28 @@ public class Product extends Shop implements Parcelable {
     @SerializedName("img_list")
     @Expose
     List<ProductImg> imgList;
-
     @SerializedName("promotion_id")
     @Expose
     String promotion_id;
     @SerializedName("promotion_name")
     @Expose
     String promotion_name;
+    @SerializedName("product_promotion_desc")
+    @Expose
+    String promotion_desc;
 
-    public Product(int productId, String productName, String productDesc, double productPrice, String created, String categoryId, String shopId, String catName, List<ProductImg> imgList) {
+    public Product(int productId, String productName, String productDesc, double productPrice, String created, String categoryId, String catName, List<ProductImg> imgList, String promotion_id, String promotion_name, String promotion_desc) {
         this.productId = productId;
         this.productName = productName;
         this.productDesc = productDesc;
         this.productPrice = productPrice;
         this.created = created;
         this.categoryId = categoryId;
-        this.shopId = shopId;
         this.catName = catName;
         this.imgList = imgList;
+        this.promotion_id = promotion_id;
+        this.promotion_name = promotion_name;
+        this.promotion_desc = promotion_desc;
     }
 
     public int getProductId() {
@@ -103,14 +107,6 @@ public class Product extends Shop implements Parcelable {
         this.categoryId = categoryId;
     }
 
-    public String getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(String shopId) {
-        this.shopId = shopId;
-    }
-
     public String getCatName() {
         return catName;
     }
@@ -143,6 +139,13 @@ public class Product extends Shop implements Parcelable {
         this.promotion_name = promotion_name;
     }
 
+    public String getPromotion_desc() {
+        return promotion_desc;
+    }
+
+    public void setPromotion_desc(String promotion_desc) {
+        this.promotion_desc = promotion_desc;
+    }
 
     @Override
     public int describeContents() {
@@ -161,6 +164,7 @@ public class Product extends Shop implements Parcelable {
         dest.writeTypedList(this.imgList);
         dest.writeString(this.promotion_id);
         dest.writeString(this.promotion_name);
+        dest.writeString(this.promotion_desc);
         dest.writeString(this.shopId);
         dest.writeString(this.shopName);
         dest.writeString(this.shopDesc);
@@ -197,6 +201,7 @@ public class Product extends Shop implements Parcelable {
         this.imgList = in.createTypedArrayList(ProductImg.CREATOR);
         this.promotion_id = in.readString();
         this.promotion_name = in.readString();
+        this.promotion_desc = in.readString();
         this.shopId = in.readString();
         this.shopName = in.readString();
         this.shopDesc = in.readString();

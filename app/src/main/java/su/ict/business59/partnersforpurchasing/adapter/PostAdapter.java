@@ -46,6 +46,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void onItemClick(Post item);
 
         void onJoinButtonClick(int index);
+
+        void onClosePost(int index);
     }
 
     public void updateData(List<Post> list) {
@@ -71,7 +73,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(PostAdapter.ViewHolder holder, int position) {
         Post mPost = postList.get(position);
         holder.title_text.setText(mPost.getPostName());
-        holder.shop_text.setText(mPost.getShopName() + "\n" + mPost.getAddressPostShop());
+        holder.shop_text.setText(mPost.getShopName() + "\n\n" + mPost.getAddressPostShop());
         holder.category_text.setText(mPost.getCatName());
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
@@ -131,6 +133,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             close_post_btn = (Button) itemView.findViewById(R.id.close_post_btn);
             date = (TextView) itemView.findViewById(R.id.date);
             promotion = (TextView) itemView.findViewById(R.id.promotion);
+            close_post_btn.setOnClickListener(this);
         }
 
 
@@ -138,6 +141,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public void onClick(View view) {
             if (view == join_btn) {
                 listener.onJoinButtonClick(getAdapterPosition());
+            } else if (view == close_post_btn) {
+                listener.onClosePost(getAdapterPosition());
             } else {
                 listener.onItemClick(postList.get(getAdapterPosition()));
             }

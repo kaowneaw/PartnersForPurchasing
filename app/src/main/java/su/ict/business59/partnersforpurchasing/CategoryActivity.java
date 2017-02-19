@@ -39,6 +39,8 @@ public class CategoryActivity extends AppCompatActivity implements RadioGroup.On
     RadioButton radioMale;
     @Bind(R.id.radioFemale)
     RadioButton radioFemale;
+    @Bind(R.id.radioBoth)
+    RadioButton radioBoth;
     @Bind(R.id.catlvl1)
     Spinner catlvl1;
     @Bind(R.id.catlvl2)
@@ -63,7 +65,7 @@ public class CategoryActivity extends AppCompatActivity implements RadioGroup.On
         ButterKnife.bind(this);
         setTitle("ค้นหาประเภทสินค้า");
         catDefalt.setCat_id("-99999");
-        catDefalt.setCat_name("ไม่มี");
+        catDefalt.setCat_name("--");
         radioGroupSex.setOnCheckedChangeListener(this);
         ok_btn.setOnClickListener(this);
         catlvl1.setOnItemSelectedListener(this);
@@ -143,6 +145,8 @@ public class CategoryActivity extends AppCompatActivity implements RadioGroup.On
             callCategory(SHOPSHARE.MALE_ID, catlvl1); // init category_id of male
         } else if (radioFemale.isChecked()) {
             callCategory(SHOPSHARE.FEMALE_ID, catlvl1);
+        } else if (radioBoth.isChecked()) {
+            callCategory(SHOPSHARE.FEMALE_Male_ID, catlvl1);
         }
     }
 

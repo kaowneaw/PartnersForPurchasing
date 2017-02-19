@@ -37,6 +37,7 @@ import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.adapter.MemberJoinAdapter;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
+import su.ict.business59.partnersforpurchasing.models.MemberJoin;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
@@ -62,8 +63,11 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     TextView text_joined;
     @Bind(R.id.chat)
     TableRow chat;
+    @Bind(R.id.promotion)
+    TextView promotion;
     private Shop currentUser;
     private Post postObj;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +100,12 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         desc.setText(this.postObj.getPostDesc());
         text_joined.setText(String.valueOf(this.postObj.getMemberJoin().size()));
         text_joined.setOnClickListener(this);
+        if (postObj.getPromotionDesc().equals("")) {
+            promotion.setText(postObj.getPromotionName());
+        } else {
+            promotion.setText(postObj.getPromotionName() + " ( " + postObj.getPromotionDesc() + " ) ");
+        }
+        checkShowChatButton();
         HashMap<Integer, String> url_maps = new HashMap<>();
         int index = 0;
         url_maps.put(index, host + this.postObj.getPostImg());
@@ -122,6 +132,22 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         mDemoSlider.addOnPageChangeListener(this);
     }
 
+    private boolean checkShowChatButton() {
+        for (int i = 0; i < this.postObj.getMemberJoin().size(); i++) {
+            MemberJoin member = this.postObj.getMemberJoin().get(i);
+            if (member.getUser_id().equals(this.currentUser.getUser_id())) {
+                chat.setVisibility(View.VISIBLE);
+                return true;
+            }
+        }
+        if (this.postObj.getUser_id().equals(this.currentUser.getUser_id())) {
+            chat.setVisibility(View.VISIBLE);
+            return true;
+        }
+        chat.setVisibility(View.GONE);
+        return false;
+    }
+
     @Override
     protected void onStop() {
         // To prevent a memory leak on rotation, make sure to call stopAutoCycle() on the slider before activity or fragment is destroyed
@@ -144,13 +170,14 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         int id = item.getItemId();
         if (id == R.id.join) {
             PostService service = ServiceGenerator.createService(PostService.class);
-            Call<BaseResponse> call = service.joinPost("1", this.postObj.getPostId() + "");
+            Call<BaseResponse> call = service.joinPost(this.currentUser.getUser_id(), this.postObj.getPostId() + "");
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     if (response.isSuccessful()) {
                         BaseResponse res = response.body();
                         if (res.isStatus()) {
+                            chat.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();

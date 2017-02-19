@@ -67,6 +67,14 @@
                 android:layout_marginTop="10dp" />
 
             <EditText
+                android:id="@+id/edtPromotionOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="@string/promotion_detail"
+                android:visibility="gone" />
+
+            <EditText
                 android:id="@+id/edt_product_desc"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"

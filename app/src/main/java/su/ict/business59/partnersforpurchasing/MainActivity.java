@@ -35,8 +35,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CallbackManager callbackManager;
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private FacebookCallback<LoginResult> callback;
+    private ProfileTracker profileTracker;
     //facebook
     // https://www.sitepoint.com/integrating-the-facebook-api-with-android/
 
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initFacebookBtn() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         // callback on click button login
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(LoginResult loginResult) {
                 AccessToken accessToken = loginResult.getAccessToken();
                 final Profile profile = Profile.getCurrentProfile();
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.v("LoginActivityResponse", response.toString());
@@ -126,10 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String gender = object.getString("gender");
-                            String imgUrl = profile.getProfilePictureUri(300, 300).toString();
+                            String imgUrl = Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString();
                             loginFacebook(fbId, name, email, gender, imgUrl); // insert if not have data this user
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "ข้อมูล Facebook ผิดพลาด", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -149,8 +154,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onError(FacebookException e) {
             }
         };
-
-        loginButton.setReadPermissions("user_friends");
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                Log.v("profile", "PROFILE");
+            }
+        };
+        profileTracker.startTracking();
+        List<String> permissions = new ArrayList<String>();
+        permissions.add("public_profile");
+        permissions.add("email");
+        loginButton.setReadPermissions(permissions);
         loginButton.registerCallback(callbackManager, callback);
     }
 
@@ -263,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onStop() {
         super.onStop();
+        profileTracker.stopTracking();
     }
 
 

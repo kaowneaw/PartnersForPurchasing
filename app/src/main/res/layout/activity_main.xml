@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/logo" />
+                android:src="@mipmap/logooo" />
 
             <EditText
                 android:id="@+id/user"
@@ -53,7 +53,8 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                >
 
                 <Button
                     android:id="@+id/btsignin"
@@ -61,9 +62,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="50"
-                    android:background="@color/colorAccent"
+                    android:background="@color/colorPrimary"
                     android:text="@string/signin"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
 
                 <Button
                     android:id="@+id/btsignup"
@@ -72,7 +74,8 @@
                     android:layout_margin="10dp"
                     android:layout_weight="50"
                     android:background="@android:color/white"
-                    android:text="@string/signup" />
+                    android:text="@string/signup"
+                    android:textStyle="bold"/>
 
             </TableRow>
 
@@ -94,7 +97,8 @@
                     android:gravity="center"
                     android:text="OR"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -114,7 +118,8 @@
                 android:gravity="center"
                 android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
-                android:paddingTop="12dp" />
+                android:paddingTop="12dp"
+                />
 
         </LinearLayout>
 

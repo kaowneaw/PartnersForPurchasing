@@ -41,9 +41,9 @@ public class TabAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return "Post";
+                return "โพสต์";
             case 1:
-                return "Product";
+                return "สินค้า";
         }
         return null;
     }

@@ -218,18 +218,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/round_corner2"
+                android:background="@color/colorPrimary"
                 android:gravity="center_vertical"
                 android:paddingBottom="6dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="6dp">
+                android:paddingTop="6dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:text="@string/enter_chat_room" />
+                    android:textColor="@color/colorPrimary2"
+                    android:text="@string/enter_chat_room"
+                    android:textStyle="bold"/>
 
                 <ImageView
                     android:layout_width="50dp"

@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String gender = object.getString("gender");
-                            String imgUrl = Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString();
+                            String imgUrl = "https://graph.facebook.com/"+fbId+"/picture?height=300&width=300";
+//                            String imgUrl = Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString();
                             loginFacebook(fbId, name, email, gender, imgUrl); // insert if not have data this user
                         } catch (JSONException e) {
                             e.printStackTrace();

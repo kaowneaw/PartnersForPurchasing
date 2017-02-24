@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     TableRow chat;
     @Bind(R.id.promotion)
     TextView promotion;
+    @Bind(R.id.warpPromotion)
+    LinearLayout warpPromotion;
     private Shop currentUser;
     private Post postObj;
 
@@ -102,6 +105,11 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         text_joined.setOnClickListener(this);
         if (postObj.getPromotionDesc().equals("")) {
             promotion.setText(postObj.getPromotionName());
+            if (promotion.getText().toString().equals("")) {
+                warpPromotion.setVisibility(View.GONE);
+            } else {
+                warpPromotion.setVisibility(View.VISIBLE);
+            }
         } else {
             promotion.setText(postObj.getPromotionName() + " ( " + postObj.getPromotionDesc() + " ) ");
         }

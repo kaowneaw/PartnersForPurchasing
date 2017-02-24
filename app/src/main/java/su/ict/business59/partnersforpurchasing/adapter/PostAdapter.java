@@ -18,7 +18,9 @@ import java.util.Locale;
 
 import su.ict.business59.partnersforpurchasing.R;
 import su.ict.business59.partnersforpurchasing.SHOPSHARE;
+import su.ict.business59.partnersforpurchasing.models.MemberJoin;
 import su.ict.business59.partnersforpurchasing.models.Post;
+import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -32,6 +34,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
     private UserPreference pref;
     private String CurrentUserId;
+    private Shop currentUser;
 
     public PostAdapter(List<Post> postList, Context mContext, PostAdapter.OnItemClickListener listener) {
         this.postList = postList;
@@ -40,6 +43,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.host = mContext.getResources().getString(R.string.host);
         this.pref = new UserPreference(this.mContext);
         this.CurrentUserId = this.pref.getUserObject().getUser_id();
+        UserPreference uref = new UserPreference(this.mContext);
+        this.currentUser = uref.getUserObject();
     }
 
     public interface OnItemClickListener {
@@ -87,11 +92,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
         if (mPost.getUser_id().equals(this.CurrentUserId)) {
             holder.join_btn.setVisibility(View.GONE);
+            holder.showJoined.setVisibility(View.GONE);
             holder.close_post_btn.setVisibility(View.VISIBLE);
         } else {
-            holder.close_post_btn.setVisibility(View.GONE);
-            holder.join_btn.setVisibility(View.VISIBLE);
+            if (checkMemberJoined(mPost.getMemberJoin())) {
+                holder.showJoined.setVisibility(View.VISIBLE);
+                holder.close_post_btn.setVisibility(View.GONE);
+                holder.join_btn.setVisibility(View.GONE);
+            } else {
+                holder.showJoined.setVisibility(View.GONE);
+                holder.close_post_btn.setVisibility(View.GONE);
+                holder.join_btn.setVisibility(View.VISIBLE);
+            }
         }
+    }
+
+    private boolean checkMemberJoined(List<MemberJoin> listJoin) {
+        for (MemberJoin member : listJoin) {
+            if (member.getUser_id().equals(currentUser.getUser_id())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -114,6 +137,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private Button join_btn;
         private Button close_post_btn;
         private TextView promotion;
+        private TextView showJoined;
+
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -134,6 +159,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             date = (TextView) itemView.findViewById(R.id.date);
             promotion = (TextView) itemView.findViewById(R.id.promotion);
             close_post_btn.setOnClickListener(this);
+            showJoined = (TextView) itemView.findViewById(R.id.showJoined);
         }
 
 

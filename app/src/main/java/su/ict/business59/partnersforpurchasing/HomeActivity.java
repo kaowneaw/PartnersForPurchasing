@@ -129,13 +129,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStop() {
         super.onStop();
-//        UpdateStatusUser update = new UpdateStatusUser(userInfo.getUser_id(), SHOPSHARE.OFLINE, new UpdateStatusUser.UpdateResponse() {
-//            @Override
-//            public void updateCallback(BaseResponse response) {
-//                Toast.makeText(getApplicationContext(), "OFFLINE NOW", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        update.update();
     }
 
 }

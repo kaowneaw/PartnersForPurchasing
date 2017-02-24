@@ -180,6 +180,15 @@
                     android:background="@android:color/holo_red_dark"
                     android:text="@string/close_post"
                     android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/showJoined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/joined"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
             </LinearLayout>
 
 

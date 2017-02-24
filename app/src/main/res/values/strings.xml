@@ -67,4 +67,5 @@
     <string name="require_field">*จำเป็นต้องกรอก</string>
     <string name="promotion_detail">รายละเอียดโปรโมชั่น</string>
     <string name="male_female">ชายและหญิง</string>
+    <string name="joined">คุณได้เข้าร่วมโพสนี้แล้ว</string>
 </resources>

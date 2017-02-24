@@ -39,6 +39,9 @@ public interface PostService {
     @GET("post/status")
     Call<BaseResponse> postStatus(@Query("post_id") String postId, @Query("post_status") String postStatus);
 
+    @GET("post/view")
+    Call<BaseResponse> postUpdateView(@Query("post_id") String postId, @Query("view") int view);
+
     @FormUrlEncoded
     @POST("joinpost")
     Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId);

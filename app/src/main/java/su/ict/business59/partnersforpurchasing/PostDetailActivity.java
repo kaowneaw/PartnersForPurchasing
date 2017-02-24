@@ -68,6 +68,8 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     TextView promotion;
     @Bind(R.id.warpPromotion)
     LinearLayout warpPromotion;
+    @Bind(R.id.tvView)
+    TextView tvView;
     private Shop currentUser;
     private Post postObj;
 
@@ -103,6 +105,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         desc.setText(this.postObj.getPostDesc());
         text_joined.setText(String.valueOf(this.postObj.getMemberJoin().size()));
         text_joined.setOnClickListener(this);
+        tvView.setText("มีผู้เข้าชม " + this.postObj.getPostView() + " ครั้ง");
         if (postObj.getPromotionDesc().equals("")) {
             promotion.setText(postObj.getPromotionName());
             if (promotion.getText().toString().equals("")) {
@@ -154,6 +157,24 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         }
         chat.setVisibility(View.GONE);
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // increase view post
+        PostService service = ServiceGenerator.createService(PostService.class);
+        Call<BaseResponse> call = service.postUpdateView(this.postObj.getPostId(), this.postObj.getPostView() + 1);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

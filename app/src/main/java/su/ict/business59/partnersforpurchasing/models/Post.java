@@ -61,6 +61,10 @@ public class Post extends User implements Parcelable {
     @Expose
     List<MemberJoin> memberJoin;
 
+    @SerializedName("post_view")
+    @Expose
+    int postView;
+
     public String getPostId() {
         return postId;
     }
@@ -186,6 +190,14 @@ public class Post extends User implements Parcelable {
         this.promotionDesc = promotionDesc;
     }
 
+    public int getPostView() {
+        return postView;
+    }
+
+    public void setPostView(int postView) {
+        this.postView = postView;
+    }
+
 
     @Override
     public int describeContents() {
@@ -209,6 +221,7 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.promotionName);
         dest.writeString(this.promotionDesc);
         dest.writeTypedList(this.memberJoin);
+        dest.writeInt(this.postView);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
         dest.writeString(this.password);
@@ -239,6 +252,7 @@ public class Post extends User implements Parcelable {
         this.promotionName = in.readString();
         this.promotionDesc = in.readString();
         this.memberJoin = in.createTypedArrayList(MemberJoin.CREATOR);
+        this.postView = in.readInt();
         this.user_id = in.readString();
         this.username = in.readString();
         this.password = in.readString();

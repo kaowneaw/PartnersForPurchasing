@@ -90,7 +90,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="@string/join" />
+                            android:text="@string/user_join" />
 
                     </TableRow>
 
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/rounded_corner"
                     android:gravity="center_vertical"
                     android:paddingBottom="6dp"
                     android:paddingLeft="10dp"

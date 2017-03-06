@@ -103,7 +103,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onJoinButtonClick(final int index) {
         PostService service = ServiceGenerator.createService(PostService.class);
-        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "");
+        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "", 0);
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

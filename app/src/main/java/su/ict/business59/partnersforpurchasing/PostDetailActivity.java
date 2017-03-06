@@ -132,8 +132,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
 
             //add your extra information
             textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", postObj.getPostName());
+            textSliderView.getBundle().putString("extra", postObj.getPostName());
 
             mDemoSlider.addSlider(textSliderView);
         }
@@ -199,7 +198,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         int id = item.getItemId();
         if (id == R.id.join) {
             PostService service = ServiceGenerator.createService(PostService.class);
-            Call<BaseResponse> call = service.joinPost(this.currentUser.getUser_id(), this.postObj.getPostId() + "");
+            Call<BaseResponse> call = service.joinPost(this.currentUser.getUser_id(), this.postObj.getPostId() + "", 0);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

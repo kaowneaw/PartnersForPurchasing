@@ -2,14 +2,18 @@ package su.ict.business59.partnersforpurchasing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,8 +24,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -49,6 +55,7 @@ import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.Promotion;
 import su.ict.business59.partnersforpurchasing.models.Shop;
+import su.ict.business59.partnersforpurchasing.utills.AlertInputDialog;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -182,54 +189,50 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
 
     @Override
     public void onJoinButtonClick(final int index) {
-        PostService service = ServiceGenerator.createService(PostService.class);
-        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), listPost.get(index).getPostId() + "");
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()) {
-                    BaseResponse res = response.body();
-                    if (res.isStatus()) {
-                        listPost.remove(index);
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+        alertJoinInput(index);
     }
 
     @Override
     public void onClosePost(final int index) {
-        PostService service = ServiceGenerator.createService(PostService.class);
-        String StatusClosePost = "0";
-        Call<BaseResponse> call = service.postStatus(listPost.get(index).getPostId(), StatusClosePost);
-        call.enqueue(new Callback<BaseResponse>() {
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()) {
-                    listPost.remove(index);
-                    adapter.updateData(listPost);
-                    postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "Close Post", Toast.LENGTH_SHORT).show();
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        PostService service = ServiceGenerator.createService(PostService.class);
+                        String StatusClosePost = "0";
+                        Call<BaseResponse> call = service.postStatus(listPost.get(index).getPostId(), StatusClosePost);
+                        call.enqueue(new Callback<BaseResponse>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                                if (response.isSuccessful()) {
+                                    listPost.remove(index);
+                                    adapter.updateData(listPost);
+                                    postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    adapter.notifyDataSetChanged();
+                                    Toast.makeText(getContext(), "Close Post", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                            }
+                        });
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
                 }
             }
+        };
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("ต้องการปิดโพสน์ใช่หรือไม่ ?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     @Override
@@ -277,5 +280,56 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void alertJoinInput(final int index) {
+
+        final AlertInputDialog alertInput = new AlertInputDialog();
+        final AlertDialog.Builder alert = alertInput.getDialog(this);
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //OR
+                int amount = alertInput.getValueAmount();
+
+                if (amount > 0) {
+                    PostService service = ServiceGenerator.createService(PostService.class);
+                    Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(listPost.get(index).getPostId()), amount);
+                    call.enqueue(new Callback<BaseResponse>() {
+                        @Override
+                        public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                            if (response.isSuccessful()) {
+                                BaseResponse res = response.body();
+                                if (res.isStatus()) {
+                                    listPost.remove(index);
+                                    adapter.updateData(listPost);
+                                    adapter.notifyDataSetChanged();
+                                    Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "ระบุุตัวเลขที่มากกว่า 0", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // what ever you want to do with No option.
+            }
+        });
+
+        alert.show();
     }
 }

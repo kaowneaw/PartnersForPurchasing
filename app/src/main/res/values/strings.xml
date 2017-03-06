@@ -46,6 +46,7 @@
     <string name="timeend">TimeEnd</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="join">เข้าร่วม</string>
+    <string name="user_join">ผู้เข้าร่วม</string>
     <string name="limit_user_join">Limit User Join</string>
     <string name="date">วันที่</string>
     <string name="post_by">โพสต์ โดย</string>
@@ -68,4 +69,7 @@
     <string name="promotion_detail">รายละเอียดโปรโมชั่น</string>
     <string name="male_female">ชายและหญิง</string>
     <string name="joined">คุณได้เข้าร่วมโพสนี้แล้ว</string>
+    <string name="unit">หน่วยนับ</string>
+    <string name="amount_require">จำนวนที่ต้องการ</string>
+    <string name="find_user_share">ต้องการหาคนร่วมซื้ออีก</string>
 </resources>

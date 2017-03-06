@@ -57,6 +57,52 @@
                 android:layout_marginBottom="5dp"
                 android:hint="@string/topic" />
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
+                    android:gravity="right"
+                    android:text="@string/require_field"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:gravity="right"
+                    android:text="@string/require_field"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="10sp" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/amountRequire"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
+                    android:hint="@string/amount_require"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/unitName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:hint="@string/unit" />
+
+            </TableRow>
+
 
             <LinearLayout
                 android:id="@+id/is_create_product"

@@ -82,6 +82,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     EditText shop_name;
     @Bind(R.id.category_name)
     EditText category_name;
+    @Bind(R.id.amountRequire)
+    EditText amountRequire;
+    @Bind(R.id.unitName)
+    EditText unitName;
     @Bind(R.id.spin_class)
     Spinner spin_class;
     @Bind(R.id.spin_soi)
@@ -324,6 +328,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
             RequestBody post_desc = createPartFromString(desc_post.getText().toString());
             RequestBody shopName = createPartFromString(shop_name.getText().toString());
+            RequestBody amount_require = createPartFromString(amountRequire.getText().toString());
+            RequestBody unit_name_require = createPartFromString(unitName.getText().toString());
             RequestBody shop_class, shop_soi, shop_room, promotionId, promotion_desc;
             if (spin_class.getSelectedItemPosition() != -1) {
                 shop_class = createPartFromString(listClass.get(spin_class.getSelectedItemPosition()).getClass_name());
@@ -371,6 +377,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             map.put("img_url", img_url);
             map.put("promotion_id", promotionId);
             map.put("promotion_desc", promotion_desc);
+            map.put("amount_require", amount_require);
+            map.put("unit_require", unit_name_require);
 
             final PostProductActivity activity = this;
             PostService service = ServiceGenerator.createService(PostService.class);
@@ -414,7 +422,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean validPost() {
-        return selectedImage != null && !topic_post.getText().toString().equals("") && !catId.equals("");
+        return selectedImage != null && !topic_post.getText().toString().equals("") && !catId.equals("") && !unitName.toString().equals("") && !amountRequire.toString().equals("");
     }
 
     @NonNull

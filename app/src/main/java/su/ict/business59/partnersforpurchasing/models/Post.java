@@ -60,6 +60,12 @@ public class Post extends User implements Parcelable {
     @SerializedName("memberJoin")
     @Expose
     List<MemberJoin> memberJoin;
+    @SerializedName("amount_require")
+    @Expose
+    int amountRequire;
+    @SerializedName("unit_require")
+    @Expose
+    String unitRequire;
 
     @SerializedName("post_view")
     @Expose
@@ -199,6 +205,23 @@ public class Post extends User implements Parcelable {
     }
 
 
+    public int getAmountRequire() {
+        return amountRequire;
+    }
+
+    public void setAmountRequire(int amountRequire) {
+        this.amountRequire = amountRequire;
+    }
+
+    public String getUnitRequire() {
+        return unitRequire;
+    }
+
+    public void setUnitRequire(String unitRequire) {
+        this.unitRequire = unitRequire;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -221,6 +244,8 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.promotionName);
         dest.writeString(this.promotionDesc);
         dest.writeTypedList(this.memberJoin);
+        dest.writeInt(this.amountRequire);
+        dest.writeString(this.unitRequire);
         dest.writeInt(this.postView);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
@@ -252,6 +277,8 @@ public class Post extends User implements Parcelable {
         this.promotionName = in.readString();
         this.promotionDesc = in.readString();
         this.memberJoin = in.createTypedArrayList(MemberJoin.CREATOR);
+        this.amountRequire = in.readInt();
+        this.unitRequire = in.readString();
         this.postView = in.readInt();
         this.user_id = in.readString();
         this.username = in.readString();
@@ -264,7 +291,7 @@ public class Post extends User implements Parcelable {
         this.status = in.readByte() != 0;
     }
 
-    public static final Creator<Post> CREATOR = new Creator<Post>() {
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
         @Override
         public Post createFromParcel(Parcel source) {
             return new Post(source);

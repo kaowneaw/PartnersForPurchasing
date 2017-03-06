@@ -78,12 +78,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(PostAdapter.ViewHolder holder, int position) {
         Post mPost = postList.get(position);
         holder.title_text.setText(mPost.getPostName());
-        holder.shop_text.setText(mPost.getShopName() + "\n\n" + mPost.getAddressPostShop());
         holder.category_text.setText(mPost.getCatName());
         Picasso.with(mContext).load(host + mPost.getPostImg()).fit().centerCrop().into(holder.img_product);
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
+        holder.amountRequire.setText(mPost.getAmountRequire() + " " + mPost.getUnitRequire());
         if (mPost.getPromotionId() == null || mPost.getPromotionId().equals("")) {
             holder.promotion.setVisibility(View.GONE);
         } else {
@@ -130,7 +130,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView title_text;
         private TextView category_text;
         private TextView date;
-        private TextView shop_text;
         private ImageView img_product;
         private ImageView user_img;
         private TextView user_text;
@@ -138,6 +137,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private Button close_post_btn;
         private TextView promotion;
         private TextView showJoined;
+        private TextView amountRequire;
 
 
         // We also create a constructor that accepts the entire item row
@@ -149,7 +149,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             itemView.setOnClickListener(this);
             title_text = (TextView) itemView.findViewById(R.id.title_text);
             category_text = (TextView) itemView.findViewById(R.id.category_text);
-            shop_text = (TextView) itemView.findViewById(R.id.shop_text);
             img_product = (ImageView) itemView.findViewById(R.id.img_product);
             user_img = (ImageView) itemView.findViewById(R.id.user_img);
             user_text = (TextView) itemView.findViewById(R.id.user_text);
@@ -160,6 +159,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             promotion = (TextView) itemView.findViewById(R.id.promotion);
             close_post_btn.setOnClickListener(this);
             showJoined = (TextView) itemView.findViewById(R.id.showJoined);
+            amountRequire = (TextView) itemView.findViewById(R.id.amountRequire);
         }
 
 

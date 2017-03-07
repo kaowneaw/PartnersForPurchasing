@@ -262,7 +262,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_member_join, null);
         RecyclerView rcv = (RecyclerView) dialogView.findViewById(R.id.rcv_dialog_member_join);
-        MemberJoinAdapter adapter = new MemberJoinAdapter(getApplicationContext(), this.postObj.getMemberJoin());
+        MemberJoinAdapter adapter = new MemberJoinAdapter(getApplicationContext(), this.postObj.getMemberJoin(), this.postObj.getUnitRequire());
         rcv.setAdapter(adapter);
         rcv.setLayoutManager(new LinearLayoutManager(this));
         dialogBuilder.setView(dialogView);

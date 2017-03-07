@@ -23,11 +23,13 @@ public class MemberJoinAdapter extends RecyclerView.Adapter<MemberJoinAdapter.Vi
     // Store the context for easy access
     private Context mContext;
     private final String host;
+    private String unit;
 
-    public MemberJoinAdapter(Context mContext, List<MemberJoin> joinedList) {
+    public MemberJoinAdapter(Context mContext, List<MemberJoin> joinedList, String unit) {
         this.mContext = mContext;
         this.joinedList = joinedList;
         this.host = mContext.getResources().getString(R.string.host);
+        this.unit = unit;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class MemberJoinAdapter extends RecyclerView.Adapter<MemberJoinAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         MemberJoin mMemberJoin = joinedList.get(position);
         holder.txt_username.setText(String.valueOf(mMemberJoin.getUsername()));
+        holder.amount.setText(String.valueOf(mMemberJoin.getAmount()) + " " + this.unit);
         Picasso.with(mContext).load(host + mMemberJoin.getImage_url()).fit().centerCrop().into(holder.user_img);
     }
 
@@ -58,6 +61,7 @@ public class MemberJoinAdapter extends RecyclerView.Adapter<MemberJoinAdapter.Vi
         // for any view that will be set as you render a row
         private ImageView user_img;
         private TextView txt_username;
+        private TextView amount;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -67,6 +71,7 @@ public class MemberJoinAdapter extends RecyclerView.Adapter<MemberJoinAdapter.Vi
             super(itemView);
             txt_username = (TextView) itemView.findViewById(R.id.txt_username);
             user_img = (ImageView) itemView.findViewById(R.id.user_img);
+            amount = (TextView) itemView.findViewById(R.id.amount);
         }
 
         @Override

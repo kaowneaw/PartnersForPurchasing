@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.MemberJoin;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Shop;
+import su.ict.business59.partnersforpurchasing.utills.AlertInputDialog;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -197,33 +199,80 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.join) {
-            PostService service = ServiceGenerator.createService(PostService.class);
-            Call<BaseResponse> call = service.joinPost(this.currentUser.getUser_id(), this.postObj.getPostId() + "", 0);
-            call.enqueue(new Callback<BaseResponse>() {
-                @Override
-                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    if (response.isSuccessful()) {
-                        BaseResponse res = response.body();
-                        if (res.isStatus()) {
-                            chat.setVisibility(View.VISIBLE);
-                            Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                }
-            });
+            alertJoinInput();
         } else if (id == android.R.id.home) {
             this.finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void alertJoinInput() {
+
+        final AlertInputDialog alertInput = new AlertInputDialog();
+        final AlertDialog.Builder alert = alertInput.getDialog(this);
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                int amountCanBuy = calAmountRequire(postObj);
+                int amount = alertInput.getValueAmount();
+
+                if (amount <= amountCanBuy) {
+                    if (amount > 0) {
+                        PostService service = ServiceGenerator.createService(PostService.class);
+                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(postObj.getPostId()), amount);
+                        call.enqueue(new Callback<BaseResponse>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                                if (response.isSuccessful()) {
+                                    BaseResponse res = response.body();
+                                    if (res.isStatus()) {
+                                        chat.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ระบุุตัวเลขที่มากกว่า 0", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "จำนวนที่ระบุเกินความต้องการโพสต์", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // what ever you want to do with No option.
+            }
+        });
+
+        alert.show();
+    }
+
+    private int calAmountRequire(Post post) {
+
+        int totalAmount = post.getAmountRequire();
+        int userJoinAmount = 0;
+        for (MemberJoin join : post.getMemberJoin()) {
+            userJoinAmount += join.getAmount();
+        }
+        int result = totalAmount - userJoinAmount;
+
+        if (result <= 0) return 0;
+
+        return totalAmount - userJoinAmount;
     }
 
     @Override

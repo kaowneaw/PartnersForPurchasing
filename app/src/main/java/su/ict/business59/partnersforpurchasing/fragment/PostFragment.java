@@ -346,7 +346,6 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
         for (Post post : listPost) {
             if (calAmountRequire(post) > 0) {
                 list.add(post);
-                Log.v("Yep", post.getPostName());
             }
         }
         return list;

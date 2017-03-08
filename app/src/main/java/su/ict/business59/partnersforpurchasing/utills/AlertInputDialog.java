@@ -1,5 +1,6 @@
 package su.ict.business59.partnersforpurchasing.utills;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,19 @@ public class AlertInputDialog {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(fm.getContext());
         LayoutInflater inflater = fm.getLayoutInflater(fm.getArguments());
+        //this is what I did to added the layout to the alert dialog
+        View layout = inflater.inflate(R.layout.dialog_input, null);
+        alert.setMessage("ใส่จำนวนสินค้าที่คุณต้องการร่วมซื้อ");
+        alert.setView(layout);
+        this.edittext = (EditText) layout.findViewById(R.id.edtDialog);
+
+        return alert;
+    }
+
+    public AlertDialog.Builder getDialog(Activity activity) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
         //this is what I did to added the layout to the alert dialog
         View layout = inflater.inflate(R.layout.dialog_input, null);
         alert.setMessage("ใส่จำนวนสินค้าที่คุณต้องการร่วมซื้อ");

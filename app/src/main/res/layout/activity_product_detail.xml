@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     tools:context="su.ict.business59.partnersforpurchasing.ProductDetailActivity">
 
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/slider"
         android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:fillViewport="true"
-            android:padding="@dimen/activity_vertical_margin">
+            android:fillViewport="true">
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_below="@id/slider"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin">
 
                 <TableRow
                     android:layout_width="match_parent"

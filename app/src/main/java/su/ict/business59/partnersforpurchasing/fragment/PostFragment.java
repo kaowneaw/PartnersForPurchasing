@@ -51,6 +51,7 @@ import su.ict.business59.partnersforpurchasing.interfaces.PromotionService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
+import su.ict.business59.partnersforpurchasing.models.MemberJoin;
 import su.ict.business59.partnersforpurchasing.models.Post;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.Promotion;
@@ -138,7 +139,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
-                    listPost = response.body().getItemsPost();
+                    listPost = listPostWithOutFullJoin(response.body().getItemsPost());
                     adapter.updateData(listPost);
                     postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
                     adapter.notifyDataSetChanged();
@@ -173,6 +174,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             }
         });
     }
+
 
     public void populateSpinner(Context context, List<Promotion> promotions, Spinner spinner) {
         ArrayAdapter<Promotion> adapter = new ArrayAdapter<Promotion>(context, R.layout.spinner_item, promotions);
@@ -289,37 +291,42 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
 
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //OR
+                int amountCanBuy = calAmountRequire(listPost.get(index));
                 int amount = alertInput.getValueAmount();
 
-                if (amount > 0) {
-                    PostService service = ServiceGenerator.createService(PostService.class);
-                    Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(listPost.get(index).getPostId()), amount);
-                    call.enqueue(new Callback<BaseResponse>() {
-                        @Override
-                        public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                            if (response.isSuccessful()) {
-                                BaseResponse res = response.body();
-                                if (res.isStatus()) {
-                                    listPost.remove(index);
-                                    adapter.updateData(listPost);
-                                    adapter.notifyDataSetChanged();
-                                    Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                if (amount <= amountCanBuy) {
+                    if (amount > 0) {
+                        PostService service = ServiceGenerator.createService(PostService.class);
+                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(listPost.get(index).getPostId()), amount);
+                        call.enqueue(new Callback<BaseResponse>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                                if (response.isSuccessful()) {
+                                    BaseResponse res = response.body();
+                                    if (res.isStatus()) {
+                                        listPost.remove(index);
+                                        adapter.updateData(listPost);
+                                        adapter.notifyDataSetChanged();
+                                        Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<BaseResponse> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getContext(), "ระบุุตัวเลขที่มากกว่า 0", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
-                    Toast.makeText(getContext(), "ระบุุตัวเลขที่มากกว่า 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "จำนวนที่ระบุเกินความต้องการโพสต์", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -331,5 +338,31 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
         });
 
         alert.show();
+    }
+
+    private List<Post> listPostWithOutFullJoin(List<Post> listPost) {
+        List<Post> list = new ArrayList<>();
+
+        for (Post post : listPost) {
+            if (calAmountRequire(post) > 0) {
+                list.add(post);
+                Log.v("Yep", post.getPostName());
+            }
+        }
+        return list;
+    }
+
+    private int calAmountRequire(Post post) {
+
+        int totalAmount = post.getAmountRequire();
+        int userJoinAmount = 0;
+        for (MemberJoin join : post.getMemberJoin()) {
+            userJoinAmount += join.getAmount();
+        }
+        int result = totalAmount - userJoinAmount;
+
+        if (result <= 0) return 0;
+
+        return totalAmount - userJoinAmount;
     }
 }

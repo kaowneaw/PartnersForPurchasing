@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -83,7 +84,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
-        holder.amountRequire.setText(mPost.getAmountRequire() + " " + mPost.getUnitRequire());
+        int amount = calAmountRequire(mPost);
+        if (amount <= 0) {
+            holder.amountRequire.setText("ครบจำนวนแล้ว");
+        } else {
+            holder.amountRequire.setText(amount + " " + mPost.getUnitRequire());
+        }
+
         if (mPost.getPromotionId() == null || mPost.getPromotionId().equals("")) {
             holder.promotion.setVisibility(View.GONE);
         } else {
@@ -117,6 +124,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return false;
     }
 
+    private int calAmountRequire(Post post) {
+
+        int totalAmount = post.getAmountRequire();
+        int userJoinAmount = 0;
+        for (MemberJoin join : post.getMemberJoin()) {
+            userJoinAmount += join.getAmount();
+        }
+
+        return totalAmount - userJoinAmount;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -138,6 +156,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView promotion;
         private TextView showJoined;
         private TextView amountRequire;
+        private LinearLayout postItem;
 
 
         // We also create a constructor that accepts the entire item row
@@ -147,6 +166,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // to access the context from any ViewHolder instance.
             super(itemView);
             itemView.setOnClickListener(this);
+            postItem = (LinearLayout) itemView.findViewById(R.id.postItem);
             title_text = (TextView) itemView.findViewById(R.id.title_text);
             category_text = (TextView) itemView.findViewById(R.id.category_text);
             img_product = (ImageView) itemView.findViewById(R.id.img_product);

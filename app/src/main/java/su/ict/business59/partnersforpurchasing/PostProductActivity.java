@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -54,6 +57,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import su.ict.business59.partnersforpurchasing.adapter.SelectImageAdapter;
 import su.ict.business59.partnersforpurchasing.interfaces.CategoryService;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
 import su.ict.business59.partnersforpurchasing.interfaces.ShopService;
@@ -100,6 +104,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     TextView shop_address;
     @Bind(R.id.warpSpinAddress)
     LinearLayout warpSpinAddress;
+    @Bind(R.id.addMoreImg)
+    TableRow addMoreImg;
+    @Bind(R.id.containerImg)
+    RecyclerView containerImg;
 
     private List<ShopSoi> listSoi;
     private List<ShopClass> listClass;
@@ -116,6 +124,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private ShopService shopService;
     private UserPreference pref;
     private boolean isShareProduct = false;
+    private List<Uri> imgList;
+    private SelectImageAdapter imgListadapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +145,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             isShareProduct = false;
         }
         init();
+        imgList = new ArrayList<>();
+        imgListadapter = new SelectImageAdapter(this, imgList);
         img_product.setOnClickListener(this);
         shop_name.setOnClickListener(this);
         category_name.setOnClickListener(this);
@@ -142,7 +154,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         spin_soi.setOnItemSelectedListener(this);
         spin_room.setOnItemSelectedListener(this);
         btnOptionPost.setOnClickListener(this);
+        addMoreImg.setOnClickListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
+        containerImg.setAdapter(imgListadapter);
+        containerImg.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void initFromShareProduct() {
@@ -192,6 +207,11 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             } else {
                 optionPost.setVisibility(View.VISIBLE);
             }
+        } else if (view == addMoreImg) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
         }
     }
 
@@ -280,13 +300,26 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+
             if (data == null) {
                 //Display an error
                 Toast.makeText(getApplicationContext(), "Can't use this image", Toast.LENGTH_SHORT).show();
                 return;
             }
-            selectedImage = data.getData();
-            Picasso.with(getApplicationContext()).load(selectedImage).fit().centerCrop().into(img_product);
+
+            if (imgList.size() < 3) {
+                imgList.add(data.getData());
+                imgListadapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getApplicationContext(), "เพิ่มไฟล์ได้สูงสุด 3 รูป", Toast.LENGTH_SHORT).show();
+            }
+//            if (data == null) {
+//                //Display an error
+//                Toast.makeText(getApplicationContext(), "Can't use this image", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            selectedImage = data.getData();
+//            Picasso.with(getApplicationContext()).load(selectedImage).fit().centerCrop().into(img_product);
         } else if (requestCode == PICK_CATEGORY && resultCode == Activity.RESULT_OK) {
             this.catId = data.getStringExtra("catId");
             String catName = data.getStringExtra("catName");

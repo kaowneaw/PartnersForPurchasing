@@ -349,13 +349,25 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         if (validPost()) {
             progress = ProgressDialog.show(this, "", "Saving...", true);
             RequestBody img_url;
-            MultipartBody.Part file = null;
+            MultipartBody.Part file = null, file2 = null, file3 = null;
             if (productObj != null) {
                 img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
             } else {
                 img_url = createPartFromString("");// send blank value
-                file = prepareFilePart("img", selectedImage);
+                if (imgList.size() == 1) {
+                    file = prepareFilePart("img", imgList.get(0));
+                }
+                if (imgList.size() == 2) {
+                    file = prepareFilePart("img", imgList.get(0));
+                    file2 = prepareFilePart("img2", imgList.get(1));
+                }
+                if (imgList.size() == 3) {
+                    file = prepareFilePart("img", imgList.get(0));
+                    file2 = prepareFilePart("img2", imgList.get(1));
+                    file3 = prepareFilePart("img3", imgList.get(2));
+                }
             }
+
             RequestBody category_id = createPartFromString(catId);
             RequestBody user_id = createPartFromString(pref.getUserObject().getUser_id());
             RequestBody post_name = createPartFromString(topic_post.getText().toString());
@@ -415,7 +427,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
             final PostProductActivity activity = this;
             PostService service = ServiceGenerator.createService(PostService.class);
-            Call<ResponseBody> call = service.postProduct(map, file);
+            Call<ResponseBody> call = service.postProduct(map, file, file2, file3);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -455,7 +467,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean validPost() {
-        return selectedImage != null && !topic_post.getText().toString().equals("") && !catId.equals("") && !unitName.toString().equals("") && !amountRequire.toString().equals("");
+        return imgList.size() > 0 && !topic_post.getText().toString().equals("") && !catId.equals("") && !unitName.toString().equals("") && !amountRequire.toString().equals("");
     }
 
     @NonNull

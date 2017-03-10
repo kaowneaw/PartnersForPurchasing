@@ -25,7 +25,7 @@ public interface PostService {
 
     @Multipart
     @POST("post")
-    Call<ResponseBody> postProduct(@PartMap() Map<String, RequestBody> dataStr, @Part MultipartBody.Part file1);
+    Call<ResponseBody> postProduct(@PartMap() Map<String, RequestBody> dataStr, @Part MultipartBody.Part file, @Part MultipartBody.Part file2, @Part MultipartBody.Part file3);
 
     @GET("post")
     Call<ListData> getPostList();

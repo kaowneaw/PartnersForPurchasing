@@ -30,6 +30,12 @@ public class Post extends User implements Parcelable {
     @SerializedName("post_img")
     @Expose
     String postImg;
+    @SerializedName("post_img2")
+    @Expose
+    String postImg2;
+    @SerializedName("post_img3")
+    @Expose
+    String postImg3;
     @SerializedName("cat_id")
     @Expose
     String catId;
@@ -221,6 +227,22 @@ public class Post extends User implements Parcelable {
         this.unitRequire = unitRequire;
     }
 
+    public String getPostImg2() {
+        return postImg2;
+    }
+
+    public void setPostImg2(String postImg2) {
+        this.postImg2 = postImg2;
+    }
+
+    public String getPostImg3() {
+        return postImg3;
+    }
+
+    public void setPostImg3(String postImg3) {
+        this.postImg3 = postImg3;
+    }
+
 
     @Override
     public int describeContents() {
@@ -234,6 +256,8 @@ public class Post extends User implements Parcelable {
         dest.writeString(this.postDesc);
         dest.writeString(this.postTime);
         dest.writeString(this.postImg);
+        dest.writeString(this.postImg2);
+        dest.writeString(this.postImg3);
         dest.writeString(this.catId);
         dest.writeString(this.catName);
         dest.writeString(this.shopName);
@@ -267,6 +291,8 @@ public class Post extends User implements Parcelable {
         this.postDesc = in.readString();
         this.postTime = in.readString();
         this.postImg = in.readString();
+        this.postImg2 = in.readString();
+        this.postImg3 = in.readString();
         this.catId = in.readString();
         this.catName = in.readString();
         this.shopName = in.readString();
@@ -291,7 +317,7 @@ public class Post extends User implements Parcelable {
         this.status = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+    public static final Creator<Post> CREATOR = new Creator<Post>() {
         @Override
         public Post createFromParcel(Parcel source) {
             return new Post(source);

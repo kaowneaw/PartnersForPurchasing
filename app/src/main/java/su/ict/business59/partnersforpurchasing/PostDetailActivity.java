@@ -122,6 +122,12 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         HashMap<Integer, String> url_maps = new HashMap<>();
         int index = 0;
         url_maps.put(index, host + this.postObj.getPostImg());
+        if (!this.postObj.getPostImg2().equals("")) {
+            url_maps.put(1, host + this.postObj.getPostImg2());
+        }
+        if (!this.postObj.getPostImg3().equals("")) {
+            url_maps.put(2, host + this.postObj.getPostImg3());
+        }
 
         for (Integer position : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);

@@ -84,12 +84,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
-        int amount = calAmountRequire(mPost);
-        if (amount <= 0) {
-            holder.amountRequire.setText("ครบจำนวนแล้ว");
-        } else {
-            holder.amountRequire.setText(amount + " " + mPost.getUnitRequire());
-        }
 
         if (mPost.getPromotionId() == null || mPost.getPromotionId().equals("")) {
             holder.promotion.setVisibility(View.GONE);
@@ -111,6 +105,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 holder.close_post_btn.setVisibility(View.GONE);
                 holder.join_btn.setVisibility(View.VISIBLE);
             }
+        }
+
+        int amount = calAmountRequire(mPost);
+        if (amount <= 0) {
+            holder.amountRequire.setText("ครบจำนวนแล้ว");
+            holder.join_btn.setVisibility(View.GONE);
+            holder.close_post_btn.setVisibility(View.GONE);
+        } else {
+            holder.amountRequire.setText(amount + " " + mPost.getUnitRequire());
         }
     }
 

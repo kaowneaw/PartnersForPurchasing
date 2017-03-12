@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             setTitle(getResources().getString(R.string.favorite_product));
         } else if (id == R.id.joined) {
             myFragment = new JoinedFragment();
-            setTitle(getResources().getString(R.string.join));
+            setTitle(getResources().getString(R.string.post_joined));
         } else if (id == R.id.nav_logout) {
             UserPreference pref = new UserPreference(this);
             pref.clearPreference();

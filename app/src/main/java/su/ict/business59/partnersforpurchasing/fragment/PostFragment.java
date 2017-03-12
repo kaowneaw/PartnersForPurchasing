@@ -126,6 +126,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
     public void onResume() {
         super.onResume();
         init();
+        getPromotion();
     }
 
     private void init() {
@@ -139,7 +140,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             @Override
             public void onResponse(Call<ListData> call, Response<ListData> response) {
                 if (response.isSuccessful()) {
-                    listPost = listPostWithOutFullJoin(response.body().getItemsPost());
+                    listPost = response.body().getItemsPost();
                     adapter.updateData(listPost);
                     postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
                     adapter.notifyDataSetChanged();
@@ -154,6 +155,9 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                 Log.v("onFailure", t.getMessage());
             }
         });
+    }
+
+    private void getPromotion() {
 
         PromotionService service2 = ServiceGenerator.createService(PromotionService.class);
         Call<ListData> call2 = service2.getPromotion();
@@ -212,9 +216,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                                 if (response.isSuccessful()) {
                                     listPost.remove(index);
                                     adapter.updateData(listPost);
-                                    postRc.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     adapter.notifyDataSetChanged();
-                                    Toast.makeText(getContext(), "Close Post", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -304,10 +306,7 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
                                 if (response.isSuccessful()) {
                                     BaseResponse res = response.body();
                                     if (res.isStatus()) {
-                                        listPost.remove(index);
-                                        adapter.updateData(listPost);
-                                        adapter.notifyDataSetChanged();
-                                        Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                                        init();
                                     } else {
                                         Toast.makeText(getActivity(), res.getMessage(), Toast.LENGTH_SHORT).show();
                                     }

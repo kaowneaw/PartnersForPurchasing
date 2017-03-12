@@ -72,4 +72,5 @@
     <string name="unit">หน่วยนับ</string>
     <string name="amount_require">จำนวนที่ต้องการ</string>
     <string name="find_user_share">ต้องการหาคนร่วมซื้ออีก</string>
+    <string name="post_joined">โพสต์ที่ฉันเข้าร่วม</string>
 </resources>

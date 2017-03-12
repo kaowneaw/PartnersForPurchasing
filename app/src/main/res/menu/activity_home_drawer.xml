@@ -12,6 +12,11 @@
             android:title="@string/product" />
 
         <item
+            android:id="@+id/joined"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/join" />
+
+        <item
             android:id="@+id/nav_fav"
             android:icon="@mipmap/favorite"
             android:title="@string/favorite_product" />

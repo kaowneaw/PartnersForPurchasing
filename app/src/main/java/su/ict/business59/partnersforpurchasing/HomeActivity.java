@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
+import su.ict.business59.partnersforpurchasing.fragment.JoinedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Shop;
@@ -112,6 +113,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_fav) {
             myFragment = new FavoriteProductFragment();
             setTitle(getResources().getString(R.string.favorite_product));
+        } else if (id == R.id.joined) {
+            myFragment = new JoinedFragment();
+            setTitle(getResources().getString(R.string.join));
         } else if (id == R.id.nav_logout) {
             UserPreference pref = new UserPreference(this);
             pref.clearPreference();

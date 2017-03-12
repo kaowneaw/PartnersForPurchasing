@@ -42,6 +42,9 @@ public interface PostService {
     @GET("post/view")
     Call<BaseResponse> postUpdateView(@Query("post_id") String postId, @Query("view") int view);
 
+    @GET("list/post/joined")
+    Call<ListData> getPostJoined(@Query("user_id") String userId);
+
     @FormUrlEncoded
     @POST("joinpost")
     Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId, @Field("amount") int amount);

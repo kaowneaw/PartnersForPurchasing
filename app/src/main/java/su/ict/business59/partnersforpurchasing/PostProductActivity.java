@@ -108,6 +108,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     TableRow addMoreImg;
     @Bind(R.id.containerImg)
     RecyclerView containerImg;
+    @Bind(R.id.requireImg)
+    TextView requireImg;
 
     private List<ShopSoi> listSoi;
     private List<ShopClass> listClass;
@@ -169,6 +171,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         btnOptionPost.setVisibility(View.GONE);
         optionPost.setVisibility(View.VISIBLE);
         shop_address.setText(productObj.getAddressShopString());
+        addMoreImg.setVisibility(View.GONE);
+        requireImg.setVisibility(View.GONE);
     }
 
     @Override
@@ -348,23 +352,31 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private void post() {
         if (validPost()) {
             progress = ProgressDialog.show(this, "", "Saving...", true);
-            RequestBody img_url;
+            RequestBody img_url = null, img_url2, img_url3;
+            img_url = createPartFromString("");// send blank value
+            img_url2 = createPartFromString("");// send blank value
+            img_url3 = createPartFromString("");// send blank value
             MultipartBody.Part file = null, file2 = null, file3 = null;
             if (productObj != null) {
-                img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
+                for (int i = 0; i < productObj.getImgList().size(); i++) {
+                    if (i == 0) {
+                        img_url = createPartFromString(productObj.getImgList().get(0).getPimg_url());
+                    } else if (i == 1) {
+                        img_url2 = createPartFromString(productObj.getImgList().get(1).getPimg_url());
+                    } else if (i == 2) {
+                        img_url3 = createPartFromString(productObj.getImgList().get(2).getPimg_url());
+                    }
+                }
+
             } else {
-                img_url = createPartFromString("");// send blank value
-                if (imgList.size() == 1) {
-                    file = prepareFilePart("img", imgList.get(0));
-                }
-                if (imgList.size() == 2) {
-                    file = prepareFilePart("img", imgList.get(0));
-                    file2 = prepareFilePart("img2", imgList.get(1));
-                }
-                if (imgList.size() == 3) {
-                    file = prepareFilePart("img", imgList.get(0));
-                    file2 = prepareFilePart("img2", imgList.get(1));
-                    file3 = prepareFilePart("img3", imgList.get(2));
+                for (int i = 0; i < imgList.size(); i++) {
+                    if (i == 0) {
+                        file = prepareFilePart("img", imgList.get(0));
+                    } else if (i == 1) {
+                        file2 = prepareFilePart("img2", imgList.get(1));
+                    } else if (i == 2) {
+                        file3 = prepareFilePart("img3", imgList.get(2));
+                    }
                 }
             }
 
@@ -420,6 +432,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             map.put("category_id", category_id);
             map.put("user_id", user_id);
             map.put("img_url", img_url);
+            map.put("img_url2", img_url2);
+            map.put("img_url3", img_url3);
             map.put("promotion_id", promotionId);
             map.put("promotion_desc", promotion_desc);
             map.put("amount_require", amount_require);
@@ -467,7 +481,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean validPost() {
-        return imgList.size() > 0 && !topic_post.getText().toString().equals("") && !catId.equals("") && !unitName.toString().equals("") && !amountRequire.toString().equals("");
+        return (imgList.size() > 0 || isShareProduct) && !topic_post.getText().toString().equals("") && !catId.equals("") && !unitName.toString().equals("") && !amountRequire.toString().equals("");
     }
 
     @NonNull
@@ -479,13 +493,17 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
+//        File file = FileUtils.getFile(this, fileUri);
+//        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//        ImageUtils imgUtil = new ImageUtils();
+//        Bitmap scaledBitmap = imgUtil.scaleDown(bitmap, FILE_MAX_SIZE, true);
+//        File fileResize = imgUtil.saveBitmapToFile(scaledBitmap);
+//        // create RequestBody instance from file
+//        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), fileResize);
+
         File file = FileUtils.getFile(this, fileUri);
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-        ImageUtils imgUtil = new ImageUtils();
-        Bitmap scaledBitmap = imgUtil.scaleDown(bitmap, FILE_MAX_SIZE, true);
-        File fileResize = imgUtil.saveBitmapToFile(scaledBitmap);
         // create RequestBody instance from file
-        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), fileResize);
+        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
 
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);

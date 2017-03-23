@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:layout_marginTop="1.5dp">
 
         <Spinner
             android:id="@+id/promotion_spinner"

@@ -109,7 +109,7 @@ public class ProductPostDetailActivity extends AppCompatActivity implements Base
         }
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setDuration(6000);
+        mDemoSlider.setDuration(5000);
         mDemoSlider.addOnPageChangeListener(this);
     }
 

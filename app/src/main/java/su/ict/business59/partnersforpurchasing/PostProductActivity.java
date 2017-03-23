@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -160,6 +162,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
         containerImg.setAdapter(imgListadapter);
         containerImg.setLayoutManager(new LinearLayoutManager(this));
+
+
+
     }
 
     private void initFromShareProduct() {
@@ -212,12 +217,42 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 optionPost.setVisibility(View.VISIBLE);
             }
         } else if (view == addMoreImg) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            //Intent intent = new Intent();
+            //intent.setType("image/*");
+//            intent.setAction(Intent.ACTION_GET_CONTENT);
+//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+//            Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+//            startActivityForResult(intent,0);
+//            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(pickPhoto , 1);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("เพิ่มรูปภาพโดย")
+                    //.setMessage("เพิ่มรูปภาพโดย")
+                    .setNegativeButton("d]hv'" +
+                            "", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(cameraIntent, 5);
+                        }
+                    })
+                    .setPositiveButton("แกลอรี่", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                        }
+                    })
+                    .setIcon(R.drawable.pics)
+                    .show();
+
         }
     }
+
 
 
     private void init() {

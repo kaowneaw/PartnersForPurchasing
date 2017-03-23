@@ -90,7 +90,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BaseSlid
         }
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setDuration(6000);
+        mDemoSlider.setDuration(5000);
         mDemoSlider.addOnPageChangeListener(this);
     }
 

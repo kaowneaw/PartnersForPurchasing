@@ -118,7 +118,7 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
         } else {
             promotion.setText(postObj.getPromotionName() + " ( " + postObj.getPromotionDesc() + " ) ");
         }
-        checkShowChatButton();
+//        checkShowChatButton();
         HashMap<Integer, String> url_maps = new HashMap<>();
         int index = 0;
         url_maps.put(index, host + this.postObj.getPostImg());

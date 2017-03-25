@@ -2,6 +2,8 @@ package su.ict.business59.partnersforpurchasing.utills;
 
 import android.app.Application;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -15,7 +17,8 @@ public class ServiceGenerator extends Application {
 
     public static final String API_BASE_URL = "http://www.itmystyle.com/ict_shopshare/api/v1/";
     private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-    private static OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(logging).build();
+    private static OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(logging).readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS).build();
 
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(API_BASE_URL)

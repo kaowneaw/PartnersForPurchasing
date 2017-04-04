@@ -76,7 +76,9 @@ import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-public class PostProductActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+import static java.security.AccessController.getContext;
+
+public class PostProductActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener {
     Product productObj;
     @Bind(R.id.topic_post)
     EditText topic_post;
@@ -112,6 +114,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     RecyclerView containerImg;
     @Bind(R.id.requireImg)
     TextView requireImg;
+    @Bind(R.id.selectDate)
+    Button selectDate;
+    @Bind(R.id.showDate)
+    TextView showDate;
 
     private List<ShopSoi> listSoi;
     private List<ShopClass> listClass;
@@ -130,6 +136,9 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private boolean isShareProduct = false;
     private List<Uri> imgList;
     private SelectImageAdapter imgListadapter;
+    private Calendar calendar;
+    private Calendar endDateCalendar;
+    private Calendar startDateCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,11 +168,12 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
         spin_room.setOnItemSelectedListener(this);
         btnOptionPost.setOnClickListener(this);
         addMoreImg.setOnClickListener(this);
+        selectDate.setOnClickListener(this);
         arrayAdapter = new ArrayAdapter<>(PostProductActivity.this, android.R.layout.select_dialog_singlechoice);
         containerImg.setAdapter(imgListadapter);
         containerImg.setLayoutManager(new LinearLayoutManager(this));
-
-
+        calendar = Calendar.getInstance();
+        startDateCalendar = Calendar.getInstance();
 
     }
 
@@ -226,11 +236,10 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 //            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
 //                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //            startActivityForResult(pickPhoto , 1);
-
             new AlertDialog.Builder(this)
                     .setTitle("เพิ่มรูปภาพโดย")
                     //.setMessage("เพิ่มรูปภาพโดย")
-                    .setNegativeButton("d]hv'" +
+                    .setNegativeButton("กล้อง'" +
                             "", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
@@ -250,10 +259,12 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                     .setIcon(R.drawable.pics)
                     .show();
 
+        } else if (view == selectDate) {
+            DatePickerDialog dateDialog = new DatePickerDialog(PostProductActivity.this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dateDialog.getDatePicker().setMinDate(startDateCalendar.getTime().getTime());
+            dateDialog.show();
         }
     }
-
-
 
     private void init() {
         if (isShareProduct) {
@@ -598,6 +609,11 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
     }
 }

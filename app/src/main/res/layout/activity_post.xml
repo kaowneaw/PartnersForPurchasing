@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_post"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="su.ict.business59.partnersforpurchasing.PostProductActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_post"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="su.ict.business59.partnersforpurchasing.PostProductActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,14 +27,14 @@
                 android:gravity="right"
                 android:text="@string/require_field"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
 
             <EditText
                 android:id="@+id/topic_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:hint="@string/topic" />
+                android:hint="@string/topic"/>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                     android:gravity="right"
                     android:text="@string/require_field"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -56,7 +56,7 @@
                     android:gravity="right"
                     android:text="@string/require_field"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
             </TableRow>
 
@@ -71,14 +71,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="60"
                     android:hint="@string/amount_require"
-                    android:inputType="number" />
+                    android:inputType="number"/>
 
                 <EditText
                     android:id="@+id/unitName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="40"
-                    android:hint="@string/unit" />
+                    android:hint="@string/unit"/>
 
             </TableRow>
 
@@ -95,7 +95,7 @@
                     android:gravity="right"
                     android:text="@string/require_field"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
 
                 <EditText
@@ -106,7 +106,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/category_product"
                     android:inputType="none"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/requireImg"
@@ -115,7 +115,7 @@
                     android:gravity="right"
                     android:text="@string/require_field"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
                 <ImageView
                     android:id="@+id/img_product"
@@ -123,7 +123,7 @@
                     android:layout_height="150dp"
                     android:layout_gravity="center"
                     android:src="@mipmap/product_default"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
@@ -144,14 +144,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_menu_camera" />
+                        android:src="@drawable/ic_menu_camera"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:text="@string/add_more_image"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </TableRow>
 
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/desciption"
                     android:lines="3"
-                    android:maxLines="4" />
+                    android:maxLines="4"/>
 
                 <Button
                     android:id="@+id/btnOptionPost"
@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginTop="10dp"
-                    android:text="@string/option_more" />
+                    android:text="@string/option_more"/>
 
                 <LinearLayout
                     android:id="@+id/optionPost"
@@ -186,6 +186,26 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/showDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:text="วันที่"/>
+
+                        <Button
+                            android:id="@+id/selectDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="30"
+                            android:text="เลือก"/>
+
+                    </TableRow>
+
                     <EditText
                         android:id="@+id/shop_name"
                         android:layout_width="match_parent"
@@ -193,20 +213,13 @@
                         android:layout_marginTop="5dp"
                         android:focusable="false"
                         android:hint="@string/shop_name"
-                        android:inputType="none" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/shop_address"
-                        android:textColor="@android:color/black" />
+                        android:inputType="none"/>
 
                     <TextView
                         android:id="@+id/shop_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="8dp"/>
 
                     <LinearLayout
                         android:id="@+id/warpSpinAddress"
@@ -224,13 +237,13 @@
                                 android:layout_weight="30"
                                 android:gravity="center_vertical"
                                 android:text="@string/floor"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"/>
 
                             <Spinner
                                 android:id="@+id/spin_class"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30" />
+                                android:layout_weight="30"/>
 
                         </TableRow>
 
@@ -244,13 +257,13 @@
                                 android:layout_weight="30"
                                 android:gravity="center_vertical"
                                 android:text="@string/soi"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"/>
 
                             <Spinner
                                 android:id="@+id/spin_soi"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30" />
+                                android:layout_weight="30"/>
 
                         </TableRow>
 
@@ -264,13 +277,13 @@
                                 android:layout_weight="30"
                                 android:gravity="center_vertical"
                                 android:text="@string/room"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"/>
 
                             <Spinner
                                 android:id="@+id/spin_room"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="30" />
+                                android:layout_weight="30"/>
                         </TableRow>
 
                     </LinearLayout>

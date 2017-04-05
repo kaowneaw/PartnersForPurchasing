@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +77,10 @@ public class Post extends User implements Parcelable {
     @SerializedName("post_view")
     @Expose
     int postView;
+
+    @SerializedName("post_end_time")
+    @Expose
+    Date post_end_time;
 
     public String getPostId() {
         return postId;
@@ -243,6 +248,13 @@ public class Post extends User implements Parcelable {
         this.postImg3 = postImg3;
     }
 
+    public Date getPost_end_time() {
+        return post_end_time;
+    }
+
+    public void setPost_end_time(Date post_end_time) {
+        this.post_end_time = post_end_time;
+    }
 
     @Override
     public int describeContents() {

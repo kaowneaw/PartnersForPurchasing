@@ -3,19 +3,14 @@ package su.ict.business59.partnersforpurchasing;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,22 +28,17 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,11 +50,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.adapter.SelectImageAdapter;
-import su.ict.business59.partnersforpurchasing.interfaces.CategoryService;
 import su.ict.business59.partnersforpurchasing.interfaces.PostService;
 import su.ict.business59.partnersforpurchasing.interfaces.ShopService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
-import su.ict.business59.partnersforpurchasing.models.Category;
 import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Product;
 import su.ict.business59.partnersforpurchasing.models.Shop;
@@ -72,13 +60,10 @@ import su.ict.business59.partnersforpurchasing.models.ShopClass;
 import su.ict.business59.partnersforpurchasing.models.ShopRoom;
 import su.ict.business59.partnersforpurchasing.models.ShopSoi;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
-import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
-import static java.security.AccessController.getContext;
-
-public class PostProductActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener {
+public class PostProductActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, DatePickerDialog.OnDateSetListener {
     Product productObj;
     @Bind(R.id.topic_post)
     EditText topic_post;
@@ -137,7 +122,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private List<Uri> imgList;
     private SelectImageAdapter imgListadapter;
     private Calendar calendar;
-    private Calendar endDateCalendar;
+    private Calendar dateSelected;
     private Calendar startDateCalendar;
 
     @Override
@@ -614,6 +599,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        showDate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+        dateSelected = Calendar.getInstance();
+        dateSelected.set(year, month, dayOfMonth);
     }
 }

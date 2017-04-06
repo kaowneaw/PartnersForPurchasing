@@ -34,17 +34,24 @@ public class ImageUtils {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis();
         String ts = tsLong.toString();
-        File file = new File(dir, ts+".jpg");
+        File file = new File(dir, ts + ".jpg");
         FileOutputStream fOut = null;
         try {
-            fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut = new FileOutputStream(file, false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
             fOut.flush();
             fOut.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                assert fOut != null;
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return file;

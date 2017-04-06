@@ -84,6 +84,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Picasso.with(mContext).load(SHOPSHARE.getPathImg(mPost.getImage_url())).fit().centerCrop().into(holder.user_img);
         holder.user_text.setText(mPost.getUsername());
         holder.date.setText("โพสเมื่อ " + mPost.getPostTime());
+        if (mPost.getIs_end_time() == 1) {
+            holder.dateEnd.setVisibility(View.VISIBLE);
+            holder.dateEnd.setText("เวลาปิดโพสต์ \n" + mPost.getPost_end_time());
+        } else {
+            holder.dateEnd.setVisibility(View.GONE);
+        }
+
 
         if (mPost.getPromotionId() == null || mPost.getPromotionId().equals("")) {
             holder.promotion.setVisibility(View.GONE);
@@ -160,6 +167,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView showJoined;
         private TextView amountRequire;
         private LinearLayout postItem;
+        private TextView dateEnd;
 
 
         // We also create a constructor that accepts the entire item row
@@ -183,6 +191,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             close_post_btn.setOnClickListener(this);
             showJoined = (TextView) itemView.findViewById(R.id.showJoined);
             amountRequire = (TextView) itemView.findViewById(R.id.amountRequire);
+            dateEnd = (TextView) itemView.findViewById(R.id.dateEnd);
         }
 
 

@@ -112,12 +112,19 @@
                     android:layout_weight="50"
                     android:gravity="right">
 
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/date"
-                        android:textSize="12sp" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/date"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                 </TableRow>
 
@@ -216,6 +223,17 @@
                     android:text="@string/joined"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/dateEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/date"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
 

@@ -80,7 +80,11 @@ public class Post extends User implements Parcelable {
 
     @SerializedName("post_end_time")
     @Expose
-    Date post_end_time;
+    String post_end_time;
+
+    @SerializedName("is_end_time")
+    @Expose
+    int is_end_time;
 
     public String getPostId() {
         return postId;
@@ -248,13 +252,22 @@ public class Post extends User implements Parcelable {
         this.postImg3 = postImg3;
     }
 
-    public Date getPost_end_time() {
+    public String getPost_end_time() {
         return post_end_time;
     }
 
-    public void setPost_end_time(Date post_end_time) {
+    public void setPost_end_time(String post_end_time) {
         this.post_end_time = post_end_time;
     }
+
+    public int getIs_end_time() {
+        return is_end_time;
+    }
+
+    public void setIs_end_time(int is_end_time) {
+        this.is_end_time = is_end_time;
+    }
+
 
     @Override
     public int describeContents() {
@@ -283,6 +296,8 @@ public class Post extends User implements Parcelable {
         dest.writeInt(this.amountRequire);
         dest.writeString(this.unitRequire);
         dest.writeInt(this.postView);
+        dest.writeString(this.post_end_time);
+        dest.writeInt(this.is_end_time);
         dest.writeString(this.user_id);
         dest.writeString(this.username);
         dest.writeString(this.password);
@@ -318,6 +333,8 @@ public class Post extends User implements Parcelable {
         this.amountRequire = in.readInt();
         this.unitRequire = in.readString();
         this.postView = in.readInt();
+        this.post_end_time = in.readString();
+        this.is_end_time = in.readInt();
         this.user_id = in.readString();
         this.username = in.readString();
         this.password = in.readString();

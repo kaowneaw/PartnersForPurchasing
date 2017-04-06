@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,6 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -60,6 +63,7 @@ import su.ict.business59.partnersforpurchasing.models.ShopClass;
 import su.ict.business59.partnersforpurchasing.models.ShopRoom;
 import su.ict.business59.partnersforpurchasing.models.ShopSoi;
 import su.ict.business59.partnersforpurchasing.utills.FileUtils;
+import su.ict.business59.partnersforpurchasing.utills.ImageUtils;
 import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -224,7 +228,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             new AlertDialog.Builder(this)
                     .setTitle("เพิ่มรูปภาพโดย")
                     //.setMessage("เพิ่มรูปภาพโดย")
-                    .setNegativeButton("กล้อง'" +
+                    .setNegativeButton("กล้อง" +
                             "", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
@@ -452,6 +456,17 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
                 promotionId = createPartFromString(productObj.getPromotion_id());
                 promotion_desc = createPartFromString(productObj.getPromotion_desc());
             }
+            RequestBody post_end_time, is_end_time;
+            if (dateSelected != null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = format.format(dateSelected.getTime());
+                post_end_time = createPartFromString(date);
+                is_end_time = createPartFromString("1");
+            } else {
+                post_end_time = createPartFromString(catId);
+                is_end_time = createPartFromString("0");
+            }
+
 
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("post_name", post_name);
@@ -469,6 +484,8 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
             map.put("promotion_desc", promotion_desc);
             map.put("amount_require", amount_require);
             map.put("unit_require", unit_name_require);
+            map.put("post_end_time", post_end_time);
+            map.put("is_end_time", is_end_time);
 
             final PostProductActivity activity = this;
             PostService service = ServiceGenerator.createService(PostService.class);
@@ -503,7 +520,7 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.v("onFailure", t.getMessage());
+//                    Log.v("onFailure", t.getMessage());
                 }
             });
         } else {
@@ -524,17 +541,18 @@ public class PostProductActivity extends AppCompatActivity implements View.OnCli
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
-//        File file = FileUtils.getFile(this, fileUri);
-//        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//        ImageUtils imgUtil = new ImageUtils();
-//        Bitmap scaledBitmap = imgUtil.scaleDown(bitmap, FILE_MAX_SIZE, true);
-//        File fileResize = imgUtil.saveBitmapToFile(scaledBitmap);
-//        // create RequestBody instance from file
-//        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), fileResize);
-
         File file = FileUtils.getFile(this, fileUri);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
+        ImageUtils imgUtil = new ImageUtils();
+//      Bitmap scaledBitmap = imgUtil.scaleDown(bitmap, FILE_MAX_SIZE, true);
+        File fileResize = imgUtil.saveBitmapToFile(resized);
         // create RequestBody instance from file
-        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), fileResize);
+
+//      File file = FileUtils.getFile(this, fileUri);
+        // create RequestBody instance from file
+//      RequestBody requestFile = RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);
 
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);

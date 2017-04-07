@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,14 +19,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import su.ict.business59.partnersforpurchasing.fragment.FavoriteProductFragment;
 import su.ict.business59.partnersforpurchasing.fragment.FeedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.JoinedFragment;
 import su.ict.business59.partnersforpurchasing.fragment.ProductFragment;
+import su.ict.business59.partnersforpurchasing.interfaces.AuthService;
 import su.ict.business59.partnersforpurchasing.models.BaseResponse;
 import su.ict.business59.partnersforpurchasing.models.Shop;
+import su.ict.business59.partnersforpurchasing.models.User;
+import su.ict.business59.partnersforpurchasing.utills.ServiceGenerator;
 import su.ict.business59.partnersforpurchasing.utills.UpdateStatusUser;
 import su.ict.business59.partnersforpurchasing.utills.UserPreference;
 
@@ -71,6 +79,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        updateTokenFCM();
+    }
+
+    private void updateTokenFCM() {
+        final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        AuthService service = ServiceGenerator.createService(AuthService.class);
+        Call<User> call = service.updateToken(pref.getUserObject().getUser_id(), refreshedToken);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Log.v("updateTokenFCM", "Success " + refreshedToken);
+                } else {
+                    Log.v("updateTokenFCM", "Success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.v("onFailure", t.getMessage());
             }
         });
     }

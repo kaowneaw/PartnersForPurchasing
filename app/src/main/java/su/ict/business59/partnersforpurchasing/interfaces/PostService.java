@@ -47,7 +47,7 @@ public interface PostService {
 
     @FormUrlEncoded
     @POST("joinpost")
-    Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId, @Field("amount") int amount);
+    Call<BaseResponse> joinPost(@Field("user_id") String userId, @Field("post_id") String postId, @Field("amount") int amount, @Field("token") String token, @Field("isSuccess") String isSuccess, @Field("joinedName") String joinedName);
 
     @FormUrlEncoded
     @POST("post/search")

@@ -222,11 +222,12 @@ public class PostDetailActivity extends AppCompatActivity implements BaseSliderV
             public void onClick(DialogInterface dialog, int whichButton) {
                 int amountCanBuy = calAmountRequire(postObj);
                 int amount = alertInput.getValueAmount();
-
+                String isBuySuccess = "false";
                 if (amount <= amountCanBuy) {
+                    if (amount == amountCanBuy) isBuySuccess = "true";
                     if (amount > 0) {
                         PostService service = ServiceGenerator.createService(PostService.class);
-                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(postObj.getPostId()), amount);
+                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(postObj.getPostId()), amount, postObj.getToken(), isBuySuccess, currentUser.getUsername());
                         call.enqueue(new Callback<BaseResponse>() {
                             @Override
                             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

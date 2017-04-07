@@ -27,6 +27,7 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private void initFacebookBtn() {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String name = object.getString("name");
                             String email = object.getString("email");
                             String gender = object.getString("gender");
-                            String imgUrl = "https://graph.facebook.com/"+fbId+"/picture?height=300&width=300";
+                            String imgUrl = "https://graph.facebook.com/" + fbId + "/picture?height=300&width=300";
 //                            String imgUrl = Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString();
                             loginFacebook(fbId, name, email, gender, imgUrl); // insert if not have data this user
                         } catch (JSONException e) {

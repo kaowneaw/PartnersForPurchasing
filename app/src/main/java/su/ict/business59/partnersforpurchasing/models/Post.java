@@ -86,6 +86,7 @@ public class Post extends User implements Parcelable {
     @Expose
     int is_end_time;
 
+
     public String getPostId() {
         return postId;
     }
@@ -357,4 +358,5 @@ public class Post extends User implements Parcelable {
             return new Post[size];
         }
     };
+
 }

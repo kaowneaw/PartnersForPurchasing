@@ -30,6 +30,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -295,11 +297,12 @@ public class PostFragment extends Fragment implements PostAdapter.OnItemClickLis
             public void onClick(DialogInterface dialog, int whichButton) {
                 int amountCanBuy = calAmountRequire(listPost.get(index));
                 int amount = alertInput.getValueAmount();
-
+                String isBuySuccess = "false";
                 if (amount <= amountCanBuy) {
+                    if (amount == amountCanBuy) isBuySuccess = "true";
                     if (amount > 0) {
                         PostService service = ServiceGenerator.createService(PostService.class);
-                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(listPost.get(index).getPostId()), amount);
+                        Call<BaseResponse> call = service.joinPost(currentUser.getUser_id(), String.valueOf(listPost.get(index).getPostId()), amount, listPost.get(index).getToken(), isBuySuccess, pref.getUserObject().getUsername());
                         call.enqueue(new Callback<BaseResponse>() {
                             @Override
                             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

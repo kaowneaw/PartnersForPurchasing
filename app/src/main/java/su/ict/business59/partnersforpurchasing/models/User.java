@@ -22,8 +22,6 @@ public class User extends BaseResponse {
     String role;
     @Expose
     String sex;
-    @Expose
-    String token;
 
     public String getRole() {
         return role;
@@ -79,13 +77,5 @@ public class User extends BaseResponse {
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "25524190162",
-    "firebase_url": "https://shopshare-70b23.firebaseio.com",
-    "project_id": "shopshare-70b23",
-    "storage_bucket": "shopshare-70b23.appspot.com"
+    "project_number": "147340119360",
+    "firebase_url": "https://shopshare-9a895.firebaseio.com",
+    "project_id": "shopshare-9a895",
+    "storage_bucket": "shopshare-9a895.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:25524190162:android:292a74859bb431d6",
+        "mobilesdk_app_id": "1:147340119360:android:292a74859bb431d6",
         "android_client_info": {
           "package_name": "su.ict.business59.partnersforpurchasing"
         }
       },
       "oauth_client": [
         {
-          "client_id": "25524190162-ghfaiehcbpnpes6635puell61ev83t2u.apps.googleusercontent.com",
+          "client_id": "147340119360-f1uokgoe5jel4a5anv5p9a2mihlrvllq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCB8x-EoH2x3boVPzKmOwRVfECzS-RQsvI"
+          "current_key": "AIzaSyCtp3qeGKlAM1aV8eI9yujDzlCA2HY8tbA"
         }
       ],
       "services": {

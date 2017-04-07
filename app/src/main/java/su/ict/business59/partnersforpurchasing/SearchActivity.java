@@ -102,30 +102,30 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onJoinButtonClick(final int index) {
-//        PostService service = ServiceGenerator.createService(PostService.class);
-//        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "", 0);
-//        call.enqueue(new Callback<BaseResponse>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-//                if (response.isSuccessful()) {
-//                    BaseResponse res = response.body();
-//                    if (res.isStatus()) {
-//                        listPost.remove(index);
-//                        adapter.notifyDataSetChanged();
-//                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseResponse> call, Throwable t) {
-//
-//            }
-//        });
+        PostService service = ServiceGenerator.createService(PostService.class);
+        Call<BaseResponse> call = service.joinPost("1", listPost.get(index).getPostId() + "", 0);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse res = response.body();
+                    if (res.isStatus()) {
+                        listPost.remove(index);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), res.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

@@ -13,8 +13,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
-import su.ict.business59.partnersforpurchasing.models.BaseResponse;
-import su.ict.business59.partnersforpurchasing.models.ListData;
 import su.ict.business59.partnersforpurchasing.models.Shop;
 import su.ict.business59.partnersforpurchasing.models.User;
 
@@ -35,8 +33,4 @@ public interface AuthService {
     @Multipart
     @POST("login/facebook")
     Call<Shop> loginFacebook(@PartMap() Map<String, RequestBody> datastr);
-
-    @FormUrlEncoded
-    @POST("update/token")
-    Call<User> updateToken(@Field("userId") String userId, @Field("token") String token);
 }
